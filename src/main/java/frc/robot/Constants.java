@@ -14,5 +14,8 @@ package frc.robot;
  */
 public final class Constants 
 {
+    public static int shooterMotor1PWMChannel = 0;
+    public static int shooterMotor2PWMChannel = 1;
+
     
 }

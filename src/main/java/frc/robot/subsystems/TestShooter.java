@@ -4,25 +4,27 @@
 
 package frc.robot.subsystems;
 
-
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class TestShooter extends SubsystemBase 
 {
-    private final Spark shooterMotor1 = new Spark();
+    private final Spark shooterMotor1 = new Spark(Constants.shooterMotor1PWMChannel);
+    private final Spark shooterMotor2 = new Spark(Constants.shooterMotor2PWMChannel);
+
+    private final Encoder motor1Feedback = new Encoder(0, 1);
 
     /** Creates a new TestShooter. */
     public TestShooter() 
     {
-
+        Spark.checkMotors();
     }
 
     @Override
     public void periodic() 
     {
-        System.out.println("x");
         // This method will be called once per scheduler run
     }
 }
-
-import edu.wpi.first.wpilibj.Spark;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
