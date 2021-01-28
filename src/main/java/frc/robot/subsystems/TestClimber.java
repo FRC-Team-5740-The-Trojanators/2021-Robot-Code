@@ -4,9 +4,13 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class TestClimber extends SubsystemBase {
+
+  private final Spark climberElevator = new Spark(Constants.climberElevator);
   /** Creates a new TestClimber. */
   public TestClimber() {}
 
@@ -15,3 +19,6 @@ public class TestClimber extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 }
+
+ 
+ // Creates new climberelevator
