@@ -4,14 +4,23 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class TestDriveTrain extends SubsystemBase {
+
+  private final Spark driveTrainRight = new Spark(Constants.driveTrainRight);
+
   /** Creates a new TestDriveTrain. */
-  public TestDriveTrain() {}
+  public TestDriveTrain() {
+
+    Spark.checkMotors();
+  }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+
   }
 }

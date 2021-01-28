@@ -4,25 +4,22 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.controller.PIDController;
-import edu.wpi.first.wpilibj2.command.PIDSubsystem;
+import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
-public class TestIntake extends PIDSubsystem {
+public class TestIntake extends SubsystemBase {
+
+  private final Spark intakeOverBumper = new Spark(Constants.overBumper);
+  
   /** Creates a new TestIntake. */
   public TestIntake() {
-    super(
-        // The PIDController used by the subsystem
-        new PIDController(0, 0, 0));
+    
   }
 
   @Override
-  public void useOutput(double output, double setpoint) {
-    // Use the output here
-  }
-
-  @Override
-  public double getMeasurement() {
+  public void periodic() {
     // Return the process variable measurement here
-    return 0;
+  
   }
 }
