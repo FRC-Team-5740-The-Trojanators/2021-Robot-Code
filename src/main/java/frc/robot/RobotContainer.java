@@ -6,9 +6,12 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.Constants.HIDConstants;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -22,12 +25,20 @@ public class RobotContainer
     private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
     private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+    
+    
+    private final DriveSubsystem m_robotDrive = new DriveSubsystem();
+
+    // The driver's controller
+    XboxController m_driverController = new XboxController(HIDConstants.k_DriverControllerPort);
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer()
     {
         // Configure the button bindings
         configureButtonBindings();
+
+        m_robotDrive.setDefaultCommand(getSwerveDriveCommand());
     }
 
     /**
@@ -36,7 +47,22 @@ public class RobotContainer
      * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
      * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
-    private void configureButtonBindings() {}
+    private void configureButtonBindings()
+    {
+    }
+
+
+
+    public Command getSwerveDriveCommand()
+    {
+        return new RunCommand(
+            () ->
+                m_robotDrive.drive(
+                    m_driverController.getY(GenericHID.Hand.kLeft),
+                    m_driverController.getX(GenericHID.Hand.kRight),
+                    m_driverController.getX(GenericHID.Hand.kLeft),
+                    false));
+    }
 
     /**
      * Use this to pass the autonomous command to the main {@link Robot} class.
