@@ -77,10 +77,10 @@ public class DriveSubsystem extends SubsystemBase
         // (Please provide the states in the same order in which you instantiated your 
         // SwerveDriveKinematics.)
         m_odometry.update(new Rotation2d(getHeading()),
-        m_LeftFrontModule.getState(),
-        m_RightFrontModule.getState(),
-        m_LeftRearModule.getState(),
-        m_RightRearModule.getState());
+            m_LeftFrontModule.getState(),
+            m_RightFrontModule.getState(),
+            m_LeftRearModule.getState(),
+            m_RightRearModule.getState());
     }
 
     /**
@@ -119,6 +119,7 @@ public class DriveSubsystem extends SubsystemBase
                 fieldRelative
                     ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, m_gyro.getRotation2d())
                     : new ChassisSpeeds(xSpeed, ySpeed, rot));
+                    
         SwerveDriveKinematics.normalizeWheelSpeeds(
             swerveModuleStates, SwerveDriveModuleConstants.k_MaxSpeedMetersPerSecond);
         m_LeftFrontModule.setDesiredState(swerveModuleStates[0]);

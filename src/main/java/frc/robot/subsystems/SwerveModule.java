@@ -77,7 +77,7 @@ public class SwerveModule
             m_driveMotor = new CANSparkMax(driveMotorChannel, driveMotorType);
             m_steeringMotor = new CANSparkMax(turningMotorChannel, turningMotorType);
 
-            // instantiage the drive motor encoder -- it's internal to the NEO motor
+            // instantiate the drive motor encoder -- it's internal to the NEO motor
             m_driveEncoder = m_driveMotor.getEncoder();   //assumes the use of the internal motor encoder
             m_driveEncoder.setVelocityConversionFactor(SwerveDriveModuleConstants.k_DriveEncoderDistancePerPulse); 
 
@@ -105,7 +105,7 @@ public class SwerveModule
      */
     public SwerveModuleState getState()
     {
-        return new SwerveModuleState(m_driveEncoder.getVelocity(), // the getVelocity() has been scaled to go from RPM to m/s
+        return new SwerveModuleState(m_driveEncoder.getVelocity(), // the getVelocity() has been scaled to go from RPM to m/s 
                                      new Rotation2d(m_steeringEncoder.getPosition()));
     }
 
