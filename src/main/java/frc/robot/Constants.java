@@ -21,8 +21,9 @@ import edu.wpi.first.wpilibj.kinematics.SwerveDriveKinematics;
  */
 public final class Constants 
 {
-
-
+    /**
+     * Constants for use with Human Interface Devices (HID)
+     */
     public static final class HIDConstants 
     {
         public static final int k_DriverControllerPort = 1;
@@ -31,7 +32,9 @@ public final class Constants
 
 
 
-
+    /**
+     * These constants are used for the SwerveDrive modules. The robot has four 
+     */
     public static final class SwerveDriveModuleConstants
     {
         public static final double k_MaxModuleAngularSpeedRadiansPerSecond = 2 * Math.PI;
@@ -39,7 +42,7 @@ public final class Constants
 
         public static final double k_SteeringEncoderCoefficient = (Math.PI * 2) / 4096.0; // this is 2π radians, dividided by the 12-bit encoder precision 
 
-
+        // TODO: Update these values !!!
         // These are example values only - DO NOT USE THESE FOR YOUR OWN ROBOT!
         // These characterization values MUST be determined either experimentally or theoretically
         // for *your* robot's drive.
@@ -57,15 +60,18 @@ public final class Constants
 
         public static final int k_RevNEOEncoderCtsPerRev = 42; // the NEO's hall-effect encoder is 42 counts/rev
         public static final double k_WheelDiameterMeters = 0.1016; // 4" nominal wheel diamater converted to meters
-        public static final double k_MK3SwerveModuleGearRatio = 6.86;
+        public static final double k_MK3SwerveModuleGearRatio = 6.86; // The MK3 Swerve drive module fast gear ratio is 6.86:1
         public static final double k_DriveEncoderDistancePerPulse =
             // Assumes the encoders are directly mounted on the wheel shafts
-            (k_WheelDiameterMeters * Math.PI) / ( (double) k_RevNEOEncoderCtsPerRev * 6.86);
+            (k_WheelDiameterMeters * Math.PI) / ( (double) k_RevNEOEncoderCtsPerRev * k_MK3SwerveModuleGearRatio);
     
         public static final double k_TurningEncoderDistancePerPulse =
             // Assumes the encoders are on a 1:1 reduction with the module shaft.
             (2 * Math.PI) / (double) k_RevNEOEncoderCtsPerRev;
 
+        /**
+         * The CAN Bus device IDs for devices used with the Swerve Drive: motor controllers and encoders
+         */
         public static final class CANBusIDs
         {
             public static final int k_RightFront_DriveMotor = 1;
@@ -85,6 +91,10 @@ public final class Constants
             public static final int k_LeftRear_SteeringEncoder = 33;
         }
         
+        /**
+         * The Motor controller we're using can control both brushed and brushless DC motors. 
+         * We need to specify what kind of motor we're controlling.
+         */
         public static final class MotorTypes
         {
             public static final MotorType k_SwerveRightFront_Drive = MotorType.kBrushless;
@@ -100,20 +110,31 @@ public final class Constants
             public static final MotorType k_SwerveLeftRear_Steering = MotorType.kBrushless;
         }
 
-        // Distance between centers of right and left wheels on robot; unit is meters, I think
-        public static final double k_TrackWidth = 0.5;
+        /**
+         * Contains values used in Drive Kinematics
+         */
+        public static final class DriveKinematics
+        {
+            // Distance between centers of right and left wheels on robot; unit is meters, I think
+            public static final double k_TrackWidth = 0.5;
 
-        // Distance between front and back wheels on robot; unit is meters, I think
-        public static final double k_WheelBase = 0.7;
-        
-        public static final SwerveDriveKinematics k_DriveKinematics =
-            new SwerveDriveKinematics(
-                new Translation2d(k_WheelBase / 2, k_TrackWidth / 2),    // Left Front
-                new Translation2d(k_WheelBase / 2, -k_TrackWidth / 2),   // Right Front
-                new Translation2d(-k_WheelBase / 2, k_TrackWidth / 2),   // Left Rear
-                new Translation2d(-k_WheelBase / 2, -k_TrackWidth / 2)); // Right Rear
-        
+            // Distance between front and back wheels on robot; unit is meters, I think
+            public static final double k_WheelBase = 0.7;
+            
+            // !! Important !!
+            // The order of these Translations objects must be the same order as they are declared here
+            public static final SwerveDriveKinematics k_DriveKinematics =
+                new SwerveDriveKinematics(
+                    new Translation2d(k_WheelBase / 2, k_TrackWidth / 2),    // Left Front
+                    new Translation2d(k_WheelBase / 2, -k_TrackWidth / 2),   // Right Front
+                    new Translation2d(-k_WheelBase / 2, k_TrackWidth / 2),   // Left Rear
+                    new Translation2d(-k_WheelBase / 2, -k_TrackWidth / 2)); // Right Rear
+        }
 
+        
+        /**
+         * PID Controller constants for the SwerveModule Steering motor
+         */
         public static final class TurningController
         {
             public static final double k_Prop = 1;
@@ -121,6 +142,9 @@ public final class Constants
             public static final double k_Diff = 0;
         }
 
+        /**
+         * PID Controller constants for the SwerveModule Driving motor
+         */
         public static final class DriveModule
         {
             public static final double k_Proportional = 1;
@@ -138,6 +162,5 @@ public final class Constants
         public static final boolean k_LeftRearDriveEncoderReversed = false;
         public static final boolean k_RightFrontDriveEncoderReversed = false;
         public static final boolean k_RightRearDriveEncoderReversed = false;
-
     }
 }

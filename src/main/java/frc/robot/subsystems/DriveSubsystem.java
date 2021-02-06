@@ -25,7 +25,7 @@ public class DriveSubsystem extends SubsystemBase
             SwerveDriveModuleConstants.CANBusIDs.k_LeftFront_SteeringMotor,
             SwerveDriveModuleConstants.MotorTypes.k_SwerveLeftFront_Steering,
             SwerveDriveModuleConstants.CANBusIDs.k_LeftFront_SteeringEncoder,
-            SwerveDriveModuleConstants.k_LeftFrontSteeringEncoderReversed,
+            SwerveDriveModuleConstants.k_LeftFrontDriveEncoderReversed,
             SwerveDriveModuleConstants.k_LeftFrontSteeringEncoderReversed);
 
     private final SwerveModule m_RightFrontModule = 
@@ -35,7 +35,7 @@ public class DriveSubsystem extends SubsystemBase
             SwerveDriveModuleConstants.CANBusIDs.k_RightFront_SteeringMotor,
             SwerveDriveModuleConstants.MotorTypes.k_SwerveRightFront_Steering,
             SwerveDriveModuleConstants.CANBusIDs.k_RightFront_SteeringEncoder,
-            SwerveDriveModuleConstants.k_RightFrontSteeringEncoderReversed,
+            SwerveDriveModuleConstants.k_RightFrontDriveEncoderReversed,
             SwerveDriveModuleConstants.k_RightFrontSteeringEncoderReversed);
 
     private final SwerveModule m_LeftRearModule = 
@@ -45,7 +45,7 @@ public class DriveSubsystem extends SubsystemBase
             SwerveDriveModuleConstants.CANBusIDs.k_LeftRear_SteeringMotor,
             SwerveDriveModuleConstants.MotorTypes.k_SwerveLeftRear_Steering,
             SwerveDriveModuleConstants.CANBusIDs.k_LeftRear_SteeringEncoder,
-            SwerveDriveModuleConstants.k_LeftRearSteeringEncoderReversed,
+            SwerveDriveModuleConstants.k_LeftRearDriveEncoderReversed,
             SwerveDriveModuleConstants.k_LeftRearSteeringEncoderReversed);
 
     private final SwerveModule m_RightRearModule = 
@@ -55,7 +55,7 @@ public class DriveSubsystem extends SubsystemBase
             SwerveDriveModuleConstants.CANBusIDs.k_RightRear_SteeringMotor,
             SwerveDriveModuleConstants.MotorTypes.k_SwerveRightRear_Steering,
             SwerveDriveModuleConstants.CANBusIDs.k_RightRear_SteeringEncoder,
-            SwerveDriveModuleConstants.k_RightRearSteeringEncoderReversed,
+            SwerveDriveModuleConstants.k_RightRearDriveEncoderReversed,
             SwerveDriveModuleConstants.k_RightRearSteeringEncoderReversed);
 
     // The gyro sensor
@@ -63,7 +63,7 @@ public class DriveSubsystem extends SubsystemBase
 
     // Odometry class for tracking robot pose
     SwerveDriveOdometry m_odometry =
-    new SwerveDriveOdometry(SwerveDriveModuleConstants.k_DriveKinematics, m_gyro.getRotation2d());
+    new SwerveDriveOdometry(SwerveDriveModuleConstants.DriveKinematics.k_DriveKinematics, m_gyro.getRotation2d());
 
     /** Creates a new DriveSubsystem. */
     public DriveSubsystem()
@@ -115,7 +115,7 @@ public class DriveSubsystem extends SubsystemBase
     public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative)
     {
         var swerveModuleStates =
-            SwerveDriveModuleConstants.k_DriveKinematics.toSwerveModuleStates(
+            SwerveDriveModuleConstants.DriveKinematics.k_DriveKinematics.toSwerveModuleStates(
                 fieldRelative
                     ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, m_gyro.getRotation2d())
                     : new ChassisSpeeds(xSpeed, ySpeed, rot));
