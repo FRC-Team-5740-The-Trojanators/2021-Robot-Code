@@ -75,21 +75,19 @@ public final class Constants
 
         public static final class CANBusIDs
         {
+            public static final int k_SteeringEncoder = 30;
+
             public static final int k_RightFront_DriveMotor = 1;
             public static final int k_RightFront_SteeringMotor = 2;
-            public static final int k_RightFront_SteeringEncoder = 30;
     
             public static final int k_LeftFront_DriveMotor = 3;
             public static final int k_LeftFront_SteeringMotor = 4;
-            public static final int k_LeftFront_SteeringEncoder = 31;
 
             public static final int k_RightRear_DriveMotor  = 5;
             public static final int k_RightRear_SteeringMotor = 6;
-            public static final int k_RightRear_SteeringEncoder = 32;
     
             public static final int k_LeftRear_DriveMotor  = 7;
             public static final int k_LeftRear_SteeringMotor = 8;
-            public static final int k_LeftRear_SteeringEncoder = 33;
         }
         
         public static final class MotorTypes
