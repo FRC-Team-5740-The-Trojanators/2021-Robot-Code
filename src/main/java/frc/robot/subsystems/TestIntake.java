@@ -10,7 +10,7 @@ import frc.robot.Constants;
 
 public class TestIntake extends SubsystemBase {
 
-  private final Spark intakeOverBumper = new Spark(Constants.overBumper);
+  //private final Spark intakeOverBumper = new Spark(Constants.overBumper);
   
   /** Creates a new TestIntake. */
   public TestIntake() {

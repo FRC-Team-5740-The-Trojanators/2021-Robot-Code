@@ -10,7 +10,7 @@ import frc.robot.Constants;
 
 public class TestDriveTrain extends SubsystemBase {
 
-  private final Spark driveTrainRight = new Spark(Constants.driveTrainRight);
+ // private final Spark driveTrainRight = new Spark(Constants.driveTrainRight);
 
   /** Creates a new TestDriveTrain. */
   public TestDriveTrain() {

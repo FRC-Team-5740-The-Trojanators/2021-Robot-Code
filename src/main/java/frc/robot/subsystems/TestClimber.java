@@ -10,7 +10,7 @@ import frc.robot.Constants;
 
 public class TestClimber extends SubsystemBase {
 
-  private final Spark climberElevator = new Spark(Constants.climberElevator);
+  //private final Spark climberElevator = new Spark(Constants.climberElevator);
   
   /** Creates a new TestClimber. */
   public TestClimber() {
