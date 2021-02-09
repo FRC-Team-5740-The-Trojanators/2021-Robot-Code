@@ -24,9 +24,9 @@ public class DriveSubsystem extends SubsystemBase
             SwerveDriveModuleConstants.MotorTypes.k_SwerveLeftFront_Drive,
             SwerveDriveModuleConstants.CANBusIDs.k_LeftFront_SteeringMotor,
             SwerveDriveModuleConstants.MotorTypes.k_SwerveLeftFront_Steering,
-            SwerveDriveModuleConstants.CANBusIDs.k_LeftFront_SteeringEncoder,
             SwerveDriveModuleConstants.k_LeftFrontSteeringEncoderReversed,
             SwerveDriveModuleConstants.k_LeftFrontSteeringEncoderReversed);
+
 
     private final SwerveModule m_RightFrontModule = 
         new SwerveModule(
@@ -34,7 +34,6 @@ public class DriveSubsystem extends SubsystemBase
             SwerveDriveModuleConstants.MotorTypes.k_SwerveRightFront_Drive,
             SwerveDriveModuleConstants.CANBusIDs.k_RightFront_SteeringMotor,
             SwerveDriveModuleConstants.MotorTypes.k_SwerveRightFront_Steering,
-            SwerveDriveModuleConstants.CANBusIDs.k_RightFront_SteeringEncoder,
             SwerveDriveModuleConstants.k_RightFrontSteeringEncoderReversed,
             SwerveDriveModuleConstants.k_RightFrontSteeringEncoderReversed);
 
@@ -44,7 +43,6 @@ public class DriveSubsystem extends SubsystemBase
             SwerveDriveModuleConstants.MotorTypes.k_SwerveLeftRear_Drive,
             SwerveDriveModuleConstants.CANBusIDs.k_LeftRear_SteeringMotor,
             SwerveDriveModuleConstants.MotorTypes.k_SwerveLeftRear_Steering,
-            SwerveDriveModuleConstants.CANBusIDs.k_LeftRear_SteeringEncoder,
             SwerveDriveModuleConstants.k_LeftRearSteeringEncoderReversed,
             SwerveDriveModuleConstants.k_LeftRearSteeringEncoderReversed);
 
@@ -54,7 +52,6 @@ public class DriveSubsystem extends SubsystemBase
             SwerveDriveModuleConstants.MotorTypes.k_SwerveRightRear_Drive,
             SwerveDriveModuleConstants.CANBusIDs.k_RightRear_SteeringMotor,
             SwerveDriveModuleConstants.MotorTypes.k_SwerveRightRear_Steering,
-            SwerveDriveModuleConstants.CANBusIDs.k_RightRear_SteeringEncoder,
             SwerveDriveModuleConstants.k_RightRearSteeringEncoderReversed,
             SwerveDriveModuleConstants.k_RightRearSteeringEncoderReversed);
 

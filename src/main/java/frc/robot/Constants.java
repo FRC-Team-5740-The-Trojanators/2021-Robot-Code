@@ -75,8 +75,6 @@ public final class Constants
 
         public static final class CANBusIDs
         {
-            public static final int k_SteeringEncoder = 30;
-
             public static final int k_RightFront_DriveMotor = 1;
             public static final int k_RightFront_SteeringMotor = 2;
     

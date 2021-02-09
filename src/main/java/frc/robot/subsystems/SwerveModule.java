@@ -64,8 +64,6 @@ public class SwerveModule
         MotorType driveMotorType,
         int turningMotorChannel,
         MotorType turningMotorType,
-        //int[] driveEncoderPorts,
-        int steeringEncoderChannel,
         boolean driveEncoderReversed,
         boolean turningEncoderReversed)
         {
