@@ -36,6 +36,8 @@ public class SwerveModule
 
     // CTRE CANCoder encoder signal -- mounted on the MK3 swerve module
     private final CANCoder m_steeringEncoder;
+   // private final CANEncoder m_steeringEncoder; -Assuming Plugged in directly
+
 
     // Proportional-Integral-Differential controller used to enhance drive motor control
     private final PIDController m_driverPIDController = new PIDController(SwerveDriveModuleConstants.DriveModule.k_Proportional, 
@@ -83,13 +85,14 @@ public class SwerveModule
 
             // instantiate the steering encoder -- it's a Cross-The-Road Electronics CANCoder
             m_steeringEncoder = new CANCoder(steeringEncoderChannel); 
+           // m_steeringEncoder = m_steeringMotor.getEncoder(); -Assuming Plugged in directly
             
             // Here we set the measurement unit as well as a human-readable string to describe the units
             CANCoderConfiguration m_canCoderConfiguration = new CANCoderConfiguration();
             m_canCoderConfiguration.unitString = "radians";
             m_canCoderConfiguration.sensorCoefficient = SwerveDriveModuleConstants.k_SteeringEncoderCoefficient;
 
-            m_steeringEncoder.configAllSettings(m_canCoderConfiguration);
+           m_steeringEncoder.configAllSettings(m_canCoderConfiguration);
 
             
             // Limit the PID Controller's input range between -pi and pi and set the input
