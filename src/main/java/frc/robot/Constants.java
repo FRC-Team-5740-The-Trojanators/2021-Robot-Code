@@ -5,6 +5,7 @@
 package frc.robot;
 
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.AlternateEncoderType;
 
 import org.opencv.core.Mat;
 
@@ -54,6 +55,11 @@ public final class Constants
         // !!!!!!!!!!!!!!!!!!!!!!!
 
         public static final boolean k_GyroReversed = false;
+
+
+        public static final AlternateEncoderType k_AlternateEncoderType = AlternateEncoderType.kQuadrature;
+        public static final int k_AltEnc_CountPerRev = 4096;
+
 
         public static final int k_RevNEOEncoderCtsPerRev = 42; // the NEO's hall-effect encoder is 42 counts/rev
         public static final double k_WheelDiameterMeters = 0.15;

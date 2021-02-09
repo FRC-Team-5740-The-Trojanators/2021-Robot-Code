@@ -8,6 +8,7 @@ import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+
 import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.CANCoderConfiguration;
 import com.ctre.phoenix.sensors.CANCoderFaults;
@@ -36,8 +37,8 @@ public class SwerveModule
     // REV Robotics Spark Max encoder signal
     private final CANEncoder m_driveEncoder;
 
-    // CTRE CANCoder encoder signal
-    private final CANCoder m_steeringEncoder;
+    // CTRE SRX Magnetic Encoder signal
+    private final CANEncoder m_steeringEncoder;
 
     private final PIDController m_driverPIDController = new PIDController(SwerveDriveModuleConstants.DriveModule.k_Proportional, 
                                                                           SwerveDriveModuleConstants.DriveModule.k_Intergral,
@@ -69,21 +70,24 @@ public class SwerveModule
         boolean turningEncoderReversed)
         {
             m_driveMotor = new CANSparkMax(driveMotorChannel, driveMotorType);
-            m_steeringMotor = new CANSparkMax(turningMotorChannel, turningMotorType);
 
             this.m_driveEncoder = m_driveMotor.getEncoder();   //assumes the use of the internal motor encoder
             m_driveEncoder.setVelocityConversionFactor(SwerveDriveModuleConstants.k_DriveEncoderDistancePerPulse); 
 
+            m_steeringMotor = new CANSparkMax(turningMotorChannel, turningMotorType);
+            m_steeringEncoder = m_steeringMotor.getAlternateEncoder(SwerveDriveModuleConstants.k_AlternateEncoderType, 
+                                                                    SwerveDriveModuleConstants.k_AltEnc_CountPerRev);
 
-            // Steering encoder is a Cross-The-Road Electronics CANCoder
-            this.m_steeringEncoder = new CANCoder(steeringEncoderChannel); 
+
+
+            // // Steering encoder is a Cross-The-Road Electronics CANCoder
+            // this.m_steeringEncoder = new CANCoder(steeringEncoderChannel); 
             
-            CANCoderConfiguration m_canCoderConfiguration = new CANCoderConfiguration();
-            m_canCoderConfiguration.unitString = "radians";
-            m_canCoderConfiguration.sensorCoefficient = SwerveDriveModuleConstants.k_SteeringEncoderCoefficient;
+            // CANCoderConfiguration m_canCoderConfiguration = new CANCoderConfiguration();
+            // m_canCoderConfiguration.unitString = "radians";
+            // m_canCoderConfiguration.sensorCoefficient = SwerveDriveModuleConstants.k_SteeringEncoderCoefficient;
 
-            m_steeringEncoder.configAllSettings(m_canCoderConfiguration);
-
+            // m_steeringEncoder.configAllSettings(m_canCoderConfiguration);
 
             
             // Limit the PID Controller's input range between -pi and pi and set the input
