@@ -75,11 +75,11 @@ public final class Constants
 
         public static final class CANBusIDs
         {
-            public static final int k_RightFront_DriveMotor = 1;
-            public static final int k_RightFront_SteeringMotor = 2;
+            public static final int k_RightFront_DriveMotor = 3;
+            public static final int k_RightFront_SteeringMotor = 4;
     
-            public static final int k_LeftFront_DriveMotor = 3;
-            public static final int k_LeftFront_SteeringMotor = 4;
+            public static final int k_LeftFront_DriveMotor = 1;
+            public static final int k_LeftFront_SteeringMotor = 2;
 
             public static final int k_RightRear_DriveMotor  = 5;
             public static final int k_RightRear_SteeringMotor = 6;
@@ -132,15 +132,15 @@ public final class Constants
         }
 
         // Unsure if we need these constants, including them just-in-case
-        public static final boolean k_LeftFrontSteeringEncoderReversed = false;
-        public static final boolean k_LeftRearSteeringEncoderReversed = false;
-        public static final boolean k_RightFrontSteeringEncoderReversed = false;
-        public static final boolean k_RightRearSteeringEncoderReversed = false;
+       public static final boolean k_LeftFrontSteeringEncoderReversed = false;
+       public static final boolean k_LeftRearSteeringEncoderReversed = false;
+       public static final boolean k_RightFrontSteeringEncoderReversed = false;
+       public static final boolean k_RightRearSteeringEncoderReversed = false;
 
-        public static final boolean k_LeftFrontDriveEncoderReversed = false;
-        public static final boolean k_LeftRearDriveEncoderReversed = false;
-        public static final boolean k_RightFrontDriveEncoderReversed = false;
-        public static final boolean k_RightRearDriveEncoderReversed = false;
+       public static final boolean k_LeftFrontDriveEncoderReversed = false;
+       public static final boolean k_LeftRearDriveEncoderReversed = false;
+       public static final boolean k_RightFrontDriveEncoderReversed = false;
+       public static final boolean k_RightRearDriveEncoderReversed = false;
 
     }
 }
