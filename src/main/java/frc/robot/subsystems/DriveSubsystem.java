@@ -59,8 +59,11 @@ public class DriveSubsystem extends SubsystemBase
   //  private final Gyro m_gyro = new ADXRS450_Gyro();
 
     // Odometry class for tracking robot pose
-   /* SwerveDriveOdometry m_odometry =
-    new SwerveDriveOdometry(SwerveDriveModuleConstants.k_DriveKinematics, m_gyro.getRotation2d());*/
+    // SwerveDriveOdometry m_odometry =
+    //     new SwerveDriveOdometry(SwerveDriveModuleConstants.k_DriveKinematics, m_gyro.getRotation2d());
+
+    SwerveDriveOdometry m_Odometry_TEMP = new SwerveDriveOdometry(SwerveDriveModuleConstants.k_DriveKinematics_ONEWHEEL,
+                                                     new Rotation2d(0.0, 0.0));
 
     /** Creates a new DriveSubsystem. */
     public DriveSubsystem()
@@ -73,12 +76,19 @@ public class DriveSubsystem extends SubsystemBase
         // Update the odeometry in the periodic block
         // (Please provide the states in the same order in which you instantiated your 
         // SwerveDriveKinematics.)
-       // m_odometry.update(new Rotation2d(getHeading()),
-        //m_LeftFrontModule.getState();
-        //m_RightFrontModule.getState(),
-        //m_LeftRearModule.getState(),
-       // m_RightRearModule.getState());
+    //    m_odometry.update(new Rotation2d(getHeading()),
+    //         m_LeftFrontModule.getState();
+    //         m_RightFrontModule.getState(),
+    //         m_LeftRearModule.getState(),
+    //         m_RightRearModule.getState());
+
+
+       m_Odometry_TEMP.update(new Rotation2d(0.0), m_LeftFrontModule.getState());
     }
+
+
+    
+
 
     /**
      * Returns the currently-estimated pose of the robot.
