@@ -19,15 +19,17 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
  * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
  * subsystems, commands, and button mappings) should be declared here.
  */
+
+
 public class RobotContainer
 {
     // The robot's subsystems and commands are defined here...
-    private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+    //private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
-    private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+    //private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
     
     
-    private final DriveSubsystem m_robotDrive = new DriveSubsystem();
+    // private final DriveSubsystem m_robotDrive = new DriveSubsystem();
 
     // The driver's controller
     XboxController m_driverController = new XboxController(HIDConstants.k_DriverControllerPort);
@@ -38,7 +40,10 @@ public class RobotContainer
         // Configure the button bindings
         configureButtonBindings();
 
-        m_robotDrive.setDefaultCommand(getSwerveDriveCommand());
+       // m_robotDrive.setDefaultCommand(getSwerveDriveCommand());
+
+        // m_robotDrive.setDefaultCommand (
+        // new RunCommand(() -> m_robotDrive.drive( m_driverController.getRawAxis(1),  m_driverController.getRawAxis(4)) , m_robotDrive));
     }
 
     /**
@@ -55,13 +60,14 @@ public class RobotContainer
 
     public Command getSwerveDriveCommand()
     {
-        return new RunCommand(
-            () ->
-                m_robotDrive.drive(
-                    m_driverController.getY(GenericHID.Hand.kLeft),
-                    m_driverController.getX(GenericHID.Hand.kRight),
-                    m_driverController.getX(GenericHID.Hand.kLeft),
-                    false));
+        // return new RunCommand(
+        //     () ->
+        //         m_robotDrive.drive(
+        //             m_driverController.getY(GenericHID.Hand.kLeft),
+        //             m_driverController.getX(GenericHID.Hand.kRight),
+        //             m_driverController.getX(GenericHID.Hand.kLeft),
+        //             false));
+        return null; 
     }
 
     /**
@@ -69,9 +75,9 @@ public class RobotContainer
      *
      * @return the command to run in autonomous
      */
-    public Command getAutonomousCommand()
+    /**public Command getAutonomousCommand()
     {
         // An ExampleCommand will run in autonomous
         return m_autoCommand;
-    }
+    }*/
 }

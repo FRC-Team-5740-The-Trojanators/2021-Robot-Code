@@ -52,14 +52,14 @@ public class SwerveModule
             new TrapezoidProfile.Constraints(
                 SwerveDriveModuleConstants.k_MaxModuleAngularSpeedRadiansPerSecond,
                 SwerveDriveModuleConstants.k_MaxModuleAngularAccelerationRadiansPerSecondSquared) );
-    
+
     /**
      * Constructs a SwerveModule.
      *
      * @param driveMotorChannel ID for the drive motor.
      * @param turningMotorChannel ID for the turning motor.
      */
-    public SwerveModule(
+  public SwerveModule(
         int driveMotorChannel,
         MotorType driveMotorType,
         int turningMotorChannel,
@@ -78,7 +78,7 @@ public class SwerveModule
 
 
 
-            // // Steering encoder is a Cross-The-Road Electronics CANCoder
+            // Steering encoder is a Cross-The-Road Electronics CANCoder
             // this.m_steeringEncoder = new CANCoder(steeringEncoderChannel); 
             
             // CANCoderConfiguration m_canCoderConfiguration = new CANCoderConfiguration();
@@ -124,7 +124,7 @@ public class SwerveModule
 
 
     /** Zeros all the SwerveModule encoders. */
-    public void resetEncoders()
+   public void resetEncoders()
     {
         m_driveEncoder.setPosition(0);
         m_steeringEncoder.setPosition(0);
