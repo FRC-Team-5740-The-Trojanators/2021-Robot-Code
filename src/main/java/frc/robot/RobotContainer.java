@@ -29,7 +29,7 @@ public class RobotContainer
     //private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
     
     
-    // private final DriveSubsystem m_robotDrive = new DriveSubsystem();
+     private final DriveSubsystem m_robotDrive = new DriveSubsystem();
 
     // The driver's controller
     XboxController m_driverController = new XboxController(HIDConstants.k_DriverControllerPort);
@@ -42,8 +42,8 @@ public class RobotContainer
 
        // m_robotDrive.setDefaultCommand(getSwerveDriveCommand());
 
-        // m_robotDrive.setDefaultCommand (
-        // new RunCommand(() -> m_robotDrive.drive( m_driverController.getRawAxis(1),  m_driverController.getRawAxis(4)) , m_robotDrive));
+         m_robotDrive.setDefaultCommand (
+         new RunCommand(() -> m_robotDrive.drive(m_driverController.getRawAxis(2),  m_driverController.getRawAxis(4)) , m_robotDrive));
     }
 
     /**
@@ -58,17 +58,16 @@ public class RobotContainer
 
 
 
-    public Command getSwerveDriveCommand()
-    {
-        // return new RunCommand(
-        //     () ->
-        //         m_robotDrive.drive(
-        //             m_driverController.getY(GenericHID.Hand.kLeft),
-        //             m_driverController.getX(GenericHID.Hand.kRight),
-        //             m_driverController.getX(GenericHID.Hand.kLeft),
-        //             false));
-        return null; 
-    }
+//    public Command getSwerveDriveCommand()
+//    {
+//         return new RunCommand(
+//             () ->
+//                 m_robotDrive.drive(
+//                     m_driverController.getY(GenericHID.Hand.kLeft),
+//                     m_driverController.getX(GenericHID.Hand.kRight),
+//                     m_driverController.getX(GenericHID.Hand.kLeft),
+//                     false), m_robotDrive);
+//    }
 
     /**
      * Use this to pass the autonomous command to the main {@link Robot} class.
