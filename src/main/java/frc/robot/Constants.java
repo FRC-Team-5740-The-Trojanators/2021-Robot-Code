@@ -115,15 +115,7 @@ public final class Constants
                 new Translation2d(k_WheelBase / 2, -k_TrackWidth / 2),   // Right Front
                 new Translation2d(-k_WheelBase / 2, k_TrackWidth / 2),   // Left Rear
                 new Translation2d(-k_WheelBase / 2, -k_TrackWidth / 2)); // Right Rear
-        
-        public static final SwerveDriveKinematics k_DriveKinematics_ONEWHEEL =
-            new SwerveDriveKinematics(
-                    new Translation2d(k_WheelBase / 2, k_TrackWidth / 2));    // Left Front
-
-
-
-
-
+      
         public static final class TurningController
         {
             public static final double k_Prop = 1;
