@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import com.analog.adis16470.frc.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
@@ -28,7 +29,7 @@ public class DriveSubsystem extends SubsystemBase
             SwerveDriveModuleConstants.k_LeftFrontSteeringEncoderReversed);
 
 
-/*   private final SwerveModule m_RightFrontModule = 
+   private final SwerveModule m_RightFrontModule = 
         new SwerveModule(
             SwerveDriveModuleConstants.CANBusIDs.k_RightFront_DriveMotor,
             SwerveDriveModuleConstants.MotorTypes.k_SwerveRightFront_Drive,
@@ -53,17 +54,18 @@ public class DriveSubsystem extends SubsystemBase
             SwerveDriveModuleConstants.CANBusIDs.k_RightRear_SteeringMotor,
             SwerveDriveModuleConstants.MotorTypes.k_SwerveRightRear_Steering,
             SwerveDriveModuleConstants.k_RightRearSteeringEncoderReversed,
-            SwerveDriveModuleConstants.k_RightRearSteeringEncoderReversed);*/
+            SwerveDriveModuleConstants.k_RightRearSteeringEncoderReversed);
 
     // The gyro sensor
-  //  private final Gyro m_gyro = new ADXRS450_Gyro();
+     private final Gyro m_gyro = new ADXRS450_Gyro();
+    public static final ADIS16470_IMU m_imu = new ADIS16470_IMU();
 
     // Odometry class for tracking robot pose
-    // SwerveDriveOdometry m_odometry =
-    //     new SwerveDriveOdometry(SwerveDriveModuleConstants.k_DriveKinematics, m_gyro.getRotation2d());
+    SwerveDriveOdometry m_odometry =
+        new SwerveDriveOdometry(SwerveDriveModuleConstants.k_DriveKinematics, new Rotation2d(m_imu.getAngle())); // TODO: use radians here?
 
-    SwerveDriveOdometry m_Odometry_TEMP = new SwerveDriveOdometry(SwerveDriveModuleConstants.k_DriveKinematics_ONEWHEEL,
-                                                     new Rotation2d(0.0, 0.0));
+    // SwerveDriveOdometry m_Odometry_TEMP = new SwerveDriveOdometry(SwerveDriveModuleConstants.k_DriveKinematics_ONEWHEEL,
+    //                                                  new Rotation2d(0.0, 0.0));
 
     /** Creates a new DriveSubsystem. */
     public DriveSubsystem()
@@ -76,18 +78,15 @@ public class DriveSubsystem extends SubsystemBase
         // Update the odeometry in the periodic block
         // (Please provide the states in the same order in which you instantiated your 
         // SwerveDriveKinematics.)
-    //    m_odometry.update(new Rotation2d(getHeading()),
-    //         m_LeftFrontModule.getState();
-    //         m_RightFrontModule.getState(),
-    //         m_LeftRearModule.getState(),
-    //         m_RightRearModule.getState());
+       m_odometry.update(new Rotation2d(getHeading()),
+            m_LeftFrontModule.getState(),
+            m_RightFrontModule.getState(),
+            m_LeftRearModule.getState(),
+            m_RightRearModule.getState());
 
 
-       m_Odometry_TEMP.update(new Rotation2d(0.0), m_LeftFrontModule.getState());
+    //    m_Odometry_TEMP.update(new Rotation2d(0.0), m_LeftFrontModule.getState());
     }
-
-
-    
 
 
     /**
@@ -95,20 +94,22 @@ public class DriveSubsystem extends SubsystemBase
      *
      * @return The pose.
      */
-  /*  public Pose2d getPose()
+    public Pose2d getPose()
     {
         return m_odometry.getPoseMeters();
-    }*/
+    }
+
 
     /**
      * Resets the odometry to the specified pose.
      *
      * @param pose The pose to which to set the odometry.
      */
-  /*  public void resetOdometry(Pose2d pose)
+    public void resetOdometry(Pose2d pose)
     {
         m_odometry.resetPosition(pose, m_gyro.getRotation2d());
-    }*/
+    }
+
 
     /**
      * Method to drive the robot using joystick info.
@@ -129,10 +130,11 @@ public class DriveSubsystem extends SubsystemBase
         
         SwerveDriveKinematics.normalizeWheelSpeeds(
             swerveModuleStates, SwerveDriveModuleConstants.k_MaxSpeedMetersPerSecond);
+
         m_LeftFrontModule.setDesiredState(swerveModuleStates[0]);
-       /* m_RightFrontModule.setDesiredState(swerveModuleStates[1]);
-       m_LeftRearModule.setDesiredState(swerveModuleStates[2]);
-        m_RightRearModule.setDesiredState(swerveModuleStates[3]);*/
+        m_RightFrontModule.setDesiredState(swerveModuleStates[1]);
+        m_LeftRearModule.setDesiredState(swerveModuleStates[2]);
+        m_RightRearModule.setDesiredState(swerveModuleStates[3]);
     }
 
     /**
@@ -144,10 +146,11 @@ public class DriveSubsystem extends SubsystemBase
     {
         SwerveDriveKinematics.normalizeWheelSpeeds(
             desiredStates, SwerveDriveModuleConstants.k_MaxSpeedMetersPerSecond);
+
         m_LeftFrontModule.setDesiredState(desiredStates[0]);
-       /* m_RightFrontModule.setDesiredState(desiredStates[1]);
+        m_RightFrontModule.setDesiredState(desiredStates[1]);
         m_LeftRearModule.setDesiredState(desiredStates[2]);
-        m_RightRearModule.setDesiredState(desiredStates[3]);*/
+        m_RightRearModule.setDesiredState(desiredStates[3]);
     }
 
     /** 
@@ -156,38 +159,41 @@ public class DriveSubsystem extends SubsystemBase
     public void resetEncoders()
     {
         m_LeftFrontModule.resetEncoders();
-       /* m_RightFrontModule.resetEncoders();
+        m_RightFrontModule.resetEncoders();
         m_LeftRearModule.resetEncoders();
-        m_RightRearModule.resetEncoders();*/
+        m_RightRearModule.resetEncoders();
     }
 
 
     /** 
      * Zeroes the heading of the robot. 
      */
-  /*  public void zeroHeading()
+    public void zeroHeading()
     {
-        m_gyro.reset();
+        //m_gyro.reset();
+        m_imu.reset();
     }
-*/
+
 
     /**
      * Returns the heading of the robot.
      *
-     * @return the robot's heading in degrees, from -180 to 180
+     * @return the robot's heading in degrees, from -180 to 180 // TODO: Is this still correct, that it's -180 to +180?
      */
-   /* public double getHeading()
+    public double getHeading()
     {
-        return m_gyro.getRotation2d().getDegrees();
-    }*/
+        //return m_gyro.getRotation2d().getDegrees();
+        return m_imu.getAngle();
+    }
 
     /**
      * Returns the turn rate of the robot.
      *
      * @return The turn rate of the robot, in degrees per second
      */
-    /*public double getTurnRate()
+    public double getTurnRate()
     {
-        return m_gyro.getRate() * (SwerveDriveModuleConstants.k_GyroReversed ? -1.0 : 1.0);
-    }*/
+        //return m_gyro.getRate() * (SwerveDriveModuleConstants.k_GyroReversed ? -1.0 : 1.0);
+        return m_imu.getRate() * (SwerveDriveModuleConstants.k_GyroReversed ? -1.0 : 1.0);
+    }
 }
