@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.HIDConstants;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.subsystems.DashboardSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -30,6 +31,7 @@ public class RobotContainer
     
     
      private final DriveSubsystem m_robotDrive = new DriveSubsystem();
+     private final DashboardSubsystem m_dashboard = new DashboardSubsystem();
 
     // The driver's controller
     XboxController m_driverController = new XboxController(HIDConstants.k_DriverControllerPort);
@@ -44,7 +46,9 @@ public class RobotContainer
 
          m_robotDrive.setDefaultCommand (
          new RunCommand(() -> m_robotDrive.drive(m_driverController.getRawAxis(1), m_driverController.getRawAxis(2),  m_driverController.getRawAxis(4), false) , m_robotDrive));
-    }
+         //m_dashboard.setDefaultCommand(new RunCommand(() -> m_dashboard.dashboardData(), m_dashboard));
+
+        }
 
     /**
      * Use this method to define your button->command mappings. Buttons can be created by

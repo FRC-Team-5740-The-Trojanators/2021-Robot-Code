@@ -4,10 +4,12 @@
 
 package frc.robot.subsystems;
 
+import com.analog.adis16470.frc.ADIS16470_IMU;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.PWMSparkMax;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
@@ -19,6 +21,7 @@ import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.SwerveDriveModuleConstants;
@@ -68,7 +71,8 @@ public class DriveSubsystem extends SubsystemBase
             SwerveDriveModuleConstants.k_RightRearSteeringEncoderReversed);
 
     // The gyro sensor
-      private final Gyro m_gyro = new ADXRS450_Gyro();
+    public static final ADIS16470_IMU m_gyro = new ADIS16470_IMU();
+    private NetworkTableEntry gyroAngle;
 
     //Odometry class for tracking robot pose
     SwerveDriveOdometry m_odometry =
@@ -94,9 +98,13 @@ public class DriveSubsystem extends SubsystemBase
             m_RightFrontModule.getState(),
             m_LeftRearModule.getState(),
             m_RightRearModule.getState());
+        
+       //gyroAngle = Shuffleboard.getTab("Gyro").add("Gyro Angle", m_gyro.getGyroInstantY()).getEntry();
 
 
        //m_Odometry_TEMP.update(new Rotation2d(0.0), m_LeftFrontModule.getState());
+
+      
     }
 
 
