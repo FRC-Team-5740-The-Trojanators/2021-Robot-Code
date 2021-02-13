@@ -121,22 +121,53 @@ public final class Constants
                     new Translation2d(k_WheelBase / 2, k_TrackWidth / 2));    // Left Front
 
 
-
-
-
-        public static final class TurningController
-        {
-            public static final double k_Prop = 1;
-            public static final double k_Inter = 0;
-            public static final double k_Diff = 0;
-        }
-
-        public static final class DriveModule
+        public static final class DriveModulePIDValues
         {
             public static final double k_Proportional = 1;
             public static final double k_Intergral = 0;
             public static final double k_Differential = 0;
+
+            public static final double k_Iz = 0; 
+            public static final double k_FF = 0.000156; // feedforward
+            
+            public static final double k_MaxOutput = 1; 
+            public static final double k_MinOutput = -1;
+            public static final double k_maxRPM = 5700;
+
+            public static final double k_maxVel = 2000; // rpm
+            public static final double k_minVel = 0;
+            public static final double k_maxAcc = 1500;
+
+            public static final double k_allowedError = 0; // allowedErr - The allowed deviation for your setpoint vs actual position in rotations
+
+            public static final int k_smartMotionSlot = 0; // Is the gain schedule slot, the value is a number between 0 and 3. Each slot has its own set of gain values and can be changed in each control frame using SetReference().
         }
+
+        public static final class SteeringControllerPIDValues
+        {
+            public static final double k_Prop = 1;
+            public static final double k_Inter = 0;
+            public static final double k_Diff = 0;
+
+            public static final double k_Iz = 0; 
+            public static final double k_FF = 0.000156; // feedforward
+
+            public static final double k_MaxOutput = 1; 
+            public static final double k_MinOutput = -1;
+            public static final double k_maxRPM = 5700;
+
+            public static final double k_maxVel = 2000; // rpm
+            public static final double k_minVel = 0;
+            public static final double k_maxAcc = 1500;
+
+            public static final double k_allowedError = 0; // allowedErr - The allowed deviation for your setpoint vs actual position in rotations
+
+            public static final int k_smartMotionSlot = 0; // Is the gain schedule slot, the value is a number between 0 and 3. Each slot has its own set of gain values and can be changed in each control frame using SetReference().
+
+        }
+
+
+
 
         // Unsure if we need these constants, including them just-in-case
        public static final boolean k_LeftFrontSteeringEncoderReversed = false;
