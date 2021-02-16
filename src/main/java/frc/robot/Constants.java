@@ -81,11 +81,11 @@ public final class Constants
             public static final int k_LeftFront_DriveMotor = 1;
             public static final int k_LeftFront_SteeringMotor = 2;
 
-            public static final int k_RightRear_DriveMotor  = 5;
-            public static final int k_RightRear_SteeringMotor = 6;
+            public static final int k_RightRear_DriveMotor  = 7;
+            public static final int k_RightRear_SteeringMotor = 8;
     
-            public static final int k_LeftRear_DriveMotor  = 7;
-            public static final int k_LeftRear_SteeringMotor = 8;
+            public static final int k_LeftRear_DriveMotor  = 5;
+            public static final int k_LeftRear_SteeringMotor = 6;
         }
         
         public static final class MotorTypes
@@ -123,7 +123,7 @@ public final class Constants
 
         public static final class DriveModulePIDValues
         {
-            public static final double k_Proportional = 1;
+            public static final double k_Proportional = 0.1;
             public static final double k_Intergral = 0;
             public static final double k_Differential = 0;
 
@@ -145,7 +145,7 @@ public final class Constants
 
         public static final class SteeringControllerPIDValues
         {
-            public static final double k_Prop = 1;
+            public static final double k_Prop = 0.1;
             public static final double k_Inter = 0;
             public static final double k_Diff = 0;
 
