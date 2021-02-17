@@ -57,12 +57,12 @@ public class DriveSubsystem extends SubsystemBase
             SwerveDriveModuleConstants.k_RightRearSteeringEncoderReversed);
 
     // The gyro sensor
-     private final Gyro m_gyro = new ADXRS450_Gyro();
+     //private final Gyro m_gyro = new ADXRS450_Gyro();
     public static final ADIS16470_IMU m_imu = new ADIS16470_IMU();
 
     // Odometry class for tracking robot pose
-    SwerveDriveOdometry m_odometry =
-        new SwerveDriveOdometry(SwerveDriveModuleConstants.k_DriveKinematics, new Rotation2d(m_imu.getAngle())); // TODO: use radians here?
+   SwerveDriveOdometry m_odometry =
+       new SwerveDriveOdometry(SwerveDriveModuleConstants.k_DriveKinematics, new Rotation2d(m_imu.getAngle())); // TODO: use radians here?
 
     // SwerveDriveOdometry m_Odometry_TEMP = new SwerveDriveOdometry(SwerveDriveModuleConstants.k_DriveKinematics_ONEWHEEL,
     //                                                  new Rotation2d(0.0, 0.0));
@@ -78,11 +78,11 @@ public class DriveSubsystem extends SubsystemBase
         // Update the odeometry in the periodic block
         // (Please provide the states in the same order in which you instantiated your 
         // SwerveDriveKinematics.)
-       m_odometry.update(new Rotation2d(getHeading()),
-            m_LeftFrontModule.getState(),
-            m_RightFrontModule.getState(),
-            m_LeftRearModule.getState(),
-            m_RightRearModule.getState());
+    //    m_odometry.update(new Rotation2d(getHeading()),
+    //         m_LeftFrontModule.getState(),
+    //         m_RightFrontModule.getState(),
+    //         m_LeftRearModule.getState(),
+    //         m_RightRearModule.getState());
 
 
     //    m_Odometry_TEMP.update(new Rotation2d(0.0), m_LeftFrontModule.getState());
@@ -94,10 +94,10 @@ public class DriveSubsystem extends SubsystemBase
      *
      * @return The pose.
      */
-    public Pose2d getPose()
-    {
-        return m_odometry.getPoseMeters();
-    }
+    // public Pose2d getPose()
+    // {
+    //    // return m_odometry.getPoseMeters();
+    // }
 
 
     /**
@@ -107,7 +107,7 @@ public class DriveSubsystem extends SubsystemBase
      */
     public void resetOdometry(Pose2d pose)
     {
-        m_odometry.resetPosition(pose, m_gyro.getRotation2d());
+        m_odometry.resetPosition(pose, m_imu.getRotation2d());
     }
 
 
@@ -194,6 +194,6 @@ public class DriveSubsystem extends SubsystemBase
     public double getTurnRate()
     {
         //return m_gyro.getRate() * (SwerveDriveModuleConstants.k_GyroReversed ? -1.0 : 1.0);
-        return m_imu.getRate() * (SwerveDriveModuleConstants.k_GyroReversed ? -1.0 : 1.0);
+       return m_imu.getRate() * (SwerveDriveModuleConstants.k_GyroReversed ? -1.0 : 1.0);
     }
 }

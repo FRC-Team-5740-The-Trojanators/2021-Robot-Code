@@ -196,21 +196,21 @@ public class SwerveModule
         m_driverPIDController.setSmartMotionAllowedClosedLoopError(DriveModulePIDValues.k_allowedError, DriveModulePIDValues.k_smartMotionSlot);
       
         // display PID coefficients on SmartDashboard
-        SmartDashboard.putNumber("P Gain", kP_D);
-        SmartDashboard.putNumber("I Gain", kI_D);
-        SmartDashboard.putNumber("D Gain", kD_D);
-        SmartDashboard.putNumber("I Zone", kIz_D);
-        SmartDashboard.putNumber("Feed Forward", kFF_D);
-        SmartDashboard.putNumber("Max Output", kMaxOutput_D);
-        SmartDashboard.putNumber("Min Output", kMinOutput_D);
+        SmartDashboard.putNumber("P Gain Drive", kP_D);
+        SmartDashboard.putNumber("I Gain Drive", kI_D);
+        SmartDashboard.putNumber("D Gain Drive", kD_D);
+        SmartDashboard.putNumber("I Zone Drive", kIz_D);
+        SmartDashboard.putNumber("Feed Forward Drive", kFF_D);
+        SmartDashboard.putNumber("Max Output Drive", kMaxOutput_D);
+        SmartDashboard.putNumber("Min Output Drive", kMinOutput_D);
 
         // display Smart Motion coefficients
-        SmartDashboard.putNumber("Max Velocity", maxVel_D);
-        SmartDashboard.putNumber("Min Velocity", minVel_D);
-        SmartDashboard.putNumber("Max Acceleration", maxAcc_D);
-        SmartDashboard.putNumber("Allowed Closed Loop Error", allowedErr_D);
-        SmartDashboard.putNumber("Set Position", 0);
-        SmartDashboard.putNumber("Set Velocity", 0);
+        SmartDashboard.putNumber("Max Velocity Drive", maxVel_D);
+        SmartDashboard.putNumber("Min Velocity Drive", minVel_D);
+        SmartDashboard.putNumber("Max Acceleration Drive", maxAcc_D);
+        SmartDashboard.putNumber("Allowed Closed Loop Error Drive", allowedErr_D);
+        SmartDashboard.putNumber("Set Position Drive", 0);
+        SmartDashboard.putNumber("Set Velocity Drive", 0);
         
         // button to toggle between velocity and smart motion modes
         SmartDashboard.putBoolean("Mode", true);
@@ -269,21 +269,21 @@ public class SwerveModule
         m_steeringPIDController.setSmartMotionAllowedClosedLoopError(SteeringControllerPIDValues.k_allowedError, SteeringControllerPIDValues.k_smartMotionSlot);
 
         // display PID coefficients on SmartDashboard
-        SmartDashboard.putNumber("P Gain", kP_S);
-        SmartDashboard.putNumber("I Gain", kI_S);
-        SmartDashboard.putNumber("D Gain", kD_S);
-        SmartDashboard.putNumber("I Zone", kIz_S);
-        SmartDashboard.putNumber("Feed Forward", kFF_S);
-        SmartDashboard.putNumber("Max Output", kMaxOutput_S);
-        SmartDashboard.putNumber("Min Output", kMinOutput_S);
+        SmartDashboard.putNumber("P Gain Steer", kP_S);
+        SmartDashboard.putNumber("I Gain Steer", kI_S);
+        SmartDashboard.putNumber("D Gain Steer", kD_S);
+        SmartDashboard.putNumber("I Zone Steer", kIz_S);
+        SmartDashboard.putNumber("Feed Forward Steer", kFF_S);
+        SmartDashboard.putNumber("Max Output Steer", kMaxOutput_S);
+        SmartDashboard.putNumber("Min Output Steer", kMinOutput_S);
 
         // display Smart Motion coefficients
-        SmartDashboard.putNumber("Max Velocity", maxVel_S);
-        SmartDashboard.putNumber("Min Velocity", minVel_S);
-        SmartDashboard.putNumber("Max Acceleration", maxAcc_S);
-        SmartDashboard.putNumber("Allowed Closed Loop Error", allowedErr_S);
-        SmartDashboard.putNumber("Set Position", 0);
-        SmartDashboard.putNumber("Set Velocity", 0);
+        SmartDashboard.putNumber("Max Velocity Steer", maxVel_S);
+        SmartDashboard.putNumber("Min Velocity Steer", minVel_S);
+        SmartDashboard.putNumber("Max Acceleration Steer", maxAcc_S);
+        SmartDashboard.putNumber("Allowed Closed Loop Erro Steerr", allowedErr_S);
+        SmartDashboard.putNumber("Set Position Steer", 0);
+        SmartDashboard.putNumber("Set Velocity Steer", 0);
         
         // button to toggle between velocity and smart motion modes
         SmartDashboard.putBoolean("Mode", true);
