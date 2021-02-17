@@ -82,7 +82,7 @@ public final class Constants
             public static final int k_LeftFront_SteeringMotor = 2;
 
             public static final int k_RightRear_DriveMotor  = 7;
-            public static final int k_RightRear_SteeringMotor = 8;
+            public static final int k_RightRear_SteeringMotor = 10;
     
             public static final int k_LeftRear_DriveMotor  = 5;
             public static final int k_LeftRear_SteeringMotor = 6;
