@@ -51,7 +51,7 @@ public class DriveSubsystem extends SubsystemBase
 
     private final SwerveModule m_RightRearModule = 
         new SwerveModule(
-            SwerveDriveModuleConstants.CANBusIDs.k_RightRear_SteeringMotor,
+            SwerveDriveModuleConstants.CANBusIDs.k_RightRear_DriveMotor,
             SwerveDriveModuleConstants.MotorTypes.k_SwerveRightRear_Drive,
             SwerveDriveModuleConstants.CANBusIDs.k_RightRear_SteeringMotor,
             SwerveDriveModuleConstants.MotorTypes.k_SwerveRightRear_Steering,
