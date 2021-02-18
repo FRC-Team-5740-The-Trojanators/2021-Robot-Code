@@ -145,7 +145,7 @@ public class DriveSubsystem extends SubsystemBase
     @Override
     public void periodic()
     {
-        SteeringUpdate();
+        MotorControlsValuesUpdate();
 
         // Update the odeometry in the periodic block
         // (Please provide the states in the same order in which you instantiated your 
@@ -160,7 +160,7 @@ public class DriveSubsystem extends SubsystemBase
 
     }
 
-    public void SteeringUpdate()
+    public void MotorControlsValuesUpdate()
     {
         // read PID coefficients from SmartDashboard
         double local_kP_Steer = SmartDashboard.getNumber("Steer P Gain", 0);
