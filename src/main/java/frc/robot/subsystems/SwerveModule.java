@@ -223,15 +223,123 @@ private void ConfigureSteeringMotor(int channel, MotorType motorType)
         m_steeringPIDController.setSmartMotionAllowedClosedLoopError(SteeringControllerPIDValues.k_allowedError, SteeringControllerPIDValues.k_smartMotionSlot);
     }
 
+
+    // Note to self and Team: This is cumbersome, but also very Java-y.
+
+    // Getters
+    /**
+     * Provides the Steering Motor encoder velocity
+     * @return the encoder velocity
+     */
+    public double getSteeringVelocity()
+    {
+       return m_steeringEncoder.getVelocity();
+    }
+
+    /**
+     * Provides the Driving Motor encoder velocity
+     * @return the encoder velocity
+     */
+    public double getDrivingVelocity()
+    {
+       return m_driveEncoder.getVelocity();
+    }
+
+    public double getSteerAppliedOutput()
+    {
+        return m_steeringMotor.getAppliedOutput();
+    }
+
+
+    public double getSteeringPosition()
+    {
+        return m_steeringEncoder.getPosition();
+    }
+
+
+
+    // Setters
+    /**
+     * Sets the Steering Motor PIDController P-value.
+     * @param p The Proportional value
+     */
     public void setSteerMotor_P(double p)
     {
         m_steeringPIDController.setP(p);
     }
 
+    /**
+     * Sets the Steering Motor PIDController I-value.
+     * @param i The Integral value.
+     */
+    public void setSteerMotor_I(double i)
+    {
+        m_steeringPIDController.setI(i);
+    }
+
+    /**
+     * Sets the Steering Motor PIDController D-value.
+     * @param d The Differential value.
+     */
+    public void setSteerMotor_D(double d)
+    {
+        m_steeringPIDController.setD(d);
+    }
+
+
+
+    /**
+     * Sets the Steering Motor PIDCOntroller Output range
+     * @param min The range minimum.
+     * @param max The range maximum. 
+     */
+    public void setSteerMotorOutputRange(double min, double max)
+    {
+        m_steeringPIDController.setOutputRange(min, max);
+    }
+
+
+
+    /**
+     * Sets the Steering Motor PIDController Smart Motion maximum velocity (in RPM)
+     * @param vel The maximum velocity.
+     */
+    public void setSteerMotorSmartMaxVel(double vel)
+    {
+        m_steeringPIDController.setSmartMotionMaxVelocity(vel, 0); // we're not using the 'slot' paramter of the motor controller, so the second parameter is just 0 for Slot 0
+    }
+
+
+    public void setSteerMotorVelocityMode(double setPoint)
+    {
+        m_steeringPIDController.setReference(setPoint, ControlType.kVelocity);
+    }
+
+    public void setSteerMotorSmartMotionMode(double setPoint)
+    {
+        m_steeringPIDController.setReference(setPoint, ControlType.kSmartMotion);
+    }
+
+
+
+
+
+
+
+
+
+    /**
+     * Sets the Driving Motor PIDController P-value.
+     * @param p The value to set
+     */
     public void setDriveMotor_P(double p)
     {
         m_driverPIDController.setP(p);
     }
+
+
+
+
 
 }
 
