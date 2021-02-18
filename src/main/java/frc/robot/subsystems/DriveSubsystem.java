@@ -13,8 +13,10 @@ import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.SwerveDriveModuleConstants;
+import frc.robot.subsystems.SwerveModule;
 
 @SuppressWarnings("PMD.ExcessiveImports")
 public class DriveSubsystem extends SubsystemBase 
@@ -56,6 +58,9 @@ public class DriveSubsystem extends SubsystemBase
             SwerveDriveModuleConstants.k_RightRearSteeringEncoderReversed,
             SwerveDriveModuleConstants.k_RightRearSteeringEncoderReversed);
 
+    public double kP_D, kI_D, kD_D, kIz_D, kFF_D, kMaxOutput_D, kMinOutput_D, maxRPM_D, maxVel_D, minVel_D, maxAcc_D, allowedErr_D;
+
+    public double kP_S, kI_S, kD_S, kIz_S, kFF_S, kMaxOutput_S, kMinOutput_S, maxRPM_S, maxVel_S, minVel_S, maxAcc_S, allowedErr_S;
     // The gyro sensor
      //private final Gyro m_gyro = new ADXRS450_Gyro();
     public static final ADIS16470_IMU m_imu = new ADIS16470_IMU();
@@ -84,8 +89,8 @@ public class DriveSubsystem extends SubsystemBase
     //         m_LeftRearModule.getState(),
     //         m_RightRearModule.getState());
 
-
     //    m_Odometry_TEMP.update(new Rotation2d(0.0), m_LeftFrontModule.getState());
+
     }
 
 
@@ -196,4 +201,6 @@ public class DriveSubsystem extends SubsystemBase
         //return m_gyro.getRate() * (SwerveDriveModuleConstants.k_GyroReversed ? -1.0 : 1.0);
        return m_imu.getRate() * (SwerveDriveModuleConstants.k_GyroReversed ? -1.0 : 1.0);
     }
+
+    
 }

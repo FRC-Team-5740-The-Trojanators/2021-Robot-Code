@@ -47,7 +47,7 @@ public class SwerveModule
 
     // PID Loops using the Spark API
     private CANPIDController m_driverPIDController;
-    private CANPIDController m_steeringPIDController;
+    private   CANPIDController m_steeringPIDController;
 
     // These two PID controllers are from the WPILib and we're temporarily commenting them to use the REV Spark PIDs
     // private final PIDController m_driverPIDController = new PIDController(SwerveDriveModuleConstants.DriveModule.k_Proportional, 
@@ -64,9 +64,9 @@ public class SwerveModule
     //             SwerveDriveModuleConstants.k_MaxModuleAngularAccelerationRadiansPerSecondSquared) );
     
 
-    public double kP_D, kI_D, kD_D, kIz_D, kFF_D, kMaxOutput_D, kMinOutput_D, maxRPM_D, maxVel_D, minVel_D, maxAcc_D, allowedErr_D;
+    private double kP_D, kI_D, kD_D, kIz_D, kFF_D, kMaxOutput_D, kMinOutput_D, maxRPM_D, maxVel_D, minVel_D, maxAcc_D, allowedErr_D;
         
-    public double kP_S, kI_S, kD_S, kIz_S, kFF_S, kMaxOutput_S, kMinOutput_S, maxRPM_S, maxVel_S, minVel_S, maxAcc_S, allowedErr_S;
+    private double kP_S, kI_S, kD_S, kIz_S, kFF_S, kMaxOutput_S, kMinOutput_S, maxRPM_S, maxVel_S, minVel_S, maxAcc_S, allowedErr_S;
 
  
 
@@ -148,7 +148,7 @@ public class SwerveModule
     }
 
 
-    public void ConfigureDriveMotor(int channel, MotorType motorType)
+    private void ConfigureDriveMotor(int channel, MotorType motorType)
     {
         m_driveMotor = new CANSparkMax(channel, motorType);
 
@@ -214,12 +214,11 @@ public class SwerveModule
         
         // button to toggle between velocity and smart motion modes
         SmartDashboard.putBoolean("Mode", true);
-
-        
+                
     }
 
-
-    private void ConfigureSteeringMotor(int channel, MotorType motorType)
+    
+private void ConfigureSteeringMotor(int channel, MotorType motorType)
     {
         m_steeringMotor = new CANSparkMax(channel, motorType);
 
@@ -287,7 +286,64 @@ public class SwerveModule
         
         // button to toggle between velocity and smart motion modes
         SmartDashboard.putBoolean("Mode", true);
-    }
+        }
 
+ public void SteeringUpdate(){
+
+       // read PID coefficients from SmartDashboard
+       double p = SmartDashboard.getNumber("P Gain", 0);
+       double i = SmartDashboard.getNumber("I Gain", 0);
+       double d = SmartDashboard.getNumber("D Gain", 0);
+       double iz = SmartDashboard.getNumber("I Zone", 0);
+       double ff = SmartDashboard.getNumber("Feed Forward", 0);
+       double max = SmartDashboard.getNumber("Max Output", 0);
+       double min = SmartDashboard.getNumber("Min Output", 0);
+       double maxV = SmartDashboard.getNumber("Max Velocity", 0);
+       double minV = SmartDashboard.getNumber("Min Velocity", 0);
+       double maxA = SmartDashboard.getNumber("Max Acceleration", 0);
+       double allE = SmartDashboard.getNumber("Allowed Closed Loop Error", 0);
+
+       // if PID coefficients on SmartDashboard have changed, write new values to controller
+       if((p != kP_S)) {  m_steeringPIDController.setP(p);  kP_S = p; }
+       if((i !=  kI_S)) {  m_steeringPIDController.setI(i);  kI_S = i; }
+       if((d !=  kD_S)) {  m_steeringPIDController.setD(d);  kD_S = d; }
+       if((iz !=  kIz_S)) {  m_steeringPIDController.setIZone(iz);  kIz_S = iz; }
+       if((ff !=  kFF_S)) {  m_steeringPIDController.setFF(ff);  kFF_S = ff; }
+       if((max !=  kMaxOutput_S) || (min !=  kMinOutput_S)) { 
+        m_steeringPIDController.setOutputRange(min, max); 
+        kMinOutput_S = min;  kMaxOutput_S = max; 
+       }
+       if((maxV !=  maxVel_S)) {  m_steeringPIDController.setSmartMotionMaxVelocity(maxV,0);  maxVel_S = maxV; }
+       if((minV !=  minVel_S)) {  m_steeringPIDController.setSmartMotionMinOutputVelocity(minV,0);  minVel_S = minV; }
+       if((maxA !=  maxAcc_S)) {  m_steeringPIDController.setSmartMotionMaxAccel(maxA,0);  maxAcc_S = maxA; }
+       if((allE !=  allowedErr_S)) {  m_steeringPIDController.setSmartMotionAllowedClosedLoopError(allE,0);  allowedErr_S = allE; }
+
+       double setPoint, processVariable;
+       boolean mode = SmartDashboard.getBoolean("Mode", false);
+       if(mode) {
+       setPoint = SmartDashboard.getNumber("Set Velocity", 0);
+        m_steeringPIDController.setReference(setPoint, ControlType.kVelocity);
+       processVariable =  m_steeringEncoder.getVelocity();
+       } else {
+       setPoint = SmartDashboard.getNumber("Set Position", 0);
+       /**
+        * As with other PID modes, Smart Motion is set by calling the
+        * setReference method on an existing pid object and setting
+        * the control type to kSmartMotion
+        */
+        m_steeringPIDController.setReference(setPoint, ControlType.kSmartMotion);
+       processVariable =  m_steeringEncoder.getPosition();
+
+       //SwerveModule.ConfigureSteeringMotor(0, SwerveModule.m_steeringMotor);
+
+       }
+       
+       SmartDashboard.putNumber("SetPoint", setPoint);
+       SmartDashboard.putNumber("Process Variable", processVariable);
+       SmartDashboard.putNumber("Output", m_steeringMotor.getAppliedOutput());
+   }
 
 }
+
+
+
