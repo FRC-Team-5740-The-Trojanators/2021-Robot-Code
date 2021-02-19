@@ -231,12 +231,12 @@ public class DriveSubsystem extends SubsystemBase
             m_RightRearModule.setDriveMotor_P(local_kP_Drive);
         }
 
-
+/*
         if((i !=  kI_S)) {  m_steeringPIDController.setI(i);  kI_S = i; }
         if((d !=  kD_S)) {  m_steeringPIDController.setD(d);  kD_S = d; }
         if((iz !=  kIz_S)) {  m_steeringPIDController.setIZone(iz);  kIz_S = iz; }
         if((ff !=  kFF_S)) {  m_steeringPIDController.setFF(ff);  kFF_S = ff; }
-
+*/
 
 
         if ( (local_kMinOutput_Steer != kMinOutput_Steer) || (local_kMaxOutput_Steer != kMaxOutput_Steer) ) 
@@ -260,11 +260,11 @@ public class DriveSubsystem extends SubsystemBase
             maxVel_Steer = local_maxVel_Steer; 
         }
         
-        
+/*
         if((minV !=  minVel_S)) {  m_steeringPIDController.setSmartMotionMinOutputVelocity(minV,0);  minVel_S = minV; }
         if((maxA !=  maxAcc_S)) {  m_steeringPIDController.setSmartMotionMaxAccel(maxA,0);  maxAcc_S = maxA; }
         if((allE !=  allowedErr_S)) {  m_steeringPIDController.setSmartMotionAllowedClosedLoopError(allE,0);  allowedErr_S = allE; }
- 
+*/
 
 
         // Mapping for number selector below
