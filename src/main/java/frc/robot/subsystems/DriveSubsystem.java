@@ -30,7 +30,7 @@ public class DriveSubsystem extends SubsystemBase
             SwerveDriveModuleConstants.MotorTypes.k_SwerveLeftFront_Drive,
             SwerveDriveModuleConstants.CANBusIDs.k_LeftFront_SteeringMotor,
             SwerveDriveModuleConstants.MotorTypes.k_SwerveLeftFront_Steering,
-            SwerveDriveModuleConstants.k_LeftFrontSteeringEncoderReversed,
+            SwerveDriveModuleConstants.k_LeftFrontDriveEncoderReversed,
             SwerveDriveModuleConstants.k_LeftFrontSteeringEncoderReversed);
 
 
@@ -40,7 +40,7 @@ public class DriveSubsystem extends SubsystemBase
             SwerveDriveModuleConstants.MotorTypes.k_SwerveRightFront_Drive,
             SwerveDriveModuleConstants.CANBusIDs.k_RightFront_SteeringMotor,
             SwerveDriveModuleConstants.MotorTypes.k_SwerveRightFront_Steering,
-            SwerveDriveModuleConstants.k_RightFrontSteeringEncoderReversed,
+            SwerveDriveModuleConstants.k_RightFrontDriveEncoderReversed,
             SwerveDriveModuleConstants.k_RightFrontSteeringEncoderReversed);
 
     private final SwerveModule m_LeftRearModule = 
@@ -49,7 +49,7 @@ public class DriveSubsystem extends SubsystemBase
             SwerveDriveModuleConstants.MotorTypes.k_SwerveLeftRear_Drive,
             SwerveDriveModuleConstants.CANBusIDs.k_LeftRear_SteeringMotor,
             SwerveDriveModuleConstants.MotorTypes.k_SwerveLeftRear_Steering,
-            SwerveDriveModuleConstants.k_LeftRearSteeringEncoderReversed,
+            SwerveDriveModuleConstants.k_LeftRearDriveEncoderReversed,
             SwerveDriveModuleConstants.k_LeftRearSteeringEncoderReversed);
 
     private final SwerveModule m_RightRearModule = 
@@ -58,7 +58,7 @@ public class DriveSubsystem extends SubsystemBase
             SwerveDriveModuleConstants.MotorTypes.k_SwerveRightRear_Drive,
             SwerveDriveModuleConstants.CANBusIDs.k_RightRear_SteeringMotor,
             SwerveDriveModuleConstants.MotorTypes.k_SwerveRightRear_Steering,
-            SwerveDriveModuleConstants.k_RightRearSteeringEncoderReversed,
+            SwerveDriveModuleConstants.k_RightRearDriveEncoderReversed,
             SwerveDriveModuleConstants.k_RightRearSteeringEncoderReversed);
 
     public double kP_Drive, kI_Drive, kD_Drive, kIz_Drive, kFF_Drive, kMaxOutput_Drive, kMinOutput_Drive, maxRPM_Drive, maxVel_Drive, minVel_Drive, maxAcc_Drive, allowedErr_Drive;

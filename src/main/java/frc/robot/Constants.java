@@ -63,15 +63,15 @@ public final class Constants
 
 
         public static final int k_RevNEOEncoderCtsPerRev = 42; // the NEO's hall-effect encoder is 42 counts/rev
-        public static final double k_WheelDiameterMeters = 0.15;
+        public static final double k_WheelDiameterMeters = 0.1016;
         public static final double k_MK3SwerveModuleGearRatio = 6.86;
         public static final double k_DriveEncoderDistancePerPulse =
             // Assumes the encoders are directly mounted on the wheel shafts
-            (k_WheelDiameterMeters * Math.PI) / ( (double) k_RevNEOEncoderCtsPerRev * 6.86);
+            (k_WheelDiameterMeters * Math.PI) / ( (double) k_RevNEOEncoderCtsPerRev * k_MK3SwerveModuleGearRatio);
     
         public static final double k_TurningEncoderDistancePerPulse =
             // Assumes the encoders are on a 1:1 reduction with the module shaft.
-            (2 * Math.PI) / (double) k_RevNEOEncoderCtsPerRev;
+            (2 * Math.PI) / (double) k_AltEnc_CountPerRev; //in radians
 
         public static final class CANBusIDs
         {
@@ -82,7 +82,7 @@ public final class Constants
             public static final int k_LeftFront_SteeringMotor = 2;
 
             public static final int k_RightRear_DriveMotor  = 7;
-            public static final int k_RightRear_SteeringMotor = 10;
+            public static final int k_RightRear_SteeringMotor = 8;
     
             public static final int k_LeftRear_DriveMotor  = 5;
             public static final int k_LeftRear_SteeringMotor = 6;
@@ -103,60 +103,60 @@ public final class Constants
             public static final MotorType k_SwerveLeftRear_Steering = MotorType.kBrushless;
         }
 
-        // Distance between centers of right and left wheels on robot; unit is meters, I think
-        public static final double k_TrackWidth = 0.5;
+        // Distance between centers of right and left wheels on robot; unit is meters
+        public static final double k_TrackWidth = 0.5842;
 
-        // Distance between front and back wheels on robot; unit is meters, I think
-        public static final double k_WheelBase = 0.7;
+        // Distance between front and back wheels on robot; unit is meters
+        public static final double k_WheelBase = 0.5842;
         
         public static final SwerveDriveKinematics k_DriveKinematics =
             new SwerveDriveKinematics(
-                new Translation2d(k_WheelBase / 2, k_TrackWidth / 2),    // Left Front
-                new Translation2d(k_WheelBase / 2, -k_TrackWidth / 2),   // Right Front
-                new Translation2d(-k_WheelBase / 2, k_TrackWidth / 2),   // Left Rear
-                new Translation2d(-k_WheelBase / 2, -k_TrackWidth / 2)); // Right Rear
+                new Translation2d(-k_WheelBase / 2, k_TrackWidth / 2),    // Left Front
+                new Translation2d(k_WheelBase / 2, k_TrackWidth / 2),   // Right Front
+                new Translation2d(-k_WheelBase / 2, -k_TrackWidth / 2),   // Left Rear
+                new Translation2d(k_WheelBase / 2, -k_TrackWidth / 2)); // Right Rear
         
 
         public static final class DriveModulePIDValues
         {
             public static final double k_Proportional = 0.1;
             public static final double k_Intergral = 0;
-            public static final double k_Differential = 0;
+            public static final double k_Differential = 0.001;
 
             public static final double k_Iz = 0; 
-            public static final double k_FF = 0.000156; // feedforward
+            public static final double k_FF = 0; // feedforward
             
-            public static final double k_MaxOutput = 1; 
-            public static final double k_MinOutput = -1;
-            public static final double k_maxRPM = 5700;
+            public static final double k_MaxOutput = .3; 
+            public static final double k_MinOutput = -.3;
+            public static final double k_maxRPM = 5600;
 
-            public static final double k_maxVel = 2000; // rpm
+            public static final double k_maxVel = 800; // rpm
             public static final double k_minVel = 0;
             public static final double k_maxAcc = 1500;
 
-            public static final double k_allowedError = 0; // allowedErr - The allowed deviation for your setpoint vs actual position in rotations
+            public static final double k_allowedError = 0.05; // allowedErr - The allowed deviation for your setpoint vs actual position in rotations
 
             public static final int k_smartMotionSlot = 0; // Is the gain schedule slot, the value is a number between 0 and 3. Each slot has its own set of gain values and can be changed in each control frame using SetReference().
         }
 
         public static final class SteeringControllerPIDValues
         {
-            public static final double k_Prop = 0.1;
+            public static final double k_Prop = 0;
             public static final double k_Inter = 0;
             public static final double k_Diff = 0;
 
             public static final double k_Iz = 0; 
-            public static final double k_FF = 0.000156; // feedforward
+            public static final double k_FF = 0; // feedforward
 
             public static final double k_MaxOutput = 1; 
             public static final double k_MinOutput = -1;
-            public static final double k_maxRPM = 5700;
+            public static final double k_maxRPM = 5600;
 
             public static final double k_maxVel = 2000; // rpm
             public static final double k_minVel = 0;
             public static final double k_maxAcc = 1500;
 
-            public static final double k_allowedError = 0; // allowedErr - The allowed deviation for your setpoint vs actual position in rotations
+            public static final double k_allowedError = 0.1; // allowedErr - The allowed deviation for your setpoint vs actual position in rotations
 
             public static final int k_smartMotionSlot = 0; // Is the gain schedule slot, the value is a number between 0 and 3. Each slot has its own set of gain values and can be changed in each control frame using SetReference().
 
