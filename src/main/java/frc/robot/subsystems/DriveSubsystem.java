@@ -229,15 +229,89 @@ public class DriveSubsystem extends SubsystemBase
             m_RightFrontModule.setDriveMotor_P(local_kP_Drive);
             m_LeftRearModule.setDriveMotor_P(local_kP_Drive);
             m_RightRearModule.setDriveMotor_P(local_kP_Drive);
+
+            kP_Drive = local_kP_Drive;
         }
 
-/*
-        if((i !=  kI_S)) {  m_steeringPIDController.setI(i);  kI_S = i; }
-        if((d !=  kD_S)) {  m_steeringPIDController.setD(d);  kD_S = d; }
-        if((iz !=  kIz_S)) {  m_steeringPIDController.setIZone(iz);  kIz_S = iz; }
-        if((ff !=  kFF_S)) {  m_steeringPIDController.setFF(ff);  kFF_S = ff; }
-*/
+        if (local_kI_Steer != kI_Steer) 
+        {  
+            m_LeftFrontModule.setSteerMotor_I(local_kI_Steer);
+            m_RightFrontModule.setSteerMotor_I(local_kI_Steer);
+            m_LeftRearModule.setSteerMotor_I(local_kI_Steer);
+            m_RightRearModule.setSteerMotor_I(local_kI_Steer);
 
+            kI_Steer = local_kI_Steer; 
+        }
+
+        if (local_kI_Drive != kI_Drive)
+        {
+            m_LeftFrontModule.setDriveMotor_I(local_kI_Drive);
+            m_RightFrontModule.setDriveMotor_I(local_kI_Drive);
+            m_LeftRearModule.setDriveMotor_I(local_kI_Drive);
+            m_RightRearModule.setDriveMotor_I(local_kI_Drive);
+
+            kI_Drive = local_kI_Drive;
+        }
+
+        if (local_kD_Steer != kD_Steer) 
+        {  
+            m_LeftFrontModule.setSteerMotor_D(local_kD_Steer);
+            m_RightFrontModule.setSteerMotor_D(local_kD_Steer);
+            m_LeftRearModule.setSteerMotor_D(local_kD_Steer);
+            m_RightRearModule.setSteerMotor_D(local_kD_Steer);
+
+            kD_Steer = local_kD_Steer; 
+        }
+
+        if (local_kD_Drive != kD_Drive)
+        {
+            m_LeftFrontModule.setDriveMotor_D(local_kD_Drive);
+            m_RightFrontModule.setDriveMotor_D(local_kD_Drive);
+            m_LeftRearModule.setDriveMotor_D(local_kD_Drive);
+            m_RightRearModule.setDriveMotor_D(local_kD_Drive);
+
+            kD_Drive = local_kD_Drive;
+        }
+
+        if (local_kIz_Steer != kIz_Steer) 
+        {  
+            m_LeftFrontModule.setSteerMotor_Iz(local_kIz_Steer);
+            m_RightFrontModule.setSteerMotor_Iz(local_kIz_Steer);
+            m_LeftRearModule.setSteerMotor_Iz(local_kIz_Steer);
+            m_RightRearModule.setSteerMotor_Iz(local_kIz_Steer);
+
+            kIz_Steer = local_kIz_Steer; 
+        }
+
+        if (local_kIz_Drive != kIz_Drive)
+        {
+            m_LeftFrontModule.setDriveMotor_Iz(local_kIz_Drive);
+            m_RightFrontModule.setDriveMotor_Iz(local_kIz_Drive);
+            m_LeftRearModule.setDriveMotor_Iz(local_kIz_Drive);
+            m_RightRearModule.setDriveMotor_Iz(local_kIz_Drive);
+
+            kIz_Drive = local_kIz_Drive;
+        }
+
+        if (local_kFF_Steer != kFF_Steer) 
+        {  
+            m_LeftFrontModule.setSteerMotor_FF(local_kFF_Steer);
+            m_RightFrontModule.setSteerMotor_FF(local_kFF_Steer);
+            m_LeftRearModule.setSteerMotor_FF(local_kFF_Steer);
+            m_RightRearModule.setSteerMotor_FF(local_kFF_Steer);
+
+            kFF_Steer = local_kFF_Steer; 
+        }
+
+        if (local_kFF_Drive != kFF_Drive)
+        {
+            m_LeftFrontModule.setDriveMotor_FF(local_kFF_Drive);
+            m_RightFrontModule.setDriveMotor_FF(local_kFF_Drive);
+            m_LeftRearModule.setDriveMotor_FF(local_kFF_Drive);
+            m_RightRearModule.setDriveMotor_FF(local_kFF_Drive);
+
+            kFF_Drive = local_kFF_Drive;
+        }
 
         if ( (local_kMinOutput_Steer != kMinOutput_Steer) || (local_kMaxOutput_Steer != kMaxOutput_Steer) ) 
         {
@@ -249,6 +323,17 @@ public class DriveSubsystem extends SubsystemBase
             kMinOutput_Steer = local_kMinOutput_Steer;
             kMaxOutput_Steer = local_kMaxOutput_Steer; 
         }
+
+        if ( (local_kMinOutput_Drive != kMinOutput_Drive) || (local_kMaxOutput_Drive != kMaxOutput_Drive) ) 
+        {
+            m_LeftFrontModule.setDriveMotorOutputRange(local_kMinOutput_Drive, local_kMaxOutput_Drive);
+            m_RightFrontModule.setDriveMotorOutputRange(local_kMinOutput_Drive, local_kMaxOutput_Drive);
+            m_LeftRearModule.setDriveMotorOutputRange(local_kMinOutput_Drive, local_kMaxOutput_Drive);
+            m_RightRearModule.setDriveMotorOutputRange(local_kMinOutput_Drive, local_kMaxOutput_Drive);
+         
+            kMinOutput_Drive = local_kMinOutput_Drive;
+            kMaxOutput_Drive = local_kMaxOutput_Drive; 
+        }
         
         if ((local_maxVel_Steer != maxVel_Steer)) 
         {
@@ -259,10 +344,79 @@ public class DriveSubsystem extends SubsystemBase
             
             maxVel_Steer = local_maxVel_Steer; 
         }
+
+        if ((local_maxVel_Drive != maxVel_Drive)) 
+        {
+            m_LeftFrontModule.setDriveMotorSmartMaxVel(local_maxVel_Drive);
+            m_RightFrontModule.setDriveMotorSmartMaxVel(local_maxVel_Drive);
+            m_LeftRearModule.setDriveMotorSmartMaxVel(local_maxVel_Drive);
+            m_RightRearModule.setDriveMotorSmartMaxVel(local_maxVel_Drive);
+            
+            maxVel_Drive = local_maxVel_Drive; 
+        }
+
+        if ((local_minVel_Steer != minVel_Steer)) 
+        {
+            m_LeftFrontModule.setSteerMotorSmartMinVel(local_minVel_Steer);
+            m_RightFrontModule.setSteerMotorSmartMinVel(local_minVel_Steer);
+            m_LeftRearModule.setSteerMotorSmartMinVel(local_minVel_Steer);
+            m_RightRearModule.setSteerMotorSmartMinVel(local_minVel_Steer);
+            
+            minVel_Steer = local_minVel_Steer; 
+        }
+
+        if ((local_minVel_Drive != minVel_Drive)) 
+        {
+            m_LeftFrontModule.setDriveMotorSmartMinVel(local_minVel_Drive);
+            m_RightFrontModule.setDriveMotorSmartMinVel(local_minVel_Drive);
+            m_LeftRearModule.setDriveMotorSmartMinVel(local_minVel_Drive);
+            m_RightRearModule.setDriveMotorSmartMinVel(local_minVel_Drive);
+            
+            minVel_Drive = local_minVel_Drive; 
+        }
         
+
+        if ((local_maxAcc_Steer != maxAcc_Steer)) 
+        {
+            m_LeftFrontModule.setSteerMotorMaxAcc(local_maxAcc_Steer);
+            m_RightFrontModule.setSteerMotorMaxAcc(local_maxAcc_Steer);
+            m_LeftRearModule.setSteerMotorMaxAcc(local_maxAcc_Steer);
+            m_RightRearModule.setSteerMotorMaxAcc(local_maxAcc_Steer);
+            
+            maxAcc_Steer = local_maxAcc_Steer; 
+        } 
+        
+        if ((local_maxAcc_Drive != maxAcc_Drive)) 
+        {
+            m_LeftFrontModule.setDriveMotorMaxAcc(local_maxAcc_Drive);
+            m_RightFrontModule.setDriveMotorMaxAcc(local_maxAcc_Drive);
+            m_LeftRearModule.setDriveMotorMaxAcc(local_maxAcc_Drive);
+            m_RightRearModule.setDriveMotorMaxAcc(local_maxAcc_Drive);
+            
+            maxAcc_Drive = local_maxAcc_Drive; 
+        }
+        
+        if ((local_allowedErr_Steer != allowedErr_Steer)) 
+        {
+            m_LeftFrontModule.setSteerMotorAllowedErr(local_allowedErr_Steer);
+            m_RightFrontModule.setSteerMotorAllowedErr(local_allowedErr_Steer);
+            m_LeftRearModule.setSteerMotorAllowedErr(local_allowedErr_Steer);
+            m_RightRearModule.setSteerMotorAllowedErr(local_allowedErr_Steer);
+            
+            allowedErr_Steer = local_allowedErr_Steer; 
+        } 
+        
+        if ((local_allowedErr_Drive != allowedErr_Drive)) 
+        {
+            m_LeftFrontModule.setDriveMotorAllowedErr(local_allowedErr_Drive);
+            m_RightFrontModule.setDriveMotorAllowedErr(local_allowedErr_Drive);
+            m_LeftRearModule.setDriveMotorAllowedErr(local_allowedErr_Drive);
+            m_RightRearModule.setDriveMotorAllowedErr(local_allowedErr_Drive);
+            
+            allowedErr_Drive = local_allowedErr_Drive; 
+        }
+
 /*
-        if((minV !=  minVel_S)) {  m_steeringPIDController.setSmartMotionMinOutputVelocity(minV,0);  minVel_S = minV; }
-        if((maxA !=  maxAcc_S)) {  m_steeringPIDController.setSmartMotionMaxAccel(maxA,0);  maxAcc_S = maxA; }
         if((allE !=  allowedErr_S)) {  m_steeringPIDController.setSmartMotionAllowedClosedLoopError(allE,0);  allowedErr_S = allE; }
 */
 

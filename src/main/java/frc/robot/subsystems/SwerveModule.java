@@ -47,7 +47,7 @@ public class SwerveModule
 
     // PID Loops using the Spark API
     private CANPIDController m_driverPIDController;
-    private   CANPIDController m_steeringPIDController;
+    private CANPIDController m_steeringPIDController;
 
     // These two PID controllers are from the WPILib and we're temporarily commenting them to use the REV Spark PIDs
     // private final PIDController m_driverPIDController = new PIDController(SwerveDriveModuleConstants.DriveModule.k_Proportional, 
@@ -250,10 +250,19 @@ private void ConfigureSteeringMotor(int channel, MotorType motorType)
         return m_steeringMotor.getAppliedOutput();
     }
 
+    public double getDriveAppliedOutput()
+    {
+            return m_driveMotor.getAppliedOutput();
+    }
 
     public double getSteeringPosition()
     {
         return m_steeringEncoder.getPosition();
+    }
+
+    public double getDrivePosition()
+    {
+            return m_driveEncoder.getPosition();
     }
 
 
@@ -268,6 +277,11 @@ private void ConfigureSteeringMotor(int channel, MotorType motorType)
         m_steeringPIDController.setP(p);
     }
 
+    public void setDriveMotor_P(double p_Drive)
+    {
+        m_driverPIDController.setP(p_Drive);
+    }
+
     /**
      * Sets the Steering Motor PIDController I-value.
      * @param i The Integral value.
@@ -275,6 +289,11 @@ private void ConfigureSteeringMotor(int channel, MotorType motorType)
     public void setSteerMotor_I(double i)
     {
         m_steeringPIDController.setI(i);
+    }
+
+    public void setDriveMotor_I(double i_Drive)
+    {
+        m_driverPIDController.setI(i_Drive);
     }
 
     /**
@@ -286,7 +305,32 @@ private void ConfigureSteeringMotor(int channel, MotorType motorType)
         m_steeringPIDController.setD(d);
     }
 
+    public void setDriveMotor_D(double d_Drive)
+    {
+        m_driverPIDController.setD(d_Drive);
+    }
 
+    public void setSteerMotor_Iz(double Iz)
+    {
+        m_steeringPIDController.setIZone(Iz);
+    }
+
+    /**
+     * Sets the Integral Zone for the Drive Motor PIDController.
+     * @param Iz Limits for Integral PID loop
+     */
+    public void setDriveMotor_Iz(double Iz)
+    {
+        m_driverPIDController.setIZone(Iz);
+    }
+
+    public void setSteerMotor_FF(double FF){
+        m_steeringPIDController.setFF(FF);
+    }
+
+    public void setDriveMotor_FF(double FF){
+        m_driverPIDController.setFF(FF);
+    }
 
     /**
      * Sets the Steering Motor PIDCOntroller Output range
@@ -298,21 +342,58 @@ private void ConfigureSteeringMotor(int channel, MotorType motorType)
         m_steeringPIDController.setOutputRange(min, max);
     }
 
-
+    public void setDriveMotorOutputRange( double min_Drive, double max_Drive)
+    {
+        m_driverPIDController.setOutputRange(min_Drive, max_Drive);
+    }
 
     /**
      * Sets the Steering Motor PIDController Smart Motion maximum velocity (in RPM)
-     * @param vel The maximum velocity.
+     * @param maxVel The maximum velocity.
      */
-    public void setSteerMotorSmartMaxVel(double vel)
+    public void setSteerMotorSmartMaxVel(double maxVel)
     {
-        m_steeringPIDController.setSmartMotionMaxVelocity(vel, 0); // we're not using the 'slot' paramter of the motor controller, so the second parameter is just 0 for Slot 0
+        m_steeringPIDController.setSmartMotionMaxVelocity(maxVel, 0); // we're not using the 'slot' paramter of the motor controller, so the second parameter is just 0 for Slot 0
     }
 
+    public void setDriveMotorSmartMaxVel(double maxVel)
+    {
+        m_driverPIDController.setSmartMotionMaxVelocity(maxVel, 0); 
+    }
+
+    public void setSteerMotorSmartMinVel(double minVel)
+    {
+        m_steeringPIDController.setSmartMotionMinOutputVelocity(minVel, 0);
+    }
+    
+    public void setDriveMotorSmartMinVel(double minVel)
+    {
+        m_driverPIDController.setSmartMotionMinOutputVelocity(minVel, 0);
+    }
 
     public void setSteerMotorVelocityMode(double setPoint)
     {
         m_steeringPIDController.setReference(setPoint, ControlType.kVelocity);
+    }
+
+    public void setSteerMotorMaxAcc(double maxAcc)
+    {
+        m_steeringPIDController.setSmartMotionMaxAccel(maxAcc, 0);
+    }
+
+    public void setDriveMotorMaxAcc(double maxAcc)
+    {
+        m_driverPIDController.setSmartMotionMaxAccel(maxAcc, 0);
+    }
+
+    public void setSteerMotorAllowedErr(double allowedErr)
+    {
+        m_steeringPIDController.setSmartMotionMaxAccel(allowedErr, 0);
+    }
+
+    public void setDriveMotorAllowedErr(double allowedErr)
+    {
+        m_driverPIDController.setSmartMotionMaxAccel(allowedErr, 0);
     }
 
     public void setSteerMotorSmartMotionMode(double setPoint)
@@ -320,24 +401,22 @@ private void ConfigureSteeringMotor(int channel, MotorType motorType)
         m_steeringPIDController.setReference(setPoint, ControlType.kSmartMotion);
     }
 
-
-
-
-
-
-
-
-
-    /**
-     * Sets the Driving Motor PIDController P-value.
-     * @param p The value to set
-     */
-    public void setDriveMotor_P(double p)
+    public void setDriveMotorSmartMotionMode(double setPoint)
     {
-        m_driverPIDController.setP(p);
+        m_driverPIDController.setReference(setPoint, ControlType.kSmartMotion);
     }
 
 
+
+    
+
+
+
+
+
+
+
+    
 
 
 
