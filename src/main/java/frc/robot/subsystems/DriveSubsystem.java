@@ -82,7 +82,7 @@ public class DriveSubsystem extends SubsystemBase
     // SwerveDriveOdometry m_Odometry_TEMP = new SwerveDriveOdometry(SwerveDriveModuleConstants.k_DriveKinematics_ONEWHEEL,
     //                                                  new Rotation2d(0.0, 0.0));
 
-    private NetworkTableEntry kP_Steer_widget, kI_Steer_widget, kD_Steer_widget, kIz_Steer_widget, kFF_Steer_widget, kMaxOutput_Steer_widget, kMinOutput_Steer_widget, maxRPM_Steer_widget, maxVel_Steer_widget, minVel_Steer_widget, maxAcc_Steer_widget, allowedErr_Steer_widget, setPos_Steer_widget, setVel_Steer_widget, motorMode_Steer_widget, moduleSel_Steer_widget;
+    private NetworkTableEntry kP_Steer_widget, kI_Steer_widget, kD_Steer_widget, kIz_Steer_widget, kFF_Steer_widget, kMaxOutput_Steer_widget, kMinOutput_Steer_widget, maxRPM_Steer_widget, maxVel_Steer_widget, minVel_Steer_widget, maxAcc_Steer_widget, allowedErr_Steer_widget, setPos_Steer_widget, setVel_Steer_widget, motorMode_Steer_widget, moduleSel_Steer_widget, processVariable_steer_widget, appliedOutput_steer_widget;
     
     private NetworkTableEntry kP_Drive_widget, kI_Drive_widget, kD_Drive_widget, kIz_Drive_widget, kFF_Drive_widget, kMaxOutput_Drive_widget, kMinOutput_Drive_widget, maxRPM_Drive_widget, maxVel_Drive_widget, minVel_Drive_widget, maxAcc_Drive_widget, allowedErr_Drive_widget, setPos_Drive_widget, setVel_Drive_widget, motorMode_Drive_widget, moduleSel_Drive_widget;
 
@@ -132,7 +132,7 @@ public class DriveSubsystem extends SubsystemBase
         maxVel_Steer_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("maxVel_Steer Max Velocity", maxVel_Steer).getEntry();
         minVel_Steer_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("minVel_Steer Min Velocity", minVel_Steer).getEntry();
         maxAcc_Steer_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("maxAcc_Steer Acceleration", maxAcc_Steer).getEntry();
-        allowedErr_Steer_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("allowedErr_Drive Allowed Closed Loop Error", allowedErr_Steer).getEntry();
+        allowedErr_Steer_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("allowedErr_Steer Allowed Closed Loop Error", allowedErr_Steer).getEntry();
         setPos_Steer_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("Set Position Steer", 0).getEntry();
         setVel_Steer_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("Set Velocity Steer", 0).getEntry();
 
@@ -142,6 +142,12 @@ public class DriveSubsystem extends SubsystemBase
         // 1 = m_LeftFrontModule   2 = m_RightFrontModule
         // 3 = m_LeftRearModule    4 = m_RightRearModule
         moduleSel_Steer_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("Select Steer Swerve Module", 1).getEntry();
+
+   
+        
+        processVariable_steer_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("Process Variable Steer", 0).getEntry();
+        appliedOutput_steer_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("Output Steer", 0).getEntry();
+
 
 
 
@@ -506,9 +512,9 @@ public class DriveSubsystem extends SubsystemBase
             }
         }
         
-        Shuffleboard.getTab("Swerve Drive Tuning").add("SetPoint Steer", setPoint_steer);
-        Shuffleboard.getTab("Swerve Drive Tuning").add("Process Variable Steer", processVariable_steer);
-        Shuffleboard.getTab("Swerve Drive Tuning").add("Output Steer", appliedOutput_steer);
+        setPos_Steer_widget.setDouble(setPoint_steer);
+        processVariable_steer_widget.setDouble(processVariable_steer);
+        appliedOutput_steer_widget.setDouble(appliedOutput_steer);
     }
 
 
