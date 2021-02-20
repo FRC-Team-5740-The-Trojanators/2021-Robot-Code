@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import com.analog.adis16470.frc.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
@@ -13,13 +14,19 @@ import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+//import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants.SwerveDriveModuleConstants;
 import frc.robot.Constants;
 
 import frc.robot.subsystems.SwerveModule;
+
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+
+//"Swerve Drive Tuning"
+
 
 @SuppressWarnings("PMD.ExcessiveImports")
 public class DriveSubsystem extends SubsystemBase 
@@ -75,6 +82,13 @@ public class DriveSubsystem extends SubsystemBase
     // SwerveDriveOdometry m_Odometry_TEMP = new SwerveDriveOdometry(SwerveDriveModuleConstants.k_DriveKinematics_ONEWHEEL,
     //                                                  new Rotation2d(0.0, 0.0));
 
+    private NetworkTableEntry kP_Steer_widget, kI_Steer_widget, kD_Steer_widget, kIz_Steer_widget, kFF_Steer_widget, kMaxOutput_Steer_widget, kMinOutput_Steer_widget, maxRPM_Steer_widget, maxVel_Steer_widget, minVel_Steer_widget, maxAcc_Steer_widget, allowedErr_Steer_widget, setPos_Steer_widget, setVel_Steer_widget, motorMode_Steer_widget, moduleSel_Steer_widget;
+    
+    private NetworkTableEntry kP_Drive_widget, kI_Drive_widget, kD_Drive_widget, kIz_Drive_widget, kFF_Drive_widget, kMaxOutput_Drive_widget, kMinOutput_Drive_widget, maxRPM_Drive_widget, maxVel_Drive_widget, minVel_Drive_widget, maxAcc_Drive_widget, allowedErr_Drive_widget, setPos_Drive_widget, setVel_Drive_widget, motorMode_Drive_widget, moduleSel_Drive_widget;
+
+    
+    
+
     /** Creates a new DriveSubsystem. */
     public DriveSubsystem()
     {
@@ -106,55 +120,54 @@ public class DriveSubsystem extends SubsystemBase
         
         // !! Important! The SmartDashboard uses key/value pairs, so the keys here need to match the keys in periodic()
         // display PID coefficients on SmartDashboard
-        SmartDashboard.putNumber("Steer P Gain", kP_Steer);
-        SmartDashboard.putNumber("Steer I Gain", kI_Steer);
-        SmartDashboard.putNumber("Steer D Gain", kD_Steer);
-        SmartDashboard.putNumber("kIz_Steer Zone", kIz_Steer);
-        SmartDashboard.putNumber("kFF_Steer Feed Forward", kFF_Steer);
-        SmartDashboard.putNumber("kMaxOutput_Steer Max Output", kMaxOutput_Steer);
-        SmartDashboard.putNumber("kMinOutput_Steer Output", kMinOutput_Steer);
-
+        kP_Steer_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("Steer P Gain", kP_Steer).getEntry();
+        kI_Steer_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("Steer I Gain", kI_Steer).getEntry();
+        kD_Steer_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("Steer D Gain", kD_Steer).getEntry();
+        kIz_Steer_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("kIz_Steer Zone", kIz_Steer).getEntry();
+        kFF_Steer_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("kFF_Steer Feed Forward", kFF_Steer).getEntry();
+        kMaxOutput_Steer_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("kMaxOutput_Steer Max Output", kMaxOutput_Steer).getEntry();
+        kMinOutput_Steer_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("kMinOutput_Steer Min Output", kMinOutput_Steer).getEntry();
+        
         // display Smart Motion coefficients
-        SmartDashboard.putNumber("maxVel_Steer Max Velocity", maxVel_Steer);
-        SmartDashboard.putNumber("minVel_Steer Min Velocity", minVel_Steer);
-        SmartDashboard.putNumber("maxAcc_Steer Acceleration", maxAcc_Steer);
-        SmartDashboard.putNumber("allowedErr_Drive Allowed Closed Loop Error", allowedErr_Steer);
-        SmartDashboard.putNumber("Set Position Steer", 0);
-        SmartDashboard.putNumber("Set Velocity Steer", 0);
+        maxVel_Steer_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("maxVel_Steer Max Velocity", maxVel_Steer).getEntry();
+        minVel_Steer_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("minVel_Steer Min Velocity", minVel_Steer).getEntry();
+        maxAcc_Steer_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("maxAcc_Steer Acceleration", maxAcc_Steer).getEntry();
+        allowedErr_Steer_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("allowedErr_Drive Allowed Closed Loop Error", allowedErr_Steer).getEntry();
+        setPos_Steer_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("Set Position Steer", 0).getEntry();
+        setVel_Steer_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("Set Velocity Steer", 0).getEntry();
 
         // button to toggle between velocity and smart motion modes
-        SmartDashboard.putBoolean("Steering Motor Mode", true);
+        motorMode_Steer_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("Steering Motor Mode", true).getEntry();
 
         // 1 = m_LeftFrontModule   2 = m_RightFrontModule
         // 3 = m_LeftRearModule    4 = m_RightRearModule
-        SmartDashboard.putNumber("Select Steer Swerve Module", 1);
-
+        moduleSel_Steer_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("Select Steer Swerve Module", 1).getEntry();
 
 
 
         // display PID coefficients on SmartDashboard
-        SmartDashboard.putNumber("Drive P Gain", kP_Drive);
-        SmartDashboard.putNumber("Drive I Gain", kI_Drive);
-        SmartDashboard.putNumber("kD_Drive Gain", kD_Drive);
-        SmartDashboard.putNumber("kIz_Drive Zone", kIz_Drive);
-        SmartDashboard.putNumber("kFF_Drive Feed Forward", kFF_Drive);
-        SmartDashboard.putNumber("kMaxOutput_Drive Max Output", kMaxOutput_Drive);
-        SmartDashboard.putNumber("kMinOutput_Drive Output", kMinOutput_Drive);
+        kP_Drive_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("Drive P Gain", kP_Drive).getEntry();
+        kI_Drive_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("Drive I Gain", kI_Drive).getEntry();
+        kD_Drive_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("kD_Drive Gain", kD_Drive).getEntry();
+        kIz_Drive_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("kIz_Drive Zone", kIz_Drive).getEntry();
+        kFF_Drive_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("kFF_Drive Feed Forward", kFF_Drive).getEntry();
+        kMaxOutput_Drive_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("kMaxOutput_Drive Max Output", kMaxOutput_Drive).getEntry();
+        kMinOutput_Drive_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("kMinOutput_Drive Output", kMinOutput_Drive).getEntry();
 
         // display Smart Motion coefficients
-        SmartDashboard.putNumber("maxVel_Drive Max Velocity", maxVel_Drive);
-        SmartDashboard.putNumber("minVel_Drive Min Velocity", minVel_Drive);
-        SmartDashboard.putNumber("maxAcc_Drive Acceleration", maxAcc_Drive);
-        SmartDashboard.putNumber("allowedErr_Drive Allowed Closed Loop Error", allowedErr_Drive);
-        SmartDashboard.putNumber("Set Position Drive", 0);
-        SmartDashboard.putNumber("Set Velocity Drive", 0);
+        maxVel_Drive_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("maxVel_Drive Max Velocity", maxVel_Drive).getEntry();
+        minVel_Drive_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("minVel_Drive Min Velocity", minVel_Drive).getEntry();
+        maxAcc_Drive_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("maxAcc_Drive Acceleration", maxAcc_Drive).getEntry();
+        allowedErr_Drive_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("allowedErr_Drive Allowed Closed Loop Error", allowedErr_Drive).getEntry();
+        setPos_Drive_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("Set Position Drive", 0).getEntry();
+        setVel_Drive_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("Set Velocity Drive", 0).getEntry();
 
         // button to toggle between velocity and smart motion modes
-        SmartDashboard.putBoolean("Driving Motor Mode", true);
+        motorMode_Drive_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("Driving Motor Mode", true).getEntry();
 
         // 1 = m_LeftFrontModule   2 = m_RightFrontModule
         // 3 = m_LeftRearModule    4 = m_RightRearModule
-        SmartDashboard.putNumber("Select Drive Swerve Module", 1);
+        moduleSel_Drive_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("Select Drive Swerve Module", 1).getEntry();
     }
 
     @Override
@@ -178,37 +191,35 @@ public class DriveSubsystem extends SubsystemBase
     public void MotorControlsValuesUpdate()
     {
         // read PID coefficients from SmartDashboard
-        double local_kP_Steer = SmartDashboard.getNumber("Steer P Gain", 0);
-        double local_kI_Steer = SmartDashboard.getNumber("Steer I Gain", 0);
-        double local_kD_Steer = SmartDashboard.getNumber("Steer D Gain", 0);
-        double local_kIz_Steer = SmartDashboard.getNumber("kIz_Steer Zone", 0);
-        double local_kFF_Steer = SmartDashboard.getNumber("kFF_Steer Feed Forward", 0);
+        double local_kP_Steer = kP_Steer_widget.getDouble(0);
+        double local_kI_Steer = kI_Steer_widget.getDouble(0);
+        double local_kD_Steer = kD_Steer_widget.getDouble(0);
+        double local_kIz_Steer = kIz_Steer_widget.getDouble(0);
+        double local_kFF_Steer = kFF_Steer_widget.getDouble(0);
 
-        double local_kMaxOutput_Steer = SmartDashboard.getNumber("kMaxOutput_Steer Max Output", 0);
-        double local_kMinOutput_Steer = SmartDashboard.getNumber("kMinOutput_Steer Output", 0);
+        double local_kMaxOutput_Steer = kMaxOutput_Steer_widget.getDouble(0);
+        double local_kMinOutput_Steer = kMinOutput_Steer_widget.getDouble(0);
 
-        double local_maxVel_Steer = SmartDashboard.getNumber("maxVel_Steer Max Velocity", 0);
-        double local_minVel_Steer = SmartDashboard.getNumber("minVel_Steer Min Velocity", 0);
-        double local_maxAcc_Steer = SmartDashboard.getNumber("maxAcc_Steer Acceleration", 0);
+        double local_maxVel_Steer = maxVel_Steer_widget.getDouble(0);
+        double local_minVel_Steer = minVel_Steer_widget.getDouble(0);
+        double local_maxAcc_Steer = maxAcc_Steer_widget.getDouble(0);
 
-        double local_allowedErr_Steer = SmartDashboard.getNumber("allowedErr_Drive Allowed Closed Loop Error", 0);
+        double local_allowedErr_Steer = allowedErr_Steer_widget.getDouble(0);
 
+        double local_kP_Drive = kP_Drive_widget.getDouble(0);
+        double local_kI_Drive = kI_Drive_widget.getDouble(0);
+        double local_kD_Drive = kD_Drive_widget.getDouble(0);
+        double local_kIz_Drive = kIz_Drive_widget.getDouble(0);
+        double local_kFF_Drive = kFF_Drive_widget.getDouble(0);
 
+        double local_kMaxOutput_Drive = kMaxOutput_Drive_widget.getDouble(0);
+        double local_kMinOutput_Drive = kMinOutput_Drive_widget.getDouble(0);
 
-        double local_kP_Drive = SmartDashboard.getNumber("Drive P Gain", 0);
-        double local_kI_Drive = SmartDashboard.getNumber("Drive I Gain", 0);
-        double local_kD_Drive = SmartDashboard.getNumber("kD_Drive Gain", 0);
-        double local_kIz_Drive = SmartDashboard.getNumber("kIz_Drive Zone", 0);
-        double local_kFF_Drive = SmartDashboard.getNumber("kFF_Drive Feed Forward", 0);
+        double local_maxVel_Drive = maxVel_Drive_widget.getDouble(0);
+        double local_minVel_Drive = minVel_Drive_widget.getDouble(0);
+        double local_maxAcc_Drive = maxAcc_Drive_widget.getDouble(0);
 
-        double local_kMaxOutput_Drive = SmartDashboard.getNumber("kMaxOutput_Drive Max Output", 0);
-        double local_kMinOutput_Drive = SmartDashboard.getNumber("kMinOutput_Drive Output", 0);
-
-        double local_maxVel_Drive = SmartDashboard.getNumber("maxVel_Drive Max Velocity", 0);
-        double local_minVel_Drive = SmartDashboard.getNumber("minVel_Drive Min Velocity", 0);
-        double local_maxAcc_Drive = SmartDashboard.getNumber("maxAcc_Drive Acceleration", 0);
-
-        double local_allowedErr_Drive = SmartDashboard.getNumber("allowedErr_Drive Allowed Closed Loop Error", 0);
+        double local_allowedErr_Drive = allowedErr_Drive_widget.getDouble(0);
 
 
 
@@ -416,28 +427,24 @@ public class DriveSubsystem extends SubsystemBase
             allowedErr_Drive = local_allowedErr_Drive; 
         }
 
-/*
-        if((allE !=  allowedErr_S)) {  m_steeringPIDController.setSmartMotionAllowedClosedLoopError(allE,0);  allowedErr_S = allE; }
-*/
-
 
         // Mapping for number selector below
         // // 1 = m_LeftFrontModule   2 = m_RightFrontModule
         // // 3 = m_LeftRearModule    4 = m_RightRearModule
-        // SmartDashboard.putNumber("Select Steer Swerve Module", 1);
+        // Shuffleboard.getTab("Swerve Drive Tuning").add("Select Steer Swerve Module", 1);
 
         double setPoint_steer, processVariable_steer, appliedOutput_steer;
-        boolean mode = SmartDashboard.getBoolean("Steering Motor Mode", false);
+        boolean mode = motorMode_Steer_widget.getBoolean(false);
         
         if (mode) // true means use Velocity mode 
         {
-            setPoint_steer = SmartDashboard.getNumber("Set Velocity Steer", 0);
+            setPoint_steer = setVel_Steer_widget.getDouble(0);
             m_LeftFrontModule.setSteerMotorVelocityMode(setPoint_steer);
             m_RightFrontModule.setSteerMotorVelocityMode(setPoint_steer);
             m_LeftRearModule.setSteerMotorVelocityMode(setPoint_steer);
             m_RightRearModule.setSteerMotorVelocityMode(setPoint_steer);
 
-            double module = SmartDashboard.getNumber("Select Steer Swerve Module", 1);
+            double module = moduleSel_Steer_widget.getDouble(1);
             switch ((int)module)
             {
                 case 1: processVariable_steer = m_LeftFrontModule.getSteeringVelocity();
@@ -463,7 +470,7 @@ public class DriveSubsystem extends SubsystemBase
         } 
         else // use SmartMotion mode
         {
-            setPoint_steer = SmartDashboard.getNumber("Set Position Steer", 0);
+            setPoint_steer = setPos_Steer_widget.getDouble(0);
             /**
              * As with other PID modes, Smart Motion is set by calling the
              * setReference method on an existing pid object and setting
@@ -474,7 +481,7 @@ public class DriveSubsystem extends SubsystemBase
             m_LeftRearModule.setSteerMotorSmartMotionMode(setPoint_steer);
             m_RightRearModule.setSteerMotorSmartMotionMode(setPoint_steer);
 
-            double module = SmartDashboard.getNumber("Select Steer Swerve Module", 1);
+            double module = moduleSel_Steer_widget.getDouble(1);
             switch ((int)module)
             {
                 case 1: processVariable_steer = m_LeftFrontModule.getSteeringPosition();
@@ -499,9 +506,9 @@ public class DriveSubsystem extends SubsystemBase
             }
         }
         
-        SmartDashboard.putNumber("SetPoint Steer", setPoint_steer);
-        SmartDashboard.putNumber("Process Variable Steer", processVariable_steer);
-        SmartDashboard.putNumber("Output Steer", appliedOutput_steer);
+        Shuffleboard.getTab("Swerve Drive Tuning").add("SetPoint Steer", setPoint_steer);
+        Shuffleboard.getTab("Swerve Drive Tuning").add("Process Variable Steer", processVariable_steer);
+        Shuffleboard.getTab("Swerve Drive Tuning").add("Output Steer", appliedOutput_steer);
     }
 
 

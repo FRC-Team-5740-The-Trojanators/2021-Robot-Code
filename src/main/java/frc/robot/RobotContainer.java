@@ -6,6 +6,8 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.Constants.HIDConstants;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.DriveSubsystem;
@@ -40,6 +42,7 @@ public class RobotContainer
         configureButtonBindings();
 
         m_robotDrive.setDefaultCommand(getSwerveDriveCommand());
+        ShuffleboardTab tab = Shuffleboard.getTab("Swerve Drive Tuning");
     }
 
     /**
