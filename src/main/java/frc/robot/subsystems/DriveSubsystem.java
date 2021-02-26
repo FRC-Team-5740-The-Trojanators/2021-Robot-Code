@@ -14,109 +14,126 @@ import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
-//import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants.SwerveDriveModuleConstants;
+import frc.robot.Constants.SwerveDriveModuleConstants.CANBusIDs;
 import frc.robot.Constants;
-
 import frc.robot.subsystems.SwerveModule;
 
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+
+//Below are the imports needed from the MK3 File
+import com.ctre.phoenix.sensors.CANCoder;
+import com.revrobotics.CANEncoder;
+import com.revrobotics.CANPIDController;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.ControlType;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import edu.wpi.first.wpilibj.geometry.Translation2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Units;
+import edu.wpi.first.wpilibj.SerialPort;
+import edu.wpi.first.wpilibj.SPI;
+
+import edu.wpi.first.wpilibj2.command.CommandBase;
+
 
 //"Swerve Drive Tuning"
 
-
 @SuppressWarnings("PMD.ExcessiveImports")
 public class DriveSubsystem extends SubsystemBase 
-{        
-    private final SwerveModule m_LeftFrontModule = 
-        new SwerveModule(
-            SwerveDriveModuleConstants.CANBusIDs.k_LeftFront_DriveMotor,
-            SwerveDriveModuleConstants.MotorTypes.k_SwerveLeftFront_Drive,
-            SwerveDriveModuleConstants.CANBusIDs.k_LeftFront_SteeringMotor,
-            SwerveDriveModuleConstants.MotorTypes.k_SwerveLeftFront_Steering,
-            SwerveDriveModuleConstants.k_LeftFrontDriveEncoderReversed,
-            SwerveDriveModuleConstants.k_LeftFrontSteeringEncoderReversed);
+{  
+    //Not in Example Code, replaced by different below
+//     private final SwerveModule m_LeftFrontModule = 
+//         new SwerveModule(
+//             SwerveDriveModuleConstants.CANBusIDs.k_LeftFront_DriveMotor,
+//             SwerveDriveModuleConstants.MotorTypes.k_SwerveLeftFront_Drive,
+//             SwerveDriveModuleConstants.CANBusIDs.k_LeftFront_SteeringMotor,
+//             SwerveDriveModuleConstants.MotorTypes.k_SwerveLeftFront_Steering,
+//             SwerveDriveModuleConstants.k_LeftFrontDriveEncoderReversed,
+//             SwerveDriveModuleConstants.k_LeftFrontSteeringEncoderReversed);
 
 
-   private final SwerveModule m_RightFrontModule = 
-        new SwerveModule(
-            SwerveDriveModuleConstants.CANBusIDs.k_RightFront_DriveMotor,
-            SwerveDriveModuleConstants.MotorTypes.k_SwerveRightFront_Drive,
-            SwerveDriveModuleConstants.CANBusIDs.k_RightFront_SteeringMotor,
-            SwerveDriveModuleConstants.MotorTypes.k_SwerveRightFront_Steering,
-            SwerveDriveModuleConstants.k_RightFrontDriveEncoderReversed,
-            SwerveDriveModuleConstants.k_RightFrontSteeringEncoderReversed);
+//    private final SwerveModule m_RightFrontModule = 
+//         new SwerveModule(
+//             SwerveDriveModuleConstants.CANBusIDs.k_RightFront_DriveMotor,
+//             SwerveDriveModuleConstants.MotorTypes.k_SwerveRightFront_Drive,
+//             SwerveDriveModuleConstants.CANBusIDs.k_RightFront_SteeringMotor,
+//             SwerveDriveModuleConstants.MotorTypes.k_SwerveRightFront_Steering,
+//             SwerveDriveModuleConstants.k_RightFrontDriveEncoderReversed,
+//             SwerveDriveModuleConstants.k_RightFrontSteeringEncoderReversed);
 
-    private final SwerveModule m_LeftRearModule = 
-        new SwerveModule(
-            SwerveDriveModuleConstants.CANBusIDs.k_LeftRear_DriveMotor,
-            SwerveDriveModuleConstants.MotorTypes.k_SwerveLeftRear_Drive,
-            SwerveDriveModuleConstants.CANBusIDs.k_LeftRear_SteeringMotor,
-            SwerveDriveModuleConstants.MotorTypes.k_SwerveLeftRear_Steering,
-            SwerveDriveModuleConstants.k_LeftRearDriveEncoderReversed,
-            SwerveDriveModuleConstants.k_LeftRearSteeringEncoderReversed);
+//     private final SwerveModule m_LeftRearModule = 
+//         new SwerveModule(
+//             SwerveDriveModuleConstants.CANBusIDs.k_LeftRear_DriveMotor,
+//             SwerveDriveModuleConstants.MotorTypes.k_SwerveLeftRear_Drive,
+//             SwerveDriveModuleConstants.CANBusIDs.k_LeftRear_SteeringMotor,
+//             SwerveDriveModuleConstants.MotorTypes.k_SwerveLeftRear_Steering,
+//             SwerveDriveModuleConstants.k_LeftRearDriveEncoderReversed,
+//             SwerveDriveModuleConstants.k_LeftRearSteeringEncoderReversed);
 
-    private final SwerveModule m_RightRearModule = 
-        new SwerveModule(
-            SwerveDriveModuleConstants.CANBusIDs.k_RightRear_DriveMotor,
-            SwerveDriveModuleConstants.MotorTypes.k_SwerveRightRear_Drive,
-            SwerveDriveModuleConstants.CANBusIDs.k_RightRear_SteeringMotor,
-            SwerveDriveModuleConstants.MotorTypes.k_SwerveRightRear_Steering,
-            SwerveDriveModuleConstants.k_RightRearDriveEncoderReversed,
-            SwerveDriveModuleConstants.k_RightRearSteeringEncoderReversed);
+//     private final SwerveModule m_RightRearModule = 
+//         new SwerveModule(
+//             SwerveDriveModuleConstants.CANBusIDs.k_RightRear_DriveMotor,
+//             SwerveDriveModuleConstants.MotorTypes.k_SwerveRightRear_Drive,
+//             SwerveDriveModuleConstants.CANBusIDs.k_RightRear_SteeringMotor,
+//             SwerveDriveModuleConstants.MotorTypes.k_SwerveRightRear_Steering,
+//             SwerveDriveModuleConstants.k_RightRearDriveEncoderReversed,
+//             SwerveDriveModuleConstants.k_RightRearSteeringEncoderReversed);
 
-    public double kP_Drive, kI_Drive, kD_Drive, kIz_Drive, kFF_Drive, kMaxOutput_Drive, kMinOutput_Drive, maxRPM_Drive, maxVel_Drive, minVel_Drive, maxAcc_Drive, allowedErr_Drive;
 
-    public double kP_Steer, kI_Steer, kD_Steer, kIz_Steer, kFF_Steer, kMaxOutput_Steer, kMinOutput_Steer, maxRPM_Steer, maxVel_Steer, minVel_Steer, maxAcc_Steer, allowedErr_Steer;
     // The gyro sensor
-     //private final Gyro m_gyro = new ADXRS450_Gyro();
     public static final ADIS16470_IMU m_imu = new ADIS16470_IMU();
 
     // Odometry class for tracking robot pose
    SwerveDriveOdometry m_odometry =
-       new SwerveDriveOdometry(SwerveDriveModuleConstants.k_DriveKinematics, new Rotation2d(m_imu.getAngle())); // TODO: use radians here?
+       new SwerveDriveOdometry(SwerveDriveModuleConstants.kinematics, new Rotation2d(m_imu.getAngle())); // TODO: use radians here?
 
     // SwerveDriveOdometry m_Odometry_TEMP = new SwerveDriveOdometry(SwerveDriveModuleConstants.k_DriveKinematics_ONEWHEEL,
     //                                                  new Rotation2d(0.0, 0.0));
 
-    private NetworkTableEntry kP_Steer_widget, kI_Steer_widget, kD_Steer_widget, kIz_Steer_widget, kFF_Steer_widget, kMaxOutput_Steer_widget, kMinOutput_Steer_widget, maxRPM_Steer_widget, maxVel_Steer_widget, minVel_Steer_widget, maxAcc_Steer_widget, allowedErr_Steer_widget, setPos_Steer_widget, setVel_Steer_widget, motorMode_Steer_widget, moduleSel_Steer_widget, processVariable_steer_widget, appliedOutput_steer_widget;
     
+    private double kP_Drive, kI_Drive, kD_Drive, kIz_Drive, kFF_Drive, kMaxOutput_Drive, kMinOutput_Drive, maxRPM_Drive, maxVel_Drive, minVel_Drive, maxAcc_Drive, allowedErr_Drive; 
+    private double kP_Steer, kI_Steer, kD_Steer, kIz_Steer, kFF_Steer, kMaxOutput_Steer, kMinOutput_Steer, maxRPM_Steer, maxVel_Steer, minVel_Steer, maxAcc_Steer, allowedErr_Steer; 
+
+    private NetworkTableEntry kP_Steer_widget, kI_Steer_widget, kD_Steer_widget, kIz_Steer_widget, kFF_Steer_widget, kMaxOutput_Steer_widget, kMinOutput_Steer_widget, maxRPM_Steer_widget, maxVel_Steer_widget, minVel_Steer_widget, maxAcc_Steer_widget, allowedErr_Steer_widget, setPos_Steer_widget, setVel_Steer_widget, motorMode_Steer_widget, moduleSel_Steer_widget, processVariable_steer_widget, appliedOutput_steer_widget;
     private NetworkTableEntry kP_Drive_widget, kI_Drive_widget, kD_Drive_widget, kIz_Drive_widget, kFF_Drive_widget, kMaxOutput_Drive_widget, kMinOutput_Drive_widget, maxRPM_Drive_widget, maxVel_Drive_widget, minVel_Drive_widget, maxAcc_Drive_widget, allowedErr_Drive_widget, setPos_Drive_widget, setVel_Drive_widget, motorMode_Drive_widget, moduleSel_Drive_widget;
 
-    
-    
 
+    
     /** Creates a new DriveSubsystem. */
     public DriveSubsystem()
     {
-        kP_Steer = SwerveDriveModuleConstants.SteeringControllerPIDValues.k_Prop;
-        kI_Steer = SwerveDriveModuleConstants.SteeringControllerPIDValues.k_Inter;
-        kD_Steer = SwerveDriveModuleConstants.SteeringControllerPIDValues.k_Diff;
-        kIz_Steer = SwerveDriveModuleConstants.SteeringControllerPIDValues.k_Iz;
-        kFF_Steer = SwerveDriveModuleConstants.SteeringControllerPIDValues.k_FF;
-        kMaxOutput_Steer = SwerveDriveModuleConstants.SteeringControllerPIDValues.k_MaxOutput;
-        kMinOutput_Steer = SwerveDriveModuleConstants.SteeringControllerPIDValues.k_MinOutput;
-        maxRPM_Steer = SwerveDriveModuleConstants.SteeringControllerPIDValues.k_maxRPM;
-        maxVel_Steer = SwerveDriveModuleConstants.SteeringControllerPIDValues.k_maxVel;
-        minVel_Steer = SwerveDriveModuleConstants.SteeringControllerPIDValues.k_minVel;
-        maxAcc_Steer = SwerveDriveModuleConstants.SteeringControllerPIDValues.k_maxAcc;
-        allowedErr_Steer = SwerveDriveModuleConstants.SteeringControllerPIDValues.k_allowedError;
+        kP_Steer = SwerveDriveModuleConstants.SteeringControllerPIDValues.k_steerP;
+        kI_Steer = SwerveDriveModuleConstants.SteeringControllerPIDValues.k_steerI;
+        kD_Steer = SwerveDriveModuleConstants.SteeringControllerPIDValues.k_steerD;
+        kIz_Steer = SwerveDriveModuleConstants.SteeringControllerPIDValues.k_steerIz;
+        kFF_Steer = SwerveDriveModuleConstants.SteeringControllerPIDValues.k_steerFF;
+        kMaxOutput_Steer = SwerveDriveModuleConstants.SteeringControllerPIDValues.k_steerMaxOutput;
+        kMinOutput_Steer = SwerveDriveModuleConstants.SteeringControllerPIDValues.k_steerMinOutput;
+        maxRPM_Steer = SwerveDriveModuleConstants.SteeringControllerPIDValues.k_steerMaxRPM;
+        maxVel_Steer = SwerveDriveModuleConstants.SteeringControllerPIDValues.k_steerMaxVel;
+        minVel_Steer = SwerveDriveModuleConstants.SteeringControllerPIDValues.k_steerMinVel;
+        maxAcc_Steer = SwerveDriveModuleConstants.SteeringControllerPIDValues.k_steerMaxAcc;
+        allowedErr_Steer = SwerveDriveModuleConstants.SteeringControllerPIDValues.k_steerAllowedError;
 
-        kP_Drive = SwerveDriveModuleConstants.DriveModulePIDValues.k_Proportional;
-        kI_Drive = SwerveDriveModuleConstants.DriveModulePIDValues.k_Intergral;
-        kD_Drive = SwerveDriveModuleConstants.DriveModulePIDValues.k_Differential;
-        kIz_Drive = SwerveDriveModuleConstants.DriveModulePIDValues.k_Iz;
-        kFF_Drive = SwerveDriveModuleConstants.DriveModulePIDValues.k_FF;
-        kMaxOutput_Drive = SwerveDriveModuleConstants.DriveModulePIDValues.k_MaxOutput;
-        kMinOutput_Drive = SwerveDriveModuleConstants.DriveModulePIDValues.k_MinOutput;
-        maxRPM_Drive = SwerveDriveModuleConstants.DriveModulePIDValues.k_maxRPM;
-        maxVel_Drive = SwerveDriveModuleConstants.DriveModulePIDValues.k_maxVel;
-        minVel_Drive = SwerveDriveModuleConstants.DriveModulePIDValues.k_minVel;
-        maxAcc_Drive = SwerveDriveModuleConstants.DriveModulePIDValues.k_maxAcc;
-        allowedErr_Drive = SwerveDriveModuleConstants.DriveModulePIDValues.k_allowedError;
+        kP_Drive = SwerveDriveModuleConstants.DriveModulePIDValues.k_driveP;
+        kI_Drive = SwerveDriveModuleConstants.DriveModulePIDValues.k_driveI;
+        kD_Drive = SwerveDriveModuleConstants.DriveModulePIDValues.k_driveD;
+        kIz_Drive = SwerveDriveModuleConstants.DriveModulePIDValues.k_driveIz;
+        kFF_Drive = SwerveDriveModuleConstants.DriveModulePIDValues.k_driveFF;
+        kMaxOutput_Drive = SwerveDriveModuleConstants.DriveModulePIDValues.k_driveMaxOutput;
+        kMinOutput_Drive = SwerveDriveModuleConstants.DriveModulePIDValues.k_driveMinOutput;
+        maxRPM_Drive = SwerveDriveModuleConstants.DriveModulePIDValues.k_driveMaxRPM;
+        maxVel_Drive = SwerveDriveModuleConstants.DriveModulePIDValues.k_driveMaxVel;
+        minVel_Drive = SwerveDriveModuleConstants.DriveModulePIDValues.k_driveMinVel;
+        maxAcc_Drive = SwerveDriveModuleConstants.DriveModulePIDValues.k_driveMaxAcc;
+        allowedErr_Drive = SwerveDriveModuleConstants.DriveModulePIDValues.k_driveAllowedError;
         
         // !! Important! The SmartDashboard uses key/value pairs, so the keys here need to match the keys in periodic()
         // display PID coefficients on SmartDashboard
@@ -143,12 +160,9 @@ public class DriveSubsystem extends SubsystemBase
         // 3 = m_LeftRearModule    4 = m_RightRearModule
         moduleSel_Steer_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("Select Steer Swerve Module", 1).getEntry();
 
-   
         
         processVariable_steer_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("Process Variable Steer", 0).getEntry();
         appliedOutput_steer_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("Output Steer", 0).getEntry();
-
-
 
 
         // display PID coefficients on SmartDashboard
@@ -174,6 +188,40 @@ public class DriveSubsystem extends SubsystemBase
         // 1 = m_LeftFrontModule   2 = m_RightFrontModule
         // 3 = m_LeftRearModule    4 = m_RightRearModule
         moduleSel_Drive_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("Select Drive Swerve Module", 1).getEntry();
+   
+
+
+        private SwerveDriveModuleConstants[] modules = new SwerveDriveModuleConstants[] {
+
+            new SwerveDriveModuleConstants(new CANSparkMax(CANBusIDs.k_LeftFront_DriveMotor, MotorType.kBrushless), new CANSparkMax(CANBusIDs.k_LeftFront_SteeringMotor, MotorType.kBrushless), new CANCoder(CANBusIDs.frontLeftCANCoderId), Rotation2d.fromDegrees(frontLeftOffset)), // Front Left
+            new SwerveDriveModuleConstants(new CANSparkMax(CANBusIDs.k_RightFront_DriveMotor, MotorType.kBrushless), new CANSparkMax(CANBusIDs.k_RightFront_SteeringMotor, MotorType.kBrushless), new CANCoder(CANBusIDs.frontRightCANCoderId), Rotation2d.fromDegrees(frontRightOffset)), // Front Right
+            new SwerveDriveModuleConstants(new CANSparkMax(CANBusIDs.k_LeftRear_DriveMotor, MotorType.kBrushless), new CANSparkMax(CANBusIDs.k_LeftRear_SteeringMotor, MotorType.kBrushless), new CANCoder(CANBusIDs.backLeftCANCoderId), Rotation2d.fromDegrees(backLeftOffset)), // Back Left
+            new SwerveDriveModuleConstants(new CANSparkMax(CANBusIDs.k_RightRear_DriveMotor, MotorType.kBrushless), new CANSparkMax(CANBusIDs.k_RightRear_SteeringMotor, MotorType.kBrushless), new CANCoder(CANBusIDs.backRightCANCoderId), Rotation2d.fromDegrees(backRightOffset)); //Back Right
+         } 
+        
+
+          public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative, boolean calibrateGyro) {
+    
+            if(calibrateGyro){
+              gyro.reset(); //recalibrates gyro offset
+            }
+        
+            SwerveModuleState[] states =
+              kinematics.toSwerveModuleStates(
+                fieldRelative
+                  ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, Rotation2d.fromDegrees(-gyro.getAngle()))
+                  : new ChassisSpeeds(xSpeed, ySpeed, rot));
+            SwerveDriveKinematics.normalizeWheelSpeeds(states, kMaxSpeed);
+            for (int i = 0; i < states.length; i++) {
+              SwerveModuleMK3 module = modules[i];
+              SwerveModuleState state = states[i];
+              SmartDashboard.putNumber(String.valueOf(i) + "GET RAW ANGLE", module.getRawAngle());
+              SmartDashboard.putNumber(String.valueOf(i) + "GET SPEED", state.speedMetersPerSecond);
+              //below is a line to comment out from step 5
+              module.setDesiredState(state);
+              SmartDashboard.putNumber("gyro Angle", gyro.getAngle());
+            }
+
     }
 
     @Override
@@ -550,23 +598,24 @@ public class DriveSubsystem extends SubsystemBase
      * @param rot Angular rate of the robot.
      * @param fieldRelative Whether the provided x and y speeds are relative to the field.
      */
-    @SuppressWarnings("ParameterName")
+   /* @SuppressWarnings("ParameterName")
     public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative)
     {
        var swerveModuleStates =
-            SwerveDriveModuleConstants.k_DriveKinematics.toSwerveModuleStates(
+            SwerveDriveModuleConstants.kinematics.toSwerveModuleStates(
                // fieldRelative
                    // ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, m_gyro.getRotation2d())
                     new ChassisSpeeds(xSpeed, ySpeed, rot));
         
         SwerveDriveKinematics.normalizeWheelSpeeds(
-            swerveModuleStates, SwerveDriveModuleConstants.k_MaxSpeedMetersPerSecond);
+            swerveModuleStates, SwerveDriveModuleConstants.kMaxSpeed);
 
         m_LeftFrontModule.setDesiredState(swerveModuleStates[0]);
         m_RightFrontModule.setDesiredState(swerveModuleStates[1]);
         m_LeftRearModule.setDesiredState(swerveModuleStates[2]);
         m_RightRearModule.setDesiredState(swerveModuleStates[3]);
     }
+*/
 
     /**
      * Sets the swerve ModuleStates.
@@ -576,7 +625,7 @@ public class DriveSubsystem extends SubsystemBase
     public void setModuleStates(SwerveModuleState[] desiredStates)
     {
         SwerveDriveKinematics.normalizeWheelSpeeds(
-            desiredStates, SwerveDriveModuleConstants.k_MaxSpeedMetersPerSecond);
+            desiredStates, SwerveDriveModuleConstants.kMaxSpeed);
 
         m_LeftFrontModule.setDesiredState(desiredStates[0]);
         m_RightFrontModule.setDesiredState(desiredStates[1]);
