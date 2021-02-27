@@ -51,14 +51,14 @@ public class SwerveModule
 
     // PID Loops using the Spark API
     private CANPIDController m_driverPIDController;
-    private CANPIDController m_steeringPIDController;
+    private PIDController m_steeringPIDController;
 
     private CANSparkMax driveMotor;
     private CANSparkMax angleMotor;
     private CANCoder canCoder;
     private Rotation2d offset;
 
-    //private static double kEncoderTicksPerRotation = 4096;
+    private static double kEncoderTicksPerRotation = 4096;
 
     // These two PID controllers are from the WPILib and we're temporarily commenting them to use the REV Spark PIDs
     // private final PIDController m_driverPIDController = new PIDController(SwerveDriveModuleConstants.DriveModule.k_Proportional, 
@@ -89,13 +89,13 @@ public class SwerveModule
         this.offset = offset;
 
         m_driverPIDController = driveMotor.getPIDController();
-        m_steeringPIDController = angleMotor.getPIDController();
+       // m_steeringPIDController = angleMotor.getPIDController();
        m_steeringEncoder = this.angleMotor.getEncoder();
        this.m_steeringEncoder = m_steeringEncoder;
 
-        // m_steeringPIDController = new PIDController(SteeringControllerPIDValues.k_steerP, 
-        //                                             SteeringControllerPIDValues.k_steerI,
-        //                                             SteeringControllerPIDValues.k_steerD);
+         m_steeringPIDController = new PIDController(SteeringControllerPIDValues.k_steerP, 
+                                                     SteeringControllerPIDValues.k_steerI,
+                                                    SteeringControllerPIDValues.k_steerD);
 
         m_steeringPIDController.setP(SteeringControllerPIDValues.k_steerP);
         m_steeringPIDController.setI(SteeringControllerPIDValues.k_steerI);
@@ -162,7 +162,7 @@ public class SwerveModule
     public double getSteeringEncoderValue(){
         return m_steeringEncoder.getPosition();
     }
-    
+
     public void setEncoders(){
     if (
         canCoder.getAbsolutePosition() != m_steeringEncoder.getPosition()
@@ -177,21 +177,21 @@ public class SwerveModule
     public void setDesiredState(SwerveModuleState desiredState)
     {      
        //Steering Motor Calc
-      // Rotation2d currentRotation = getAngle();
-        //SwerveModuleState state = SwerveModuleState.optimize(desiredState, currentRotation);
-        // Rotation2d rotationDelta = state.angle.minus(currentRotation);
-
-        double steeringCurrentPos_degrees = ((m_steeringEncoder.getPosition() / m_steeringEncoder.getCountsPerRevolution())* 360) % 360; //converts the fraction of a rotation to degrees
-        Rotation2d currentRotation = Rotation2d.fromDegrees(steeringCurrentPos_degrees);
+        Rotation2d currentRotation = getAngle();
         SwerveModuleState state = SwerveModuleState.optimize(desiredState, currentRotation);
-        setpoint = steeringCurrentPos_degrees - state.angle.getDegrees();
-        m_steeringPIDController.setReference(setpoint, ControlType.kPosition);
+         Rotation2d rotationDelta = state.angle.minus(currentRotation);
+
+        // double steeringCurrentPos_degrees = ((m_steeringEncoder.getPosition() / m_steeringEncoder.getCountsPerRevolution())* 360) % 360; //converts the fraction of a rotation to degrees
+        // Rotation2d currentRotation = Rotation2d.fromDegrees(steeringCurrentPos_degrees);
+        // SwerveModuleState state = SwerveModuleState.optimize(desiredState, currentRotation);
+        // setpoint = steeringCurrentPos_degrees - state.angle.getDegrees();
+       // m_steeringPIDController.setReference(setpoint, ControlType.kPosition);
 
 
-    //    double deltaTicks = (rotationDelta.getDegrees() / 360) * kEncoderTicksPerRotation;
-    //     double currentTicks = canCoder.getPosition() / canCoder.configGetFeedbackCoefficient();
-    //     double desiredTicks = currentTicks + deltaTicks;
-    //    angleMotor.set(m_steeringPIDController.calculate(currentTicks, desiredTicks));
+       double deltaTicks = (rotationDelta.getDegrees() / 360) * kEncoderTicksPerRotation;
+        double currentTicks = canCoder.getPosition() / canCoder.configGetFeedbackCoefficient();
+        double desiredTicks = currentTicks + deltaTicks;
+       angleMotor.set(m_steeringPIDController.calculate(currentTicks, desiredTicks));
 
 
        //Drive Motor Calc
