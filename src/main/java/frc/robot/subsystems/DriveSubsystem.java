@@ -97,120 +97,99 @@ public class DriveSubsystem extends SubsystemBase
     //                                                  new Rotation2d(0.0, 0.0));
 
     
-    private double kP_Drive, kI_Drive, kD_Drive, kIz_Drive, kFF_Drive, kMaxOutput_Drive, kMinOutput_Drive, maxRPM_Drive, maxVel_Drive, minVel_Drive, maxAcc_Drive, allowedErr_Drive; 
-    private double kP_Steer, kI_Steer, kD_Steer, kIz_Steer, kFF_Steer, kMaxOutput_Steer, kMinOutput_Steer, maxRPM_Steer, maxVel_Steer, minVel_Steer, maxAcc_Steer, allowedErr_Steer; 
+    // private double kP_Drive, kI_Drive, kD_Drive, kIz_Drive, kFF_Drive, kMaxOutput_Drive, kMinOutput_Drive, maxRPM_Drive, maxVel_Drive, minVel_Drive, maxAcc_Drive, allowedErr_Drive; 
+    // private double kP_Steer, kI_Steer, kD_Steer, kIz_Steer, kFF_Steer, kMaxOutput_Steer, kMinOutput_Steer, maxRPM_Steer, maxVel_Steer, minVel_Steer, maxAcc_Steer, allowedErr_Steer; 
 
-    private NetworkTableEntry kP_Steer_widget, kI_Steer_widget, kD_Steer_widget, kIz_Steer_widget, kFF_Steer_widget, kMaxOutput_Steer_widget, kMinOutput_Steer_widget, maxRPM_Steer_widget, maxVel_Steer_widget, minVel_Steer_widget, maxAcc_Steer_widget, allowedErr_Steer_widget, setPos_Steer_widget, setVel_Steer_widget, motorMode_Steer_widget, moduleSel_Steer_widget, processVariable_steer_widget, appliedOutput_steer_widget;
-    private NetworkTableEntry kP_Drive_widget, kI_Drive_widget, kD_Drive_widget, kIz_Drive_widget, kFF_Drive_widget, kMaxOutput_Drive_widget, kMinOutput_Drive_widget, maxRPM_Drive_widget, maxVel_Drive_widget, minVel_Drive_widget, maxAcc_Drive_widget, allowedErr_Drive_widget, setPos_Drive_widget, setVel_Drive_widget, motorMode_Drive_widget, moduleSel_Drive_widget;
+    // private NetworkTableEntry kP_Steer_widget, kI_Steer_widget, kD_Steer_widget, kIz_Steer_widget, kFF_Steer_widget, kMaxOutput_Steer_widget, kMinOutput_Steer_widget, maxRPM_Steer_widget, maxVel_Steer_widget, minVel_Steer_widget, maxAcc_Steer_widget, allowedErr_Steer_widget, setPos_Steer_widget, setVel_Steer_widget, motorMode_Steer_widget, moduleSel_Steer_widget, processVariable_steer_widget, appliedOutput_steer_widget;
+    // private NetworkTableEntry kP_Drive_widget, kI_Drive_widget, kD_Drive_widget, kIz_Drive_widget, kFF_Drive_widget, kMaxOutput_Drive_widget, kMinOutput_Drive_widget, maxRPM_Drive_widget, maxVel_Drive_widget, minVel_Drive_widget, maxAcc_Drive_widget, allowedErr_Drive_widget, setPos_Drive_widget, setVel_Drive_widget, motorMode_Drive_widget, moduleSel_Drive_widget;
 
 
     
-    /** Creates a new DriveSubsystem. */
-    public DriveSubsystem()
-    {
-        kP_Steer = SwerveDriveModuleConstants.SteeringControllerPIDValues.k_steerP;
-        kI_Steer = SwerveDriveModuleConstants.SteeringControllerPIDValues.k_steerI;
-        kD_Steer = SwerveDriveModuleConstants.SteeringControllerPIDValues.k_steerD;
-        kIz_Steer = SwerveDriveModuleConstants.SteeringControllerPIDValues.k_steerIz;
-        kFF_Steer = SwerveDriveModuleConstants.SteeringControllerPIDValues.k_steerFF;
-        kMaxOutput_Steer = SwerveDriveModuleConstants.SteeringControllerPIDValues.k_steerMaxOutput;
-        kMinOutput_Steer = SwerveDriveModuleConstants.SteeringControllerPIDValues.k_steerMinOutput;
-        maxRPM_Steer = SwerveDriveModuleConstants.SteeringControllerPIDValues.k_steerMaxRPM;
-        maxVel_Steer = SwerveDriveModuleConstants.SteeringControllerPIDValues.k_steerMaxVel;
-        minVel_Steer = SwerveDriveModuleConstants.SteeringControllerPIDValues.k_steerMinVel;
-        maxAcc_Steer = SwerveDriveModuleConstants.SteeringControllerPIDValues.k_steerMaxAcc;
-        allowedErr_Steer = SwerveDriveModuleConstants.SteeringControllerPIDValues.k_steerAllowedError;
+    // /** Creates a new DriveSubsystem. */
+    // public DriveSubsystem()
+    // {
+    //     kP_Steer = SwerveDriveModuleConstants.SteeringControllerPIDValues.k_steerP;
+    //     kI_Steer = SwerveDriveModuleConstants.SteeringControllerPIDValues.k_steerI;
+    //     kD_Steer = SwerveDriveModuleConstants.SteeringControllerPIDValues.k_steerD;
+    //     kIz_Steer = SwerveDriveModuleConstants.SteeringControllerPIDValues.k_steerIz;
+    //     kFF_Steer = SwerveDriveModuleConstants.SteeringControllerPIDValues.k_steerFF;
+    //     kMaxOutput_Steer = SwerveDriveModuleConstants.SteeringControllerPIDValues.k_steerMaxOutput;
+    //     kMinOutput_Steer = SwerveDriveModuleConstants.SteeringControllerPIDValues.k_steerMinOutput;
+    //     maxRPM_Steer = SwerveDriveModuleConstants.SteeringControllerPIDValues.k_steerMaxRPM;
+    //     maxVel_Steer = SwerveDriveModuleConstants.SteeringControllerPIDValues.k_steerMaxVel;
+    //     minVel_Steer = SwerveDriveModuleConstants.SteeringControllerPIDValues.k_steerMinVel;
+    //     maxAcc_Steer = SwerveDriveModuleConstants.SteeringControllerPIDValues.k_steerMaxAcc;
+    //     allowedErr_Steer = SwerveDriveModuleConstants.SteeringControllerPIDValues.k_steerAllowedError;
 
-        kP_Drive = SwerveDriveModuleConstants.DriveModulePIDValues.k_driveP;
-        kI_Drive = SwerveDriveModuleConstants.DriveModulePIDValues.k_driveI;
-        kD_Drive = SwerveDriveModuleConstants.DriveModulePIDValues.k_driveD;
-        kIz_Drive = SwerveDriveModuleConstants.DriveModulePIDValues.k_driveIz;
-        kFF_Drive = SwerveDriveModuleConstants.DriveModulePIDValues.k_driveFF;
-        kMaxOutput_Drive = SwerveDriveModuleConstants.DriveModulePIDValues.k_driveMaxOutput;
-        kMinOutput_Drive = SwerveDriveModuleConstants.DriveModulePIDValues.k_driveMinOutput;
-        maxRPM_Drive = SwerveDriveModuleConstants.DriveModulePIDValues.k_driveMaxRPM;
-        maxVel_Drive = SwerveDriveModuleConstants.DriveModulePIDValues.k_driveMaxVel;
-        minVel_Drive = SwerveDriveModuleConstants.DriveModulePIDValues.k_driveMinVel;
-        maxAcc_Drive = SwerveDriveModuleConstants.DriveModulePIDValues.k_driveMaxAcc;
-        allowedErr_Drive = SwerveDriveModuleConstants.DriveModulePIDValues.k_driveAllowedError;
+    //     kP_Drive = SwerveDriveModuleConstants.DriveModulePIDValues.k_driveP;
+    //     kI_Drive = SwerveDriveModuleConstants.DriveModulePIDValues.k_driveI;
+    //     kD_Drive = SwerveDriveModuleConstants.DriveModulePIDValues.k_driveD;
+    //     kIz_Drive = SwerveDriveModuleConstants.DriveModulePIDValues.k_driveIz;
+    //     kFF_Drive = SwerveDriveModuleConstants.DriveModulePIDValues.k_driveFF;
+    //     kMaxOutput_Drive = SwerveDriveModuleConstants.DriveModulePIDValues.k_driveMaxOutput;
+    //     kMinOutput_Drive = SwerveDriveModuleConstants.DriveModulePIDValues.k_driveMinOutput;
+    //     maxRPM_Drive = SwerveDriveModuleConstants.DriveModulePIDValues.k_driveMaxRPM;
+    //     maxVel_Drive = SwerveDriveModuleConstants.DriveModulePIDValues.k_driveMaxVel;
+    //     minVel_Drive = SwerveDriveModuleConstants.DriveModulePIDValues.k_driveMinVel;
+    //     maxAcc_Drive = SwerveDriveModuleConstants.DriveModulePIDValues.k_driveMaxAcc;
+    //     allowedErr_Drive = SwerveDriveModuleConstants.DriveModulePIDValues.k_driveAllowedError;
         
-        // !! Important! The SmartDashboard uses key/value pairs, so the keys here need to match the keys in periodic()
-        // display PID coefficients on SmartDashboard
-        kP_Steer_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("Steer P Gain", kP_Steer).getEntry();
-        kI_Steer_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("Steer I Gain", kI_Steer).getEntry();
-        kD_Steer_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("Steer D Gain", kD_Steer).getEntry();
-        kIz_Steer_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("kIz_Steer Zone", kIz_Steer).getEntry();
-        kFF_Steer_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("kFF_Steer Feed Forward", kFF_Steer).getEntry();
-        kMaxOutput_Steer_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("kMaxOutput_Steer Max Output", kMaxOutput_Steer).getEntry();
-        kMinOutput_Steer_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("kMinOutput_Steer Min Output", kMinOutput_Steer).getEntry();
+    //     // !! Important! The SmartDashboard uses key/value pairs, so the keys here need to match the keys in periodic()
+    //     // display PID coefficients on SmartDashboard
+    //     kP_Steer_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("Steer P Gain", kP_Steer).getEntry();
+    //     kI_Steer_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("Steer I Gain", kI_Steer).getEntry();
+    //     kD_Steer_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("Steer D Gain", kD_Steer).getEntry();
+    //     kIz_Steer_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("kIz_Steer Zone", kIz_Steer).getEntry();
+    //     kFF_Steer_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("kFF_Steer Feed Forward", kFF_Steer).getEntry();
+    //     kMaxOutput_Steer_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("kMaxOutput_Steer Max Output", kMaxOutput_Steer).getEntry();
+    //     kMinOutput_Steer_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("kMinOutput_Steer Min Output", kMinOutput_Steer).getEntry();
         
-        // display Smart Motion coefficients
-        maxVel_Steer_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("maxVel_Steer Max Velocity", maxVel_Steer).getEntry();
-        minVel_Steer_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("minVel_Steer Min Velocity", minVel_Steer).getEntry();
-        maxAcc_Steer_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("maxAcc_Steer Acceleration", maxAcc_Steer).getEntry();
-        allowedErr_Steer_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("allowedErr_Steer Allowed Closed Loop Error", allowedErr_Steer).getEntry();
-        setPos_Steer_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("Set Position Steer", 0).getEntry();
-        setVel_Steer_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("Set Velocity Steer", 0).getEntry();
+    //     // display Smart Motion coefficients
+    //     maxVel_Steer_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("maxVel_Steer Max Velocity", maxVel_Steer).getEntry();
+    //     minVel_Steer_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("minVel_Steer Min Velocity", minVel_Steer).getEntry();
+    //     maxAcc_Steer_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("maxAcc_Steer Acceleration", maxAcc_Steer).getEntry();
+    //     allowedErr_Steer_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("allowedErr_Steer Allowed Closed Loop Error", allowedErr_Steer).getEntry();
+    //     setPos_Steer_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("Set Position Steer", 0).getEntry();
+    //     setVel_Steer_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("Set Velocity Steer", 0).getEntry();
 
-        // button to toggle between velocity and smart motion modes
-        motorMode_Steer_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("Steering Motor Mode", true).getEntry();
+    //     // button to toggle between velocity and smart motion modes
+    //     motorMode_Steer_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("Steering Motor Mode", true).getEntry();
 
-        // 1 = m_LeftFrontModule   2 = m_RightFrontModule
-        // 3 = m_LeftRearModule    4 = m_RightRearModule
-        moduleSel_Steer_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("Select Steer Swerve Module", 1).getEntry();
+    //     // 1 = m_LeftFrontModule   2 = m_RightFrontModule
+    //     // 3 = m_LeftRearModule    4 = m_RightRearModule
+    //     moduleSel_Steer_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("Select Steer Swerve Module", 1).getEntry();
 
         
-        processVariable_steer_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("Process Variable Steer", 0).getEntry();
-        appliedOutput_steer_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("Output Steer", 0).getEntry();
+    //     processVariable_steer_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("Process Variable Steer", 0).getEntry();
+    //     appliedOutput_steer_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("Output Steer", 0).getEntry();
 
 
-        // display PID coefficients on SmartDashboard
-        kP_Drive_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("Drive P Gain", kP_Drive).getEntry();
-        kI_Drive_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("Drive I Gain", kI_Drive).getEntry();
-        kD_Drive_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("kD_Drive Gain", kD_Drive).getEntry();
-        kIz_Drive_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("kIz_Drive Zone", kIz_Drive).getEntry();
-        kFF_Drive_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("kFF_Drive Feed Forward", kFF_Drive).getEntry();
-        kMaxOutput_Drive_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("kMaxOutput_Drive Max Output", kMaxOutput_Drive).getEntry();
-        kMinOutput_Drive_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("kMinOutput_Drive Output", kMinOutput_Drive).getEntry();
+    //     // display PID coefficients on SmartDashboard
+    //     kP_Drive_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("Drive P Gain", kP_Drive).getEntry();
+    //     kI_Drive_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("Drive I Gain", kI_Drive).getEntry();
+    //     kD_Drive_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("kD_Drive Gain", kD_Drive).getEntry();
+    //     kIz_Drive_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("kIz_Drive Zone", kIz_Drive).getEntry();
+    //     kFF_Drive_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("kFF_Drive Feed Forward", kFF_Drive).getEntry();
+    //     kMaxOutput_Drive_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("kMaxOutput_Drive Max Output", kMaxOutput_Drive).getEntry();
+    //     kMinOutput_Drive_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("kMinOutput_Drive Output", kMinOutput_Drive).getEntry();
 
-        // display Smart Motion coefficients
-        maxVel_Drive_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("maxVel_Drive Max Velocity", maxVel_Drive).getEntry();
-        minVel_Drive_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("minVel_Drive Min Velocity", minVel_Drive).getEntry();
-        maxAcc_Drive_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("maxAcc_Drive Acceleration", maxAcc_Drive).getEntry();
-        allowedErr_Drive_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("allowedErr_Drive Allowed Closed Loop Error", allowedErr_Drive).getEntry();
-        setPos_Drive_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("Set Position Drive", 0).getEntry();
-        setVel_Drive_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("Set Velocity Drive", 0).getEntry();
+    //     // display Smart Motion coefficients
+    //     maxVel_Drive_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("maxVel_Drive Max Velocity", maxVel_Drive).getEntry();
+    //     minVel_Drive_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("minVel_Drive Min Velocity", minVel_Drive).getEntry();
+    //     maxAcc_Drive_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("maxAcc_Drive Acceleration", maxAcc_Drive).getEntry();
+    //     allowedErr_Drive_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("allowedErr_Drive Allowed Closed Loop Error", allowedErr_Drive).getEntry();
+    //     setPos_Drive_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("Set Position Drive", 0).getEntry();
+    //     setVel_Drive_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("Set Velocity Drive", 0).getEntry();
 
-        // button to toggle between velocity and smart motion modes
-        motorMode_Drive_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("Driving Motor Mode", true).getEntry();
+    //     // button to toggle between velocity and smart motion modes
+    //     motorMode_Drive_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("Driving Motor Mode", true).getEntry();
 
-        // 1 = m_LeftFrontModule   2 = m_RightFrontModule
-        // 3 = m_LeftRearModule    4 = m_RightRearModule
-        moduleSel_Drive_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("Select Drive Swerve Module", 1).getEntry();
-    }
+    //     // 1 = m_LeftFrontModule   2 = m_RightFrontModule
+    //     // 3 = m_LeftRearModule    4 = m_RightRearModule
+    //     moduleSel_Drive_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("Select Drive Swerve Module", 1).getEntry();
+    // }
 
-        private SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
-            new Translation2d(
-              Units.inchesToMeters(11.5),
-              Units.inchesToMeters(11.5)
-            ),
-            new Translation2d(
-              Units.inchesToMeters(11.5),
-              Units.inchesToMeters(-11.5)
-            ),
-            new Translation2d(
-              Units.inchesToMeters(-11.5),
-              Units.inchesToMeters(11.5)
-            ),
-            new Translation2d(
-              Units.inchesToMeters(-11.5),
-              Units.inchesToMeters(-11.5)
-            )
-          );
-        
-      
-
-        private SwerveModule[] modules = new SwerveModule[]{
+        public SwerveModule[] modules = new SwerveModule[]{
             new SwerveModule(new CANSparkMax(CANBusIDs.k_LeftFront_DriveMotor, MotorType.kBrushless), new CANSparkMax(CANBusIDs.k_LeftFront_SteeringMotor, MotorType.kBrushless), new CANCoder(CANBusIDs.frontLeftCANCoderId), Rotation2d.fromDegrees(SwerveDriveModuleConstants.frontLeftOffset)), // Front Left
             new SwerveModule(new CANSparkMax(CANBusIDs.k_RightFront_DriveMotor, MotorType.kBrushless), new CANSparkMax(CANBusIDs.k_RightFront_SteeringMotor, MotorType.kBrushless), new CANCoder(CANBusIDs.frontRightCANCoderId), Rotation2d.fromDegrees(SwerveDriveModuleConstants.frontRightOffset)), // Front Right
             new SwerveModule(new CANSparkMax(CANBusIDs.k_LeftRear_DriveMotor, MotorType.kBrushless), new CANSparkMax(CANBusIDs.k_LeftRear_SteeringMotor, MotorType.kBrushless), new CANCoder(CANBusIDs.backLeftCANCoderId), Rotation2d.fromDegrees(SwerveDriveModuleConstants.backLeftOffset)), // Back Left
@@ -233,14 +212,16 @@ public class DriveSubsystem extends SubsystemBase
             for (int i = 0; i < states.length; i++) {
               SwerveModule module = modules[i];
               SwerveModuleState state = states[i];
-              SmartDashboard.putNumber(String.valueOf(i) + "GET RAW ANGLE", module.getRawAngle());
-              SmartDashboard.putNumber(String.valueOf(i) + "GET SPEED", state.speedMetersPerSecond);
+             SmartDashboard.putNumber(String.valueOf(i) + "SetPoint", module.getSetpoint());
+              SmartDashboard.putNumber(String.valueOf(i) + "Steer Encoder", module.getSteeringEncoderValue());
               //below is a line to comment out from step 5
               module.setDesiredState(state);
-              SmartDashboard.putNumber("gyro Angle", m_imu.getAngle());
+              //SmartDashboard.putNumber("gyro Angle", m_imu.getAngle());
             }
-
+    
     }
+
+
     @Override
     public void periodic() {
       // This method will be called once per scheduler run

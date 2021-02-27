@@ -116,34 +116,34 @@ public final class Constants
         // Distance between front and back wheels on robot; unit is meters
         public static final double k_WheelBase = 0.5842;
         
-       /* Original 
-        public static final SwerveDriveKinematics k_DriveKinematics =
+     
+        public static SwerveDriveKinematics kinematics =
             new SwerveDriveKinematics(
-                new Translation2d(-k_WheelBase / 2, k_TrackWidth / 2),    // Left Front
-                new Translation2d(k_WheelBase / 2, k_TrackWidth / 2),   // Right Front
-                new Translation2d(-k_WheelBase / 2, -k_TrackWidth / 2),   // Left Rear
-                new Translation2d(k_WheelBase / 2, -k_TrackWidth / 2)); // Right Rear
-        */
+                new Translation2d(k_WheelBase / 2, k_TrackWidth / 2),    // Left Front
+                new Translation2d(k_WheelBase / 2, -k_TrackWidth / 2),   // Right Front
+                new Translation2d(-k_WheelBase / 2, k_TrackWidth / 2),   // Left Rear
+                new Translation2d(-k_WheelBase / 2, -k_TrackWidth / 2)); // Right Rear
+    
 
-        //From MK3 Swerve file
-         public static SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
-            new Translation2d(
-                Units.inchesToMeters(11.5),
-                Units.inchesToMeters(11.5)
-            ),
-            new Translation2d(
-                Units.inchesToMeters(11.5),
-                Units.inchesToMeters(-11.5)
-            ),
-            new Translation2d(
-                Units.inchesToMeters(-11.5),
-                Units.inchesToMeters(11.5)
-            ),
-            new Translation2d(
-                Units.inchesToMeters(-11.5),
-                Units.inchesToMeters(-11.5)
-            )
-        );
+        // //From MK3 Swerve file
+        //  public static SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
+        //     new Translation2d(
+        //         Units.inchesToMeters(11.5),
+        //         Units.inchesToMeters(11.5)
+        //     ),
+        //     new Translation2d(
+        //         Units.inchesToMeters(11.5),
+        //         Units.inchesToMeters(-11.5)
+        //     ),
+        //     new Translation2d(
+        //         Units.inchesToMeters(-11.5),
+        //         Units.inchesToMeters(11.5)
+        //     ),
+        //     new Translation2d(
+        //         Units.inchesToMeters(-11.5),
+        //         Units.inchesToMeters(-11.5)
+        //     )
+        // );
 
 
         public static final class DriveModulePIDValues
