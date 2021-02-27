@@ -165,7 +165,9 @@ public class SwerveModule
 
         double feetPerSecond = Units.metersToFeet(state.speedMetersPerSecond);
         
-        m_driverPIDController.setReference(feetPerSecond / Constants.kMaxSpeed, ControlType.kVoltage);
+        m_driverPIDController.setReference(feetPerSecond / SwerveDriveModuleConstants.kMaxSpeed, ControlType.kVoltage);
+
+     
 
         // // Calculate the drive output from the drive PID controller.
         // final var driveOutput = m_driverPIDController.calculate(m_driveEncoder.getVelocity(), state.speedMetersPerSecond);

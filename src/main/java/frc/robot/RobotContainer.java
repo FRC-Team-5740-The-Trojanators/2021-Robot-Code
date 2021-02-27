@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.Constants.HIDConstants;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.SwerveDriveCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.SwerveModule;
@@ -29,8 +30,9 @@ public class RobotContainer
 
     private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
     
-    
     private final DriveSubsystem m_robotDrive = new DriveSubsystem();
+
+    //private final SwerveModule m_Module = new SwerveModule();
 
     // The driver's controller
     XboxController m_driverController = new XboxController(HIDConstants.k_DriverControllerPort);
@@ -40,9 +42,10 @@ public class RobotContainer
     {
         // Configure the button bindings
         configureButtonBindings();
-
-        m_robotDrive.setDefaultCommand(getSwerveDriveCommand());
+ 
+        m_robotDrive.setDefaultCommand(new SwerveDriveCommand(m_robotDrive, m_driverController));
         ShuffleboardTab tab = Shuffleboard.getTab("Swerve Drive Tuning");
+
     }
 
     /**
@@ -55,18 +58,18 @@ public class RobotContainer
     {
     }
 
+   
 
-
-    public Command getSwerveDriveCommand()
-    {
-        return new RunCommand(
-            () ->
-                m_robotDrive.drive(
-                    m_driverController.getX(GenericHID.Hand.kLeft),
-                    m_driverController.getY(GenericHID.Hand.kLeft),
-                    m_driverController.getX(GenericHID.Hand.kRight),
-                    false), m_robotDrive);
-    }
+    // public Command getSwerveDriveCommand()
+    // {
+    //     return new RunCommand(
+    //         () ->
+    //             m_robotDrive.drive(
+    //                 m_driverController.getX(GenericHID.Hand.kLeft),
+    //                 m_driverController.getY(GenericHID.Hand.kLeft),
+    //                 m_driverController.getX(GenericHID.Hand.kRight),
+    //                 false), m_robotDrive);
+    // }
 
     /**
      * Use this to pass the autonomous command to the main {@link Robot} class.

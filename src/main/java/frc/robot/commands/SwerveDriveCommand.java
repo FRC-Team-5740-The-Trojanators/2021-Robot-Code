@@ -34,14 +34,14 @@ public void execute() {
   // negative values when we push forward.
   final var xSpeed =
     xspeedLimiter.calculate(controller.getY(GenericHID.Hand.kLeft))
-      * DriveSubsystem.kMaxSpeed;
+      * SwerveDriveModuleConstants.kMaxSpeed;
 
   // Get the y speed or sideways/strafe speed. We are inverting this because
   // we want a positive value when we pull to the left. Xbox controllers
   // return positive values when you pull to the right by default.
   final var ySpeed =
     yspeedLimiter.calculate(controller.getX(GenericHID.Hand.kLeft))
-      * DriveSubsystem.SwerveDriveModuleConstants.kMaxSpeed;
+      * SwerveDriveModuleConstants.kMaxSpeed;
 
   // Get the rate of angular rotation. We are inverting this because we want a
   // positive value when we pull to the left (remember, CCW is positive in
@@ -49,7 +49,7 @@ public void execute() {
   // the right by default.
   final var rot =
     -rotLimiter.calculate(controller.getX(GenericHID.Hand.kRight))
-      * DriveSubsystem.kMaxAngularSpeed;
+      * SwerveDriveModuleConstants.kMaxAngularSpeed;
 
   boolean calibrate = controller.getBumper(GenericHID.Hand.kLeft);
 

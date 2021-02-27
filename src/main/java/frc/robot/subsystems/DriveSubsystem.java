@@ -5,7 +5,6 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import com.analog.adis16470.frc.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
@@ -188,494 +187,523 @@ public class DriveSubsystem extends SubsystemBase
         // 1 = m_LeftFrontModule   2 = m_RightFrontModule
         // 3 = m_LeftRearModule    4 = m_RightRearModule
         moduleSel_Drive_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("Select Drive Swerve Module", 1).getEntry();
-   
+    }
 
+        private SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
+            new Translation2d(
+              Units.inchesToMeters(11.5),
+              Units.inchesToMeters(11.5)
+            ),
+            new Translation2d(
+              Units.inchesToMeters(11.5),
+              Units.inchesToMeters(-11.5)
+            ),
+            new Translation2d(
+              Units.inchesToMeters(-11.5),
+              Units.inchesToMeters(11.5)
+            ),
+            new Translation2d(
+              Units.inchesToMeters(-11.5),
+              Units.inchesToMeters(-11.5)
+            )
+          );
+        
+      
 
-        private SwerveDriveModuleConstants[] modules = new SwerveDriveModuleConstants[] {
-
-            new SwerveDriveModuleConstants(new CANSparkMax(CANBusIDs.k_LeftFront_DriveMotor, MotorType.kBrushless), new CANSparkMax(CANBusIDs.k_LeftFront_SteeringMotor, MotorType.kBrushless), new CANCoder(CANBusIDs.frontLeftCANCoderId), Rotation2d.fromDegrees(frontLeftOffset)), // Front Left
-            new SwerveDriveModuleConstants(new CANSparkMax(CANBusIDs.k_RightFront_DriveMotor, MotorType.kBrushless), new CANSparkMax(CANBusIDs.k_RightFront_SteeringMotor, MotorType.kBrushless), new CANCoder(CANBusIDs.frontRightCANCoderId), Rotation2d.fromDegrees(frontRightOffset)), // Front Right
-            new SwerveDriveModuleConstants(new CANSparkMax(CANBusIDs.k_LeftRear_DriveMotor, MotorType.kBrushless), new CANSparkMax(CANBusIDs.k_LeftRear_SteeringMotor, MotorType.kBrushless), new CANCoder(CANBusIDs.backLeftCANCoderId), Rotation2d.fromDegrees(backLeftOffset)), // Back Left
-            new SwerveDriveModuleConstants(new CANSparkMax(CANBusIDs.k_RightRear_DriveMotor, MotorType.kBrushless), new CANSparkMax(CANBusIDs.k_RightRear_SteeringMotor, MotorType.kBrushless), new CANCoder(CANBusIDs.backRightCANCoderId), Rotation2d.fromDegrees(backRightOffset)); //Back Right
-         } 
+        private SwerveModule[] modules = new SwerveModule[]{
+            new SwerveModule(new CANSparkMax(CANBusIDs.k_LeftFront_DriveMotor, MotorType.kBrushless), new CANSparkMax(CANBusIDs.k_LeftFront_SteeringMotor, MotorType.kBrushless), new CANCoder(CANBusIDs.frontLeftCANCoderId), Rotation2d.fromDegrees(SwerveDriveModuleConstants.frontLeftOffset)), // Front Left
+            new SwerveModule(new CANSparkMax(CANBusIDs.k_RightFront_DriveMotor, MotorType.kBrushless), new CANSparkMax(CANBusIDs.k_RightFront_SteeringMotor, MotorType.kBrushless), new CANCoder(CANBusIDs.frontRightCANCoderId), Rotation2d.fromDegrees(SwerveDriveModuleConstants.frontRightOffset)), // Front Right
+            new SwerveModule(new CANSparkMax(CANBusIDs.k_LeftRear_DriveMotor, MotorType.kBrushless), new CANSparkMax(CANBusIDs.k_LeftRear_SteeringMotor, MotorType.kBrushless), new CANCoder(CANBusIDs.backLeftCANCoderId), Rotation2d.fromDegrees(SwerveDriveModuleConstants.backLeftOffset)), // Back Left
+            new SwerveModule(new CANSparkMax(CANBusIDs.k_RightRear_DriveMotor, MotorType.kBrushless), new CANSparkMax(CANBusIDs.k_RightRear_SteeringMotor, MotorType.kBrushless), new CANCoder(CANBusIDs.backRightCANCoderId), Rotation2d.fromDegrees(SwerveDriveModuleConstants.backRightOffset)) //Back Right
+        };
         
 
           public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative, boolean calibrateGyro) {
     
             if(calibrateGyro){
-              gyro.reset(); //recalibrates gyro offset
+                m_imu.reset(); //recalibrates gyro offset
             }
         
             SwerveModuleState[] states =
-              kinematics.toSwerveModuleStates(
+            SwerveDriveModuleConstants.kinematics.toSwerveModuleStates(
                 fieldRelative
-                  ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, Rotation2d.fromDegrees(-gyro.getAngle()))
+                  ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, Rotation2d.fromDegrees(-m_imu.getAngle()))
                   : new ChassisSpeeds(xSpeed, ySpeed, rot));
-            SwerveDriveKinematics.normalizeWheelSpeeds(states, kMaxSpeed);
+            SwerveDriveKinematics.normalizeWheelSpeeds(states, SwerveDriveModuleConstants.kMaxSpeed);
             for (int i = 0; i < states.length; i++) {
-              SwerveModuleMK3 module = modules[i];
+              SwerveModule module = modules[i];
               SwerveModuleState state = states[i];
               SmartDashboard.putNumber(String.valueOf(i) + "GET RAW ANGLE", module.getRawAngle());
               SmartDashboard.putNumber(String.valueOf(i) + "GET SPEED", state.speedMetersPerSecond);
               //below is a line to comment out from step 5
               module.setDesiredState(state);
-              SmartDashboard.putNumber("gyro Angle", gyro.getAngle());
+              SmartDashboard.putNumber("gyro Angle", m_imu.getAngle());
             }
 
     }
-
     @Override
-    public void periodic()
-    {
-        MotorControlsValuesUpdate();
-
-        // Update the odeometry in the periodic block
-        // (Please provide the states in the same order in which you instantiated your 
-        // SwerveDriveKinematics.)
-       m_odometry.update(new Rotation2d(getHeading()),
-            m_LeftFrontModule.getState(),
-            m_RightFrontModule.getState(),
-            m_LeftRearModule.getState(),
-            m_RightRearModule.getState());
-
-    //    m_Odometry_TEMP.update(new Rotation2d(0.0), m_LeftFrontModule.getState());
-
+    public void periodic() {
+      // This method will be called once per scheduler run
+    }
+  
+    @Override
+    public void simulationPeriodic() {
+      // This method will be called once per scheduler run during simulation
     }
 
-    public void MotorControlsValuesUpdate()
-    {
-        // read PID coefficients from SmartDashboard
-        double local_kP_Steer = kP_Steer_widget.getDouble(0);
-        double local_kI_Steer = kI_Steer_widget.getDouble(0);
-        double local_kD_Steer = kD_Steer_widget.getDouble(0);
-        double local_kIz_Steer = kIz_Steer_widget.getDouble(0);
-        double local_kFF_Steer = kFF_Steer_widget.getDouble(0);
+    //Everything after this was not used in the example file
+//     @Override
+//     public void periodic()
+//     {
+//         MotorControlsValuesUpdate();
 
-        double local_kMaxOutput_Steer = kMaxOutput_Steer_widget.getDouble(0);
-        double local_kMinOutput_Steer = kMinOutput_Steer_widget.getDouble(0);
+//         // Update the odeometry in the periodic block
+//         // (Please provide the states in the same order in which you instantiated your 
+//         // SwerveDriveKinematics.)
+//        m_odometry.update(new Rotation2d(getHeading()),
+//             m_LeftFrontModule.getState(),
+//             m_RightFrontModule.getState(),
+//             m_LeftRearModule.getState(),
+//             m_RightRearModule.getState());
 
-        double local_maxVel_Steer = maxVel_Steer_widget.getDouble(0);
-        double local_minVel_Steer = minVel_Steer_widget.getDouble(0);
-        double local_maxAcc_Steer = maxAcc_Steer_widget.getDouble(0);
+//     //    m_Odometry_TEMP.update(new Rotation2d(0.0), m_LeftFrontModule.getState());
 
-        double local_allowedErr_Steer = allowedErr_Steer_widget.getDouble(0);
+//     }
 
-        double local_kP_Drive = kP_Drive_widget.getDouble(0);
-        double local_kI_Drive = kI_Drive_widget.getDouble(0);
-        double local_kD_Drive = kD_Drive_widget.getDouble(0);
-        double local_kIz_Drive = kIz_Drive_widget.getDouble(0);
-        double local_kFF_Drive = kFF_Drive_widget.getDouble(0);
+//     public void MotorControlsValuesUpdate()
+//     {
+//         // read PID coefficients from SmartDashboard
+//         double local_kP_Steer = kP_Steer_widget.getDouble(0);
+//         double local_kI_Steer = kI_Steer_widget.getDouble(0);
+//         double local_kD_Steer = kD_Steer_widget.getDouble(0);
+//         double local_kIz_Steer = kIz_Steer_widget.getDouble(0);
+//         double local_kFF_Steer = kFF_Steer_widget.getDouble(0);
 
-        double local_kMaxOutput_Drive = kMaxOutput_Drive_widget.getDouble(0);
-        double local_kMinOutput_Drive = kMinOutput_Drive_widget.getDouble(0);
+//         double local_kMaxOutput_Steer = kMaxOutput_Steer_widget.getDouble(0);
+//         double local_kMinOutput_Steer = kMinOutput_Steer_widget.getDouble(0);
 
-        double local_maxVel_Drive = maxVel_Drive_widget.getDouble(0);
-        double local_minVel_Drive = minVel_Drive_widget.getDouble(0);
-        double local_maxAcc_Drive = maxAcc_Drive_widget.getDouble(0);
+//         double local_maxVel_Steer = maxVel_Steer_widget.getDouble(0);
+//         double local_minVel_Steer = minVel_Steer_widget.getDouble(0);
+//         double local_maxAcc_Steer = maxAcc_Steer_widget.getDouble(0);
 
-        double local_allowedErr_Drive = allowedErr_Drive_widget.getDouble(0);
+//         double local_allowedErr_Steer = allowedErr_Steer_widget.getDouble(0);
+
+//         double local_kP_Drive = kP_Drive_widget.getDouble(0);
+//         double local_kI_Drive = kI_Drive_widget.getDouble(0);
+//         double local_kD_Drive = kD_Drive_widget.getDouble(0);
+//         double local_kIz_Drive = kIz_Drive_widget.getDouble(0);
+//         double local_kFF_Drive = kFF_Drive_widget.getDouble(0);
+
+//         double local_kMaxOutput_Drive = kMaxOutput_Drive_widget.getDouble(0);
+//         double local_kMinOutput_Drive = kMinOutput_Drive_widget.getDouble(0);
+
+//         double local_maxVel_Drive = maxVel_Drive_widget.getDouble(0);
+//         double local_minVel_Drive = minVel_Drive_widget.getDouble(0);
+//         double local_maxAcc_Drive = maxAcc_Drive_widget.getDouble(0);
+
+//         double local_allowedErr_Drive = allowedErr_Drive_widget.getDouble(0);
 
 
 
-        // if PID coefficients on SmartDashboard have changed, write new values to controller
-        if (local_kP_Steer != kP_Steer) 
-        {  
-            m_LeftFrontModule.setSteerMotor_P(local_kP_Steer);
-            m_RightFrontModule.setSteerMotor_P(local_kP_Steer);
-            m_LeftRearModule.setSteerMotor_P(local_kP_Steer);
-            m_RightRearModule.setSteerMotor_P(local_kP_Steer);
+//         // if PID coefficients on SmartDashboard have changed, write new values to controller
+//         if (local_kP_Steer != kP_Steer) 
+//         {  
+//             m_LeftFrontModule.setSteerMotor_P(local_kP_Steer);
+//             m_RightFrontModule.setSteerMotor_P(local_kP_Steer);
+//             m_LeftRearModule.setSteerMotor_P(local_kP_Steer);
+//             m_RightRearModule.setSteerMotor_P(local_kP_Steer);
 
-            kP_Steer = local_kP_Steer; 
-        }
+//             kP_Steer = local_kP_Steer; 
+//         }
 
-        if (local_kP_Drive != kP_Drive)
-        {
-            m_LeftFrontModule.setDriveMotor_P(local_kP_Drive);
-            m_RightFrontModule.setDriveMotor_P(local_kP_Drive);
-            m_LeftRearModule.setDriveMotor_P(local_kP_Drive);
-            m_RightRearModule.setDriveMotor_P(local_kP_Drive);
+//         if (local_kP_Drive != kP_Drive)
+//         {
+//             m_LeftFrontModule.setDriveMotor_P(local_kP_Drive);
+//             m_RightFrontModule.setDriveMotor_P(local_kP_Drive);
+//             m_LeftRearModule.setDriveMotor_P(local_kP_Drive);
+//             m_RightRearModule.setDriveMotor_P(local_kP_Drive);
 
-            kP_Drive = local_kP_Drive;
-        }
+//             kP_Drive = local_kP_Drive;
+//         }
 
-        if (local_kI_Steer != kI_Steer) 
-        {  
-            m_LeftFrontModule.setSteerMotor_I(local_kI_Steer);
-            m_RightFrontModule.setSteerMotor_I(local_kI_Steer);
-            m_LeftRearModule.setSteerMotor_I(local_kI_Steer);
-            m_RightRearModule.setSteerMotor_I(local_kI_Steer);
+//         if (local_kI_Steer != kI_Steer) 
+//         {  
+//             m_LeftFrontModule.setSteerMotor_I(local_kI_Steer);
+//             m_RightFrontModule.setSteerMotor_I(local_kI_Steer);
+//             m_LeftRearModule.setSteerMotor_I(local_kI_Steer);
+//             m_RightRearModule.setSteerMotor_I(local_kI_Steer);
 
-            kI_Steer = local_kI_Steer; 
-        }
+//             kI_Steer = local_kI_Steer; 
+//         }
 
-        if (local_kI_Drive != kI_Drive)
-        {
-            m_LeftFrontModule.setDriveMotor_I(local_kI_Drive);
-            m_RightFrontModule.setDriveMotor_I(local_kI_Drive);
-            m_LeftRearModule.setDriveMotor_I(local_kI_Drive);
-            m_RightRearModule.setDriveMotor_I(local_kI_Drive);
+//         if (local_kI_Drive != kI_Drive)
+//         {
+//             m_LeftFrontModule.setDriveMotor_I(local_kI_Drive);
+//             m_RightFrontModule.setDriveMotor_I(local_kI_Drive);
+//             m_LeftRearModule.setDriveMotor_I(local_kI_Drive);
+//             m_RightRearModule.setDriveMotor_I(local_kI_Drive);
 
-            kI_Drive = local_kI_Drive;
-        }
+//             kI_Drive = local_kI_Drive;
+//         }
 
-        if (local_kD_Steer != kD_Steer) 
-        {  
-            m_LeftFrontModule.setSteerMotor_D(local_kD_Steer);
-            m_RightFrontModule.setSteerMotor_D(local_kD_Steer);
-            m_LeftRearModule.setSteerMotor_D(local_kD_Steer);
-            m_RightRearModule.setSteerMotor_D(local_kD_Steer);
+//         if (local_kD_Steer != kD_Steer) 
+//         {  
+//             m_LeftFrontModule.setSteerMotor_D(local_kD_Steer);
+//             m_RightFrontModule.setSteerMotor_D(local_kD_Steer);
+//             m_LeftRearModule.setSteerMotor_D(local_kD_Steer);
+//             m_RightRearModule.setSteerMotor_D(local_kD_Steer);
 
-            kD_Steer = local_kD_Steer; 
-        }
+//             kD_Steer = local_kD_Steer; 
+//         }
 
-        if (local_kD_Drive != kD_Drive)
-        {
-            m_LeftFrontModule.setDriveMotor_D(local_kD_Drive);
-            m_RightFrontModule.setDriveMotor_D(local_kD_Drive);
-            m_LeftRearModule.setDriveMotor_D(local_kD_Drive);
-            m_RightRearModule.setDriveMotor_D(local_kD_Drive);
+//         if (local_kD_Drive != kD_Drive)
+//         {
+//             m_LeftFrontModule.setDriveMotor_D(local_kD_Drive);
+//             m_RightFrontModule.setDriveMotor_D(local_kD_Drive);
+//             m_LeftRearModule.setDriveMotor_D(local_kD_Drive);
+//             m_RightRearModule.setDriveMotor_D(local_kD_Drive);
 
-            kD_Drive = local_kD_Drive;
-        }
+//             kD_Drive = local_kD_Drive;
+//         }
 
-        if (local_kIz_Steer != kIz_Steer) 
-        {  
-            m_LeftFrontModule.setSteerMotor_Iz(local_kIz_Steer);
-            m_RightFrontModule.setSteerMotor_Iz(local_kIz_Steer);
-            m_LeftRearModule.setSteerMotor_Iz(local_kIz_Steer);
-            m_RightRearModule.setSteerMotor_Iz(local_kIz_Steer);
+//         if (local_kIz_Steer != kIz_Steer) 
+//         {  
+//             m_LeftFrontModule.setSteerMotor_Iz(local_kIz_Steer);
+//             m_RightFrontModule.setSteerMotor_Iz(local_kIz_Steer);
+//             m_LeftRearModule.setSteerMotor_Iz(local_kIz_Steer);
+//             m_RightRearModule.setSteerMotor_Iz(local_kIz_Steer);
 
-            kIz_Steer = local_kIz_Steer; 
-        }
+//             kIz_Steer = local_kIz_Steer; 
+//         }
 
-        if (local_kIz_Drive != kIz_Drive)
-        {
-            m_LeftFrontModule.setDriveMotor_Iz(local_kIz_Drive);
-            m_RightFrontModule.setDriveMotor_Iz(local_kIz_Drive);
-            m_LeftRearModule.setDriveMotor_Iz(local_kIz_Drive);
-            m_RightRearModule.setDriveMotor_Iz(local_kIz_Drive);
+//         if (local_kIz_Drive != kIz_Drive)
+//         {
+//             m_LeftFrontModule.setDriveMotor_Iz(local_kIz_Drive);
+//             m_RightFrontModule.setDriveMotor_Iz(local_kIz_Drive);
+//             m_LeftRearModule.setDriveMotor_Iz(local_kIz_Drive);
+//             m_RightRearModule.setDriveMotor_Iz(local_kIz_Drive);
 
-            kIz_Drive = local_kIz_Drive;
-        }
+//             kIz_Drive = local_kIz_Drive;
+//         }
 
-        if (local_kFF_Steer != kFF_Steer) 
-        {  
-            m_LeftFrontModule.setSteerMotor_FF(local_kFF_Steer);
-            m_RightFrontModule.setSteerMotor_FF(local_kFF_Steer);
-            m_LeftRearModule.setSteerMotor_FF(local_kFF_Steer);
-            m_RightRearModule.setSteerMotor_FF(local_kFF_Steer);
+//         if (local_kFF_Steer != kFF_Steer) 
+//         {  
+//             m_LeftFrontModule.setSteerMotor_FF(local_kFF_Steer);
+//             m_RightFrontModule.setSteerMotor_FF(local_kFF_Steer);
+//             m_LeftRearModule.setSteerMotor_FF(local_kFF_Steer);
+//             m_RightRearModule.setSteerMotor_FF(local_kFF_Steer);
 
-            kFF_Steer = local_kFF_Steer; 
-        }
+//             kFF_Steer = local_kFF_Steer; 
+//         }
 
-        if (local_kFF_Drive != kFF_Drive)
-        {
-            m_LeftFrontModule.setDriveMotor_FF(local_kFF_Drive);
-            m_RightFrontModule.setDriveMotor_FF(local_kFF_Drive);
-            m_LeftRearModule.setDriveMotor_FF(local_kFF_Drive);
-            m_RightRearModule.setDriveMotor_FF(local_kFF_Drive);
+//         if (local_kFF_Drive != kFF_Drive)
+//         {
+//             m_LeftFrontModule.setDriveMotor_FF(local_kFF_Drive);
+//             m_RightFrontModule.setDriveMotor_FF(local_kFF_Drive);
+//             m_LeftRearModule.setDriveMotor_FF(local_kFF_Drive);
+//             m_RightRearModule.setDriveMotor_FF(local_kFF_Drive);
 
-            kFF_Drive = local_kFF_Drive;
-        }
+//             kFF_Drive = local_kFF_Drive;
+//         }
 
-        if ( (local_kMinOutput_Steer != kMinOutput_Steer) || (local_kMaxOutput_Steer != kMaxOutput_Steer) ) 
-        {
-            m_LeftFrontModule.setSteerMotorOutputRange(local_kMinOutput_Steer, local_kMaxOutput_Steer);
-            m_RightFrontModule.setSteerMotorOutputRange(local_kMinOutput_Steer, local_kMaxOutput_Steer);
-            m_LeftRearModule.setSteerMotorOutputRange(local_kMinOutput_Steer, local_kMaxOutput_Steer);
-            m_RightRearModule.setSteerMotorOutputRange(local_kMinOutput_Steer, local_kMaxOutput_Steer);
+//         if ( (local_kMinOutput_Steer != kMinOutput_Steer) || (local_kMaxOutput_Steer != kMaxOutput_Steer) ) 
+//         {
+//             m_LeftFrontModule.setSteerMotorOutputRange(local_kMinOutput_Steer, local_kMaxOutput_Steer);
+//             m_RightFrontModule.setSteerMotorOutputRange(local_kMinOutput_Steer, local_kMaxOutput_Steer);
+//             m_LeftRearModule.setSteerMotorOutputRange(local_kMinOutput_Steer, local_kMaxOutput_Steer);
+//             m_RightRearModule.setSteerMotorOutputRange(local_kMinOutput_Steer, local_kMaxOutput_Steer);
          
-            kMinOutput_Steer = local_kMinOutput_Steer;
-            kMaxOutput_Steer = local_kMaxOutput_Steer; 
-        }
+//             kMinOutput_Steer = local_kMinOutput_Steer;
+//             kMaxOutput_Steer = local_kMaxOutput_Steer; 
+//         }
 
-        if ( (local_kMinOutput_Drive != kMinOutput_Drive) || (local_kMaxOutput_Drive != kMaxOutput_Drive) ) 
-        {
-            m_LeftFrontModule.setDriveMotorOutputRange(local_kMinOutput_Drive, local_kMaxOutput_Drive);
-            m_RightFrontModule.setDriveMotorOutputRange(local_kMinOutput_Drive, local_kMaxOutput_Drive);
-            m_LeftRearModule.setDriveMotorOutputRange(local_kMinOutput_Drive, local_kMaxOutput_Drive);
-            m_RightRearModule.setDriveMotorOutputRange(local_kMinOutput_Drive, local_kMaxOutput_Drive);
+//         if ( (local_kMinOutput_Drive != kMinOutput_Drive) || (local_kMaxOutput_Drive != kMaxOutput_Drive) ) 
+//         {
+//             m_LeftFrontModule.setDriveMotorOutputRange(local_kMinOutput_Drive, local_kMaxOutput_Drive);
+//             m_RightFrontModule.setDriveMotorOutputRange(local_kMinOutput_Drive, local_kMaxOutput_Drive);
+//             m_LeftRearModule.setDriveMotorOutputRange(local_kMinOutput_Drive, local_kMaxOutput_Drive);
+//             m_RightRearModule.setDriveMotorOutputRange(local_kMinOutput_Drive, local_kMaxOutput_Drive);
          
-            kMinOutput_Drive = local_kMinOutput_Drive;
-            kMaxOutput_Drive = local_kMaxOutput_Drive; 
-        }
+//             kMinOutput_Drive = local_kMinOutput_Drive;
+//             kMaxOutput_Drive = local_kMaxOutput_Drive; 
+//         }
         
-        if ((local_maxVel_Steer != maxVel_Steer)) 
-        {
-            m_LeftFrontModule.setSteerMotorSmartMaxVel(local_maxVel_Steer);
-            m_RightFrontModule.setSteerMotorSmartMaxVel(local_maxVel_Steer);
-            m_LeftRearModule.setSteerMotorSmartMaxVel(local_maxVel_Steer);
-            m_RightRearModule.setSteerMotorSmartMaxVel(local_maxVel_Steer);
+//         if ((local_maxVel_Steer != maxVel_Steer)) 
+//         {
+//             m_LeftFrontModule.setSteerMotorSmartMaxVel(local_maxVel_Steer);
+//             m_RightFrontModule.setSteerMotorSmartMaxVel(local_maxVel_Steer);
+//             m_LeftRearModule.setSteerMotorSmartMaxVel(local_maxVel_Steer);
+//             m_RightRearModule.setSteerMotorSmartMaxVel(local_maxVel_Steer);
             
-            maxVel_Steer = local_maxVel_Steer; 
-        }
+//             maxVel_Steer = local_maxVel_Steer; 
+//         }
 
-        if ((local_maxVel_Drive != maxVel_Drive)) 
-        {
-            m_LeftFrontModule.setDriveMotorSmartMaxVel(local_maxVel_Drive);
-            m_RightFrontModule.setDriveMotorSmartMaxVel(local_maxVel_Drive);
-            m_LeftRearModule.setDriveMotorSmartMaxVel(local_maxVel_Drive);
-            m_RightRearModule.setDriveMotorSmartMaxVel(local_maxVel_Drive);
+//         if ((local_maxVel_Drive != maxVel_Drive)) 
+//         {
+//             m_LeftFrontModule.setDriveMotorSmartMaxVel(local_maxVel_Drive);
+//             m_RightFrontModule.setDriveMotorSmartMaxVel(local_maxVel_Drive);
+//             m_LeftRearModule.setDriveMotorSmartMaxVel(local_maxVel_Drive);
+//             m_RightRearModule.setDriveMotorSmartMaxVel(local_maxVel_Drive);
             
-            maxVel_Drive = local_maxVel_Drive; 
-        }
+//             maxVel_Drive = local_maxVel_Drive; 
+//         }
 
-        if ((local_minVel_Steer != minVel_Steer)) 
-        {
-            m_LeftFrontModule.setSteerMotorSmartMinVel(local_minVel_Steer);
-            m_RightFrontModule.setSteerMotorSmartMinVel(local_minVel_Steer);
-            m_LeftRearModule.setSteerMotorSmartMinVel(local_minVel_Steer);
-            m_RightRearModule.setSteerMotorSmartMinVel(local_minVel_Steer);
+//         if ((local_minVel_Steer != minVel_Steer)) 
+//         {
+//             m_LeftFrontModule.setSteerMotorSmartMinVel(local_minVel_Steer);
+//             m_RightFrontModule.setSteerMotorSmartMinVel(local_minVel_Steer);
+//             m_LeftRearModule.setSteerMotorSmartMinVel(local_minVel_Steer);
+//             m_RightRearModule.setSteerMotorSmartMinVel(local_minVel_Steer);
             
-            minVel_Steer = local_minVel_Steer; 
-        }
+//             minVel_Steer = local_minVel_Steer; 
+//         }
 
-        if ((local_minVel_Drive != minVel_Drive)) 
-        {
-            m_LeftFrontModule.setDriveMotorSmartMinVel(local_minVel_Drive);
-            m_RightFrontModule.setDriveMotorSmartMinVel(local_minVel_Drive);
-            m_LeftRearModule.setDriveMotorSmartMinVel(local_minVel_Drive);
-            m_RightRearModule.setDriveMotorSmartMinVel(local_minVel_Drive);
+//         if ((local_minVel_Drive != minVel_Drive)) 
+//         {
+//             m_LeftFrontModule.setDriveMotorSmartMinVel(local_minVel_Drive);
+//             m_RightFrontModule.setDriveMotorSmartMinVel(local_minVel_Drive);
+//             m_LeftRearModule.setDriveMotorSmartMinVel(local_minVel_Drive);
+//             m_RightRearModule.setDriveMotorSmartMinVel(local_minVel_Drive);
             
-            minVel_Drive = local_minVel_Drive; 
-        }
+//             minVel_Drive = local_minVel_Drive; 
+//         }
         
 
-        if ((local_maxAcc_Steer != maxAcc_Steer)) 
-        {
-            m_LeftFrontModule.setSteerMotorMaxAcc(local_maxAcc_Steer);
-            m_RightFrontModule.setSteerMotorMaxAcc(local_maxAcc_Steer);
-            m_LeftRearModule.setSteerMotorMaxAcc(local_maxAcc_Steer);
-            m_RightRearModule.setSteerMotorMaxAcc(local_maxAcc_Steer);
+//         if ((local_maxAcc_Steer != maxAcc_Steer)) 
+//         {
+//             m_LeftFrontModule.setSteerMotorMaxAcc(local_maxAcc_Steer);
+//             m_RightFrontModule.setSteerMotorMaxAcc(local_maxAcc_Steer);
+//             m_LeftRearModule.setSteerMotorMaxAcc(local_maxAcc_Steer);
+//             m_RightRearModule.setSteerMotorMaxAcc(local_maxAcc_Steer);
             
-            maxAcc_Steer = local_maxAcc_Steer; 
-        } 
+//             maxAcc_Steer = local_maxAcc_Steer; 
+//         } 
         
-        if ((local_maxAcc_Drive != maxAcc_Drive)) 
-        {
-            m_LeftFrontModule.setDriveMotorMaxAcc(local_maxAcc_Drive);
-            m_RightFrontModule.setDriveMotorMaxAcc(local_maxAcc_Drive);
-            m_LeftRearModule.setDriveMotorMaxAcc(local_maxAcc_Drive);
-            m_RightRearModule.setDriveMotorMaxAcc(local_maxAcc_Drive);
+//         if ((local_maxAcc_Drive != maxAcc_Drive)) 
+//         {
+//             m_LeftFrontModule.setDriveMotorMaxAcc(local_maxAcc_Drive);
+//             m_RightFrontModule.setDriveMotorMaxAcc(local_maxAcc_Drive);
+//             m_LeftRearModule.setDriveMotorMaxAcc(local_maxAcc_Drive);
+//             m_RightRearModule.setDriveMotorMaxAcc(local_maxAcc_Drive);
             
-            maxAcc_Drive = local_maxAcc_Drive; 
-        }
+//             maxAcc_Drive = local_maxAcc_Drive; 
+//         }
         
-        if ((local_allowedErr_Steer != allowedErr_Steer)) 
-        {
-            m_LeftFrontModule.setSteerMotorAllowedErr(local_allowedErr_Steer);
-            m_RightFrontModule.setSteerMotorAllowedErr(local_allowedErr_Steer);
-            m_LeftRearModule.setSteerMotorAllowedErr(local_allowedErr_Steer);
-            m_RightRearModule.setSteerMotorAllowedErr(local_allowedErr_Steer);
+//         if ((local_allowedErr_Steer != allowedErr_Steer)) 
+//         {
+//             m_LeftFrontModule.setSteerMotorAllowedErr(local_allowedErr_Steer);
+//             m_RightFrontModule.setSteerMotorAllowedErr(local_allowedErr_Steer);
+//             m_LeftRearModule.setSteerMotorAllowedErr(local_allowedErr_Steer);
+//             m_RightRearModule.setSteerMotorAllowedErr(local_allowedErr_Steer);
             
-            allowedErr_Steer = local_allowedErr_Steer; 
-        } 
+//             allowedErr_Steer = local_allowedErr_Steer; 
+//         } 
         
-        if ((local_allowedErr_Drive != allowedErr_Drive)) 
-        {
-            m_LeftFrontModule.setDriveMotorAllowedErr(local_allowedErr_Drive);
-            m_RightFrontModule.setDriveMotorAllowedErr(local_allowedErr_Drive);
-            m_LeftRearModule.setDriveMotorAllowedErr(local_allowedErr_Drive);
-            m_RightRearModule.setDriveMotorAllowedErr(local_allowedErr_Drive);
+//         if ((local_allowedErr_Drive != allowedErr_Drive)) 
+//         {
+//             m_LeftFrontModule.setDriveMotorAllowedErr(local_allowedErr_Drive);
+//             m_RightFrontModule.setDriveMotorAllowedErr(local_allowedErr_Drive);
+//             m_LeftRearModule.setDriveMotorAllowedErr(local_allowedErr_Drive);
+//             m_RightRearModule.setDriveMotorAllowedErr(local_allowedErr_Drive);
             
-            allowedErr_Drive = local_allowedErr_Drive; 
-        }
+//             allowedErr_Drive = local_allowedErr_Drive; 
+//         }
 
 
-        // Mapping for number selector below
-        // // 1 = m_LeftFrontModule   2 = m_RightFrontModule
-        // // 3 = m_LeftRearModule    4 = m_RightRearModule
-        // Shuffleboard.getTab("Swerve Drive Tuning").add("Select Steer Swerve Module", 1);
+//         // Mapping for number selector below
+//         // // 1 = m_LeftFrontModule   2 = m_RightFrontModule
+//         // // 3 = m_LeftRearModule    4 = m_RightRearModule
+//         // Shuffleboard.getTab("Swerve Drive Tuning").add("Select Steer Swerve Module", 1);
 
-        double setPoint_steer, processVariable_steer, appliedOutput_steer;
-        boolean mode = motorMode_Steer_widget.getBoolean(false);
+//         double setPoint_steer, processVariable_steer, appliedOutput_steer;
+//         boolean mode = motorMode_Steer_widget.getBoolean(false);
         
-        if (mode) // true means use Velocity mode 
-        {
-            setPoint_steer = setVel_Steer_widget.getDouble(0);
-            m_LeftFrontModule.setSteerMotorVelocityMode(setPoint_steer);
-            m_RightFrontModule.setSteerMotorVelocityMode(setPoint_steer);
-            m_LeftRearModule.setSteerMotorVelocityMode(setPoint_steer);
-            m_RightRearModule.setSteerMotorVelocityMode(setPoint_steer);
+//         if (mode) // true means use Velocity mode 
+//         {
+//             setPoint_steer = setVel_Steer_widget.getDouble(0);
+//             m_LeftFrontModule.setSteerMotorVelocityMode(setPoint_steer);
+//             m_RightFrontModule.setSteerMotorVelocityMode(setPoint_steer);
+//             m_LeftRearModule.setSteerMotorVelocityMode(setPoint_steer);
+//             m_RightRearModule.setSteerMotorVelocityMode(setPoint_steer);
 
-            double module = moduleSel_Steer_widget.getDouble(1);
-            switch ((int)module)
-            {
-                case 1: processVariable_steer = m_LeftFrontModule.getSteeringVelocity();
-                        appliedOutput_steer = m_LeftFrontModule.getSteerAppliedOutput();
-                        break;
+//             double module = moduleSel_Steer_widget.getDouble(1);
+//             switch ((int)module)
+//             {
+//                 case 1: processVariable_steer = m_LeftFrontModule.getSteeringVelocity();
+//                         appliedOutput_steer = m_LeftFrontModule.getSteerAppliedOutput();
+//                         break;
 
-                case 2: processVariable_steer = m_RightFrontModule.getSteeringVelocity();
-                        appliedOutput_steer = m_RightFrontModule.getSteerAppliedOutput();
-                        break;
+//                 case 2: processVariable_steer = m_RightFrontModule.getSteeringVelocity();
+//                         appliedOutput_steer = m_RightFrontModule.getSteerAppliedOutput();
+//                         break;
 
-                case 3: processVariable_steer = m_LeftRearModule.getSteeringVelocity();
-                        appliedOutput_steer = m_LeftRearModule.getSteerAppliedOutput();
-                        break;
+//                 case 3: processVariable_steer = m_LeftRearModule.getSteeringVelocity();
+//                         appliedOutput_steer = m_LeftRearModule.getSteerAppliedOutput();
+//                         break;
 
-                case 4: processVariable_steer = m_RightRearModule.getSteeringVelocity();
-                        appliedOutput_steer = m_RightRearModule.getSteerAppliedOutput();
-                        break;
+//                 case 4: processVariable_steer = m_RightRearModule.getSteeringVelocity();
+//                         appliedOutput_steer = m_RightRearModule.getSteerAppliedOutput();
+//                         break;
 
-                default:processVariable_steer = m_LeftFrontModule.getSteeringVelocity();
-                        appliedOutput_steer = m_LeftFrontModule.getSteerAppliedOutput();
-                        break;
-            }
-        } 
-        else // use SmartMotion mode
-        {
-            setPoint_steer = setPos_Steer_widget.getDouble(0);
-            /**
-             * As with other PID modes, Smart Motion is set by calling the
-             * setReference method on an existing pid object and setting
-             * the control type to kSmartMotion
-             */
-            m_LeftFrontModule.setSteerMotorSmartMotionMode(setPoint_steer);
-            m_RightFrontModule.setSteerMotorSmartMotionMode(setPoint_steer);
-            m_LeftRearModule.setSteerMotorSmartMotionMode(setPoint_steer);
-            m_RightRearModule.setSteerMotorSmartMotionMode(setPoint_steer);
+//                 default:processVariable_steer = m_LeftFrontModule.getSteeringVelocity();
+//                         appliedOutput_steer = m_LeftFrontModule.getSteerAppliedOutput();
+//                         break;
+//             }
+//         } 
+//         else // use SmartMotion mode
+//         {
+//             setPoint_steer = setPos_Steer_widget.getDouble(0);
+//             /**
+//              * As with other PID modes, Smart Motion is set by calling the
+//              * setReference method on an existing pid object and setting
+//              * the control type to kSmartMotion
+//              */
+//             m_LeftFrontModule.setSteerMotorSmartMotionMode(setPoint_steer);
+//             m_RightFrontModule.setSteerMotorSmartMotionMode(setPoint_steer);
+//             m_LeftRearModule.setSteerMotorSmartMotionMode(setPoint_steer);
+//             m_RightRearModule.setSteerMotorSmartMotionMode(setPoint_steer);
 
-            double module = moduleSel_Steer_widget.getDouble(1);
-            switch ((int)module)
-            {
-                case 1: processVariable_steer = m_LeftFrontModule.getSteeringPosition();
-                        appliedOutput_steer = m_LeftFrontModule.getSteerAppliedOutput();
-                        break;
+//             double module = moduleSel_Steer_widget.getDouble(1);
+//             switch ((int)module)
+//             {
+//                 case 1: processVariable_steer = m_LeftFrontModule.getSteeringPosition();
+//                         appliedOutput_steer = m_LeftFrontModule.getSteerAppliedOutput();
+//                         break;
 
-                case 2: processVariable_steer = m_RightFrontModule.getSteeringPosition();
-                        appliedOutput_steer = m_RightFrontModule.getSteerAppliedOutput();
-                        break;
+//                 case 2: processVariable_steer = m_RightFrontModule.getSteeringPosition();
+//                         appliedOutput_steer = m_RightFrontModule.getSteerAppliedOutput();
+//                         break;
 
-                case 3: processVariable_steer = m_LeftRearModule.getSteeringPosition();
-                        appliedOutput_steer = m_LeftRearModule.getSteerAppliedOutput();
-                        break;
+//                 case 3: processVariable_steer = m_LeftRearModule.getSteeringPosition();
+//                         appliedOutput_steer = m_LeftRearModule.getSteerAppliedOutput();
+//                         break;
 
-                case 4: processVariable_steer = m_RightRearModule.getSteeringPosition();
-                        appliedOutput_steer = m_RightRearModule.getSteerAppliedOutput();
-                        break;
+//                 case 4: processVariable_steer = m_RightRearModule.getSteeringPosition();
+//                         appliedOutput_steer = m_RightRearModule.getSteerAppliedOutput();
+//                         break;
 
-                default:processVariable_steer = m_LeftFrontModule.getSteeringPosition();
-                        appliedOutput_steer = m_LeftFrontModule.getSteerAppliedOutput();
-                        break;
-            }
-        }
+//                 default:processVariable_steer = m_LeftFrontModule.getSteeringPosition();
+//                         appliedOutput_steer = m_LeftFrontModule.getSteerAppliedOutput();
+//                         break;
+//             }
+//         }
         
-        setPos_Steer_widget.setDouble(setPoint_steer);
-        processVariable_steer_widget.setDouble(processVariable_steer);
-        appliedOutput_steer_widget.setDouble(appliedOutput_steer);
-    }
+//         setPos_Steer_widget.setDouble(setPoint_steer);
+//         processVariable_steer_widget.setDouble(processVariable_steer);
+//         appliedOutput_steer_widget.setDouble(appliedOutput_steer);
+//     }
 
 
 
     
-    /**
-     * Returns the currently-estimated pose of the robot.
-     *
-     * @return The pose.
-     */
-    // public Pose2d getPose()
-    // {
-    //    // return m_odometry.getPoseMeters();
-    // }
+//     /**
+//      * Returns the currently-estimated pose of the robot.
+//      *
+//      * @return The pose.
+//      */
+//     // public Pose2d getPose()
+//     // {
+//     //    // return m_odometry.getPoseMeters();
+//     // }
 
 
-    /**
-     * Resets the odometry to the specified pose.
-     *
-     * @param pose The pose to which to set the odometry.
-     */
-    public void resetOdometry(Pose2d pose)
-    {
-        m_odometry.resetPosition(pose, m_imu.getRotation2d());
-    }
+//     /**
+//      * Resets the odometry to the specified pose.
+//      *
+//      * @param pose The pose to which to set the odometry.
+//      */
+//     public void resetOdometry(Pose2d pose)
+//     {
+//         m_odometry.resetPosition(pose, m_imu.getRotation2d());
+//     }
 
 
-    /**
-     * Method to drive the robot using joystick info.
-     *
-     * @param xSpeed Speed of the robot in the x direction (forward).
-     * @param ySpeed Speed of the robot in the y direction (sideways).
-     * @param rot Angular rate of the robot.
-     * @param fieldRelative Whether the provided x and y speeds are relative to the field.
-     */
-   /* @SuppressWarnings("ParameterName")
-    public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative)
-    {
-       var swerveModuleStates =
-            SwerveDriveModuleConstants.kinematics.toSwerveModuleStates(
-               // fieldRelative
-                   // ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, m_gyro.getRotation2d())
-                    new ChassisSpeeds(xSpeed, ySpeed, rot));
+//     /**
+//      * Method to drive the robot using joystick info.
+//      *
+//      * @param xSpeed Speed of the robot in the x direction (forward).
+//      * @param ySpeed Speed of the robot in the y direction (sideways).
+//      * @param rot Angular rate of the robot.
+//      * @param fieldRelative Whether the provided x and y speeds are relative to the field.
+//      */
+//    /* @SuppressWarnings("ParameterName")
+//     public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative)
+//     {
+//        var swerveModuleStates =
+//             SwerveDriveModuleConstants.kinematics.toSwerveModuleStates(
+//                // fieldRelative
+//                    // ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, m_gyro.getRotation2d())
+//                     new ChassisSpeeds(xSpeed, ySpeed, rot));
         
-        SwerveDriveKinematics.normalizeWheelSpeeds(
-            swerveModuleStates, SwerveDriveModuleConstants.kMaxSpeed);
+//         SwerveDriveKinematics.normalizeWheelSpeeds(
+//             swerveModuleStates, SwerveDriveModuleConstants.kMaxSpeed);
 
-        m_LeftFrontModule.setDesiredState(swerveModuleStates[0]);
-        m_RightFrontModule.setDesiredState(swerveModuleStates[1]);
-        m_LeftRearModule.setDesiredState(swerveModuleStates[2]);
-        m_RightRearModule.setDesiredState(swerveModuleStates[3]);
-    }
-*/
+//         m_LeftFrontModule.setDesiredState(swerveModuleStates[0]);
+//         m_RightFrontModule.setDesiredState(swerveModuleStates[1]);
+//         m_LeftRearModule.setDesiredState(swerveModuleStates[2]);
+//         m_RightRearModule.setDesiredState(swerveModuleStates[3]);
+//     }
+// */
 
-    /**
-     * Sets the swerve ModuleStates.
-     *
-     * @param desiredStates The desired SwerveModule states.
-     */
-    public void setModuleStates(SwerveModuleState[] desiredStates)
-    {
-        SwerveDriveKinematics.normalizeWheelSpeeds(
-            desiredStates, SwerveDriveModuleConstants.kMaxSpeed);
+//     /**
+//      * Sets the swerve ModuleStates.
+//      *
+//      * @param desiredStates The desired SwerveModule states.
+//      */
+//     public void setModuleStates(SwerveModuleState[] desiredStates)
+//     {
+//         SwerveDriveKinematics.normalizeWheelSpeeds(
+//             desiredStates, SwerveDriveModuleConstants.kMaxSpeed);
 
-        m_LeftFrontModule.setDesiredState(desiredStates[0]);
-        m_RightFrontModule.setDesiredState(desiredStates[1]);
-        m_LeftRearModule.setDesiredState(desiredStates[2]);
-        m_RightRearModule.setDesiredState(desiredStates[3]);
-    }
+//         m_LeftFrontModule.setDesiredState(desiredStates[0]);
+//         m_RightFrontModule.setDesiredState(desiredStates[1]);
+//         m_LeftRearModule.setDesiredState(desiredStates[2]);
+//         m_RightRearModule.setDesiredState(desiredStates[3]);
+//     }
 
-    /** 
-     * Resets the drive encoders to currently read a position of 0. 
-     */
-    public void resetEncoders()
-    {
-        m_LeftFrontModule.resetEncoders();
-        m_RightFrontModule.resetEncoders();
-        m_LeftRearModule.resetEncoders();
-        m_RightRearModule.resetEncoders();
-    }
-
-
-    /** 
-     * Zeroes the heading of the robot. 
-     */
-    public void zeroHeading()
-    {
-        //m_gyro.reset();
-        m_imu.reset();
-    }
+//     /** 
+//      * Resets the drive encoders to currently read a position of 0. 
+//      */
+//     public void resetEncoders()
+//     {
+//         m_LeftFrontModule.resetEncoders();
+//         m_RightFrontModule.resetEncoders();
+//         m_LeftRearModule.resetEncoders();
+//         m_RightRearModule.resetEncoders();
+//     }
 
 
-    /**
-     * Returns the heading of the robot.
-     *
-     * @return the robot's heading in degrees, from -180 to 180 // TODO: Is this still correct, that it's -180 to +180?
-     */
-    public double getHeading()
-    {
-        //return m_gyro.getRotation2d().getDegrees();
-        return m_imu.getAngle();
-    }
+//     /** 
+//      * Zeroes the heading of the robot. 
+//      */
+//     public void zeroHeading()
+//     {
+//         //m_gyro.reset();
+//         m_imu.reset();
+//     }
 
-    /**
-     * Returns the turn rate of the robot.
-     *
-     * @return The turn rate of the robot, in degrees per second
-     */
-    public double getTurnRate()
-    {
-        //return m_gyro.getRate() * (SwerveDriveModuleConstants.k_GyroReversed ? -1.0 : 1.0);
-       return m_imu.getRate() * (SwerveDriveModuleConstants.k_GyroReversed ? -1.0 : 1.0);
-    }
+
+//     /**
+//      * Returns the heading of the robot.
+//      *
+//      * @return the robot's heading in degrees, from -180 to 180 // TODO: Is this still correct, that it's -180 to +180?
+//      */
+//     public double getHeading()
+//     {
+//         //return m_gyro.getRotation2d().getDegrees();
+//         return m_imu.getAngle();
+//     }
+
+//     /**
+//      * Returns the turn rate of the robot.
+//      *
+//      * @return The turn rate of the robot, in degrees per second
+//      */
+//     public double getTurnRate()
+//     {
+//         //return m_gyro.getRate() * (SwerveDriveModuleConstants.k_GyroReversed ? -1.0 : 1.0);
+//        return m_imu.getRate() * (SwerveDriveModuleConstants.k_GyroReversed ? -1.0 : 1.0);
+//     }
 
     
 }
