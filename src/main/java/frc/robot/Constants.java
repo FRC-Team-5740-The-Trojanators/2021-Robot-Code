@@ -35,8 +35,7 @@ public final class Constants
 
     public static final class SwerveDriveModuleConstants
     {
-        //public static final double k_MaxModuleAngularSpeedRadiansPerSecond = 2 * Math.PI;
-        //public static final double k_MaxModuleAngularAccelerationRadiansPerSecondSquared = 2 * Math.PI;
+ 
         public static final double kMaxSpeed = Units.feetToMeters(95); // FIX gear ratio calc.
         public static final double kMaxAngularSpeed = 50; // ???? rotation per second
         public static double fieldCalibration = 0;
@@ -49,12 +48,7 @@ public final class Constants
 
         public static final double k_SteeringEncoderCoefficient = (Math.PI * 2) / 4096.0; // this is 2π radians, dividided by the 12-bit encoder precision 
 
-        // These are example values only - DO NOT USE THESE FOR YOUR OWN ROBOT!
-        // These characterization values MUST be determined either experimentally or theoretically
-        // for *your* robot's drive.
-        // The RobotPy Characterization Toolsuite provides a convenient tool for obtaining these
-        // values for your robot.
-        // !!!!!!!!!!!!!!!!!!!!!!!
+        //TODO Change values to match the robot
         public static final double ks_Volts = 1;
         public static final double kv_VoltSecondsPerMeter = 0.8;
         public static final double ka_VoltSecondsSquaredPerMeter = 0.15;
@@ -62,7 +56,7 @@ public final class Constants
         public static final boolean k_GyroReversed = false;
 
         public static final AlternateEncoderType k_AlternateEncoderType = AlternateEncoderType.kQuadrature;
-        public static final double k_AltEnc_CountPerRev = 4096;
+        public static final double kEncoderTicksPerRotation = 4096;
 
 
         public static final int k_RevNEOEncoderCtsPerRev = 42; // the NEO's hall-effect encoder is 42 counts/rev
@@ -74,7 +68,7 @@ public final class Constants
     
         public static final double k_TurningEncoderDistancePerPulse =
             // Assumes the encoders are on a 1:1 reduction with the module shaft.
-            (2 * Math.PI) / (double) k_AltEnc_CountPerRev; //in radians
+            (2 * Math.PI) / (double) kEncoderTicksPerRotation; //in radians
 
         public static final class CANBusIDs
         {
@@ -123,27 +117,6 @@ public final class Constants
                 new Translation2d(k_WheelBase / 2, -k_TrackWidth / 2),   // Right Front
                 new Translation2d(-k_WheelBase / 2, k_TrackWidth / 2),   // Left Rear
                 new Translation2d(-k_WheelBase / 2, -k_TrackWidth / 2)); // Right Rear
-    
-
-        // //From MK3 Swerve file
-        //  public static SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
-        //     new Translation2d(
-        //         Units.inchesToMeters(11.5),
-        //         Units.inchesToMeters(11.5)
-        //     ),
-        //     new Translation2d(
-        //         Units.inchesToMeters(11.5),
-        //         Units.inchesToMeters(-11.5)
-        //     ),
-        //     new Translation2d(
-        //         Units.inchesToMeters(-11.5),
-        //         Units.inchesToMeters(11.5)
-        //     ),
-        //     new Translation2d(
-        //         Units.inchesToMeters(-11.5),
-        //         Units.inchesToMeters(-11.5)
-        //     )
-        // );
 
 
         public static final class DriveModulePIDValues
@@ -188,20 +161,6 @@ public final class Constants
             public static final int k_steerSmartMotionSlot = 0; // Is the gain schedule slot, the value is a number between 0 and 3. Each slot has its own set of gain values and can be changed in each control frame using SetReference().
 
         }
-
-
-
-
-       // Unsure if we need these constants, including them just-in-case
-       public static final boolean k_LeftFrontSteeringEncoderReversed = false;
-       public static final boolean k_LeftRearSteeringEncoderReversed = false;
-       public static final boolean k_RightFrontSteeringEncoderReversed = false;
-       public static final boolean k_RightRearSteeringEncoderReversed = false;
-
-       public static final boolean k_LeftFrontDriveEncoderReversed = false;
-       public static final boolean k_LeftRearDriveEncoderReversed = false;
-       public static final boolean k_RightFrontDriveEncoderReversed = false;
-       public static final boolean k_RightRearDriveEncoderReversed = false;
 
     }
 }
