@@ -27,7 +27,6 @@ import edu.wpi.first.wpilibj.util.Units;
 
 public final class Constants 
 {
-
     public static final class HIDConstants 
     {
         public static final int k_DriverControllerPort = 1;
@@ -49,6 +48,7 @@ public final class Constants
         public static final double k_SteeringEncoderCoefficient = (Math.PI * 2) / 4096.0; // this is 2π radians, dividided by the 12-bit encoder precision 
 
         //TODO Change values to match the robot
+
         public static final double ks_Volts = 1;
         public static final double kv_VoltSecondsPerMeter = 0.8;
         public static final double ka_VoltSecondsSquaredPerMeter = 0.15;
@@ -60,8 +60,10 @@ public final class Constants
 
 
         public static final int k_RevNEOEncoderCtsPerRev = 42; // the NEO's hall-effect encoder is 42 counts/rev
+
         public static final double k_WheelDiameterMeters = 0.1016;
         public static final double k_MK3SwerveModuleGearRatio = 6.86;
+
         public static final double k_DriveEncoderDistancePerPulse =
             // Assumes the encoders are directly mounted on the wheel shafts
             (k_WheelDiameterMeters * Math.PI) / ( (double) k_RevNEOEncoderCtsPerRev * k_MK3SwerveModuleGearRatio);
@@ -70,6 +72,9 @@ public final class Constants
             // Assumes the encoders are on a 1:1 reduction with the module shaft.
             (2 * Math.PI) / (double) kEncoderTicksPerRotation; //in radians
 
+        /**
+         * The CAN Bus device IDs for devices used with the Swerve Drive: motor controllers and encoders
+         */
         public static final class CANBusIDs
         {
             public static final int k_LeftFront_DriveMotor = 1; 
@@ -89,6 +94,10 @@ public final class Constants
             public static final int k_RightRear_SteeringMotor = 8;   
           }
         
+        /**
+         * The Motor controller we're using can control both brushed and brushless DC motors. 
+         * We need to specify what kind of motor we're controlling.
+         */
         public static final class MotorTypes
         {
             public static final MotorType k_SwerveRightFront_Drive = MotorType.kBrushless;
@@ -140,6 +149,7 @@ public final class Constants
             public static final int k_driveSmartMotionSlot = 0; // Is the gain schedule slot, the value is a number between 0 and 3. Each slot has its own set of gain values and can be changed in each control frame using SetReference().
         }
 
+
         public static final class SteeringControllerPIDValues
         {
             public static final double k_steerP = 0.0005;
@@ -161,6 +171,5 @@ public final class Constants
             public static final int k_steerSmartMotionSlot = 0; // Is the gain schedule slot, the value is a number between 0 and 3. Each slot has its own set of gain values and can be changed in each control frame using SetReference().
 
         }
-
     }
 }

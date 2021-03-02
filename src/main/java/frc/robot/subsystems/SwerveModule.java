@@ -11,6 +11,7 @@ import com.revrobotics.ControlType;
 
 import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.CANCoderConfiguration;
+
 import com.ctre.phoenix.sensors.CANCoderFaults;
 import com.ctre.phoenix.sensors.CANCoderStickyFaults;
 
@@ -20,15 +21,18 @@ import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 import frc.robot.Constants.SwerveDriveModuleConstants;
+
 import frc.robot.Constants.SwerveDriveModuleConstants.DriveModulePIDValues;
 import frc.robot.Constants.SwerveDriveModuleConstants.SteeringControllerPIDValues;
 import com.ctre.phoenix.sensors.SensorInitializationStrategy;
 import edu.wpi.first.wpilibj.util.Units;
 
 
+
 /** 
- * Swerve Module is based on the WPI Swerve module code.
- * 
+ * A Swerve Module consists of a drive motor, a steering motor, and encoders to provide feedback on the state of those motors.
+ * This code provides accessors to those motors' controllers and encoders, as well as defining the feedback loops used to 
+ *  enhance their control.
  */
 public class SwerveModule
 {
@@ -82,20 +86,22 @@ public class SwerveModule
         canCoderConfiguration.magnetOffsetDegrees = offset.getDegrees();
         canCoderConfiguration.initializationStrategy = SensorInitializationStrategy.BootToAbsolutePosition;
         canCoder.configAllSettings(canCoderConfiguration);
-
         }
+
 
     /**
      * Returns the current state of the module.
      *
      * @return The current state of the module.
      */
-    
+
     // public SwerveModuleState getState()
     // {
     //     return new SwerveModuleState(m_driveEncoder.getVelocity(), // the getVelocity() has been scaled to go from RPM to m/s
     //                                  new Rotation2d(m_steeringEncoder.getPosition()));
     // }
+
+
 
     /**
      * Sets the desired state for the module.
@@ -165,7 +171,6 @@ public class SwerveModule
     //     m_steeringEncoder.setPosition(0);
         
     // }
-
 }
 
 

@@ -19,13 +19,13 @@ import frc.robot.subsystems.SwerveModule;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-
 //Below are the imports needed from the MK3 File
 import com.ctre.phoenix.sensors.CANCoder;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 
 
 //"Swerve Drive Tuning"
@@ -36,6 +36,7 @@ public class DriveSubsystem extends SubsystemBase
 
     // The gyro sensor
     public static final ADIS16470_IMU m_imu = new ADIS16470_IMU();
+
 
     // Odometry class for tracking robot pose
    SwerveDriveOdometry m_odometry =
@@ -66,9 +67,11 @@ public class DriveSubsystem extends SubsystemBase
         {            
             SwerveModuleState[] states =
             SwerveDriveModuleConstants.kinematics.toSwerveModuleStates(
+
                 fieldRelative
                     ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, Rotation2d.fromDegrees(-m_imu.getAngle()))
                     : new ChassisSpeeds(xSpeed, ySpeed, rot));
+
             SwerveDriveKinematics.normalizeWheelSpeeds(states, SwerveDriveModuleConstants.kMaxSpeed);
             for (int i = 0; i < states.length; i++) 
             {
@@ -88,6 +91,8 @@ public class DriveSubsystem extends SubsystemBase
         {
             m_imu.reset();
         }
+
+
 
     @Override
     public void periodic() {
