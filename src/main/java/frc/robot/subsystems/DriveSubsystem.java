@@ -58,7 +58,15 @@ public class DriveSubsystem extends SubsystemBase
 
         if(calibrateGyro)
         {
-            m_imu.reset(); //recalibrates gyro offset
+            modules[0].setSteerToCANCoderAbsolute();
+            modules[1].setSteerToCANCoderAbsolute();
+            modules[2].setSteerToCANCoderAbsolute();
+            modules[3].setSteerToCANCoderAbsolute();
+
+            if(calibrateGyro)
+            {
+                m_imu.reset(); //recalibrates gyro offset
+            }
         }
     }
 
@@ -81,6 +89,7 @@ public class DriveSubsystem extends SubsystemBase
             //SmartDashboard.putNumber("gyro Angle", m_imu.getAngle());
         }
     }
+
 
     public void resetIMU()
     {

@@ -97,15 +97,15 @@ public class SwerveModule
     //                                  new Rotation2d(m_steeringEncoder.getPosition()));
     // }
 
-    /**
-     * Sets the desired state for the module.
-     *
-     * @param state Desired state with speed and angle.
-     */
+  
 
+    /**
+     * 
+    * @return Relative value of CANEncoder in radians
+    */
     public Rotation2d getAngle()
     {
-        return Rotation2d.fromDegrees(canCoder.getAbsolutePosition());
+        return Rotation2d.fromDegrees(canCoder.getPosition());
     }
 
     public double getRawAngle()
@@ -129,13 +129,18 @@ public class SwerveModule
 
     double setpoint;
 
+    /**
+    * Sets the desired state for the module to drive the robot
+    *
+    * @param desiredState SwerveModule state with desired speed and angle.
+    */
     public void setDesiredState(SwerveModuleState desiredState)
     {      
        //Steering Motor Calc
-       //Using Rev PID Controller
+       //Using WPI PID Controller
         Rotation2d currentRotation = getAngle();
         SwerveModuleState state = SwerveModuleState.optimize(desiredState, currentRotation);
-        Rotation2d rotationDelta = state.angle.minus(currentRotation);
+        Rotation2d rotationDelta = state.angle.minus(currentRotation); //takes our current rotatation and subtracts the last state rotation
 
         double deltaTicks = (rotationDelta.getDegrees() / 360) * SwerveDriveModuleConstants.kEncoderTicksPerRotation;
         double currentTicks = canCoder.getPosition() / canCoder.configGetFeedbackCoefficient();
@@ -143,7 +148,7 @@ public class SwerveModule
         angleMotor.set(m_steeringPIDController.calculate(currentTicks, desiredTicks));
 
 
-        //Using WPI PID Controller
+        //Using Rev PID Controller
         // double steeringCurrentPos_degrees = ((m_steeringEncoder.getPosition() / m_steeringEncoder.getCountsPerRevolution())* 360) % 360; //converts the fraction of a rotation to degrees
         // Rotation2d currentRotation = Rotation2d.fromDegrees(steeringCurrentPos_degrees);
         // SwerveModuleState state = SwerveModuleState.optimize(desiredState, currentRotation);
