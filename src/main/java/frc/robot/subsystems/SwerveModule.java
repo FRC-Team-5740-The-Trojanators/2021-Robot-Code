@@ -5,20 +5,29 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANEncoder;
+import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.ControlType;
 
 import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.CANCoderConfiguration;
 
+import com.ctre.phoenix.sensors.CANCoderFaults;
+import com.ctre.phoenix.sensors.CANCoderStickyFaults;
+
 import edu.wpi.first.wpilibj.controller.PIDController;
-import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 import frc.robot.Constants.SwerveDriveModuleConstants;
 
-//Swerve Module is based on the WPILib Swerve module example code.
+import frc.robot.Constants.SwerveDriveModuleConstants.DriveModulePIDValues;
+import frc.robot.Constants.SwerveDriveModuleConstants.SteeringControllerPIDValues;
+import com.ctre.phoenix.sensors.SensorInitializationStrategy;
+import edu.wpi.first.wpilibj.util.Units;
+
+
 
 /** 
  * A Swerve Module consists of a drive motor, a steering motor, and encoders to provide feedback on the state of those motors.
@@ -27,77 +36,56 @@ import frc.robot.Constants.SwerveDriveModuleConstants;
  */
 public class SwerveModule
 {
-    // REV robotics Spark Max motor controllers
-    private final CANSparkMax m_driveMotor;
-    private final CANSparkMax m_steeringMotor;
+    // // CTRE SRX Magnetic Encoder signal; encoder is external and mounted on the swerve module
+    private CANEncoder m_steeringEncoder;
 
-    // REV Robotics Spark Max encoder signal -- internal to the NEO motor
-    private final CANEncoder m_driveEncoder;
+    // PID Loops using the Spark API
+    private CANPIDController m_driverPIDController;
+    private PIDController m_steeringPIDController;
 
-    // CTRE CANCoder encoder signal -- mounted on the MK3 swerve module
-    private final CANCoder m_steeringEncoder;
-   // private final CANEncoder m_steeringEncoder; -Assuming Plugged in directly
-
-
-    // Proportional-Integral-Differential controller used to enhance drive motor control
-    private final PIDController m_driverPIDController = new PIDController(SwerveDriveModuleConstants.DriveModule.k_Proportional, 
-                                                                          SwerveDriveModuleConstants.DriveModule.k_Intergral,
-                                                                          SwerveDriveModuleConstants.DriveModule.k_Differential);
-    
-    // Proportional-Integral-Differential controller used to enhance steering motor control
-    private final ProfiledPIDController m_turningPIDController = 
-        new ProfiledPIDController(
-            SwerveDriveModuleConstants.TurningController.k_Prop,
-            SwerveDriveModuleConstants.TurningController.k_Inter,
-            SwerveDriveModuleConstants.TurningController.k_Diff,
-            new TrapezoidProfile.Constraints(
-                SwerveDriveModuleConstants.k_MaxModuleAngularSpeedRadiansPerSecond,
-                SwerveDriveModuleConstants.k_MaxModuleAngularAccelerationRadiansPerSecondSquared) );
-    
+    private CANSparkMax driveMotor;
+    private CANSparkMax angleMotor;
+    private CANCoder canCoder;
+    private Rotation2d offset;
 
     /**
      * Constructs a SwerveModule.
-     * 
-     * @param driveMotorChannel CANBus ID for the driving motor
-     * @param driveMotorType Driving motor motor-type (brushed or brushless)
-     * @param turningMotorChannel CANBus ID for the steering motor
-     * @param turningMotorType Steering motor motor-type (brushed or brushless)
-     * @param steeringEncoderChannel CANBus ID for the encoder mounted on the Swerve Module
-     * @param driveEncoderReversed Is the Drive Motor encoder reversed
-     * @param turningEncoderReversed Is the Swerve Module encoder (steering encoder) reverse
+     *
+     * @param driveMotorChannel ID for the drive motor.
+     * @param steeringMotorChannel ID for the turning motor.
      */
-    public SwerveModule(
-        int driveMotorChannel,
-        MotorType driveMotorType,
-        int turningMotorChannel,
-        MotorType turningMotorType,
-        int steeringEncoderChannel,
-        boolean driveEncoderReversed,
-        boolean turningEncoderReversed)
-        {
-            // instantiate the drive motor and steering motor contollers
-            m_driveMotor = new CANSparkMax(driveMotorChannel, driveMotorType);
-            m_steeringMotor = new CANSparkMax(turningMotorChannel, turningMotorType);
+    public SwerveModule(CANSparkMax driveMotor, CANSparkMax angleMotor, CANCoder canCoder, Rotation2d offset) {
 
-            // instantiate the drive motor encoder -- it's internal to the NEO motor
-            m_driveEncoder = m_driveMotor.getEncoder();   //assumes the use of the internal motor encoder
-            m_driveEncoder.setVelocityConversionFactor(SwerveDriveModuleConstants.k_DriveEncoderDistancePerPulse); 
+        this.driveMotor = driveMotor;
+        this.angleMotor = angleMotor;
+        this.canCoder = canCoder;
+        this.offset = offset;
 
-            // instantiate the steering encoder -- it's a Cross-The-Road Electronics CANCoder
-            m_steeringEncoder = new CANCoder(steeringEncoderChannel); 
-           // m_steeringEncoder = m_steeringMotor.getEncoder(); -Assuming Plugged in directly
-            
-            // Here we set the measurement unit as well as a human-readable string to describe the units
-            CANCoderConfiguration m_canCoderConfiguration = new CANCoderConfiguration();
-            m_canCoderConfiguration.unitString = "radians";
-            m_canCoderConfiguration.sensorCoefficient = SwerveDriveModuleConstants.k_SteeringEncoderCoefficient;
+        m_driverPIDController = driveMotor.getPIDController();
+       // m_steeringPIDController = angleMotor.getPIDController();
+       m_steeringEncoder = this.angleMotor.getEncoder();
+       this.m_steeringEncoder = m_steeringEncoder;
 
-           m_steeringEncoder.configAllSettings(m_canCoderConfiguration);
+       //Sets steering PID values using WPI version
+         m_steeringPIDController = new PIDController(SteeringControllerPIDValues.k_steerP, 
+                                                     SteeringControllerPIDValues.k_steerI,
+                                                    SteeringControllerPIDValues.k_steerD);
 
-            
-            // Limit the PID Controller's input range between -pi and pi and set the input
-            // to be continuous.
-            m_turningPIDController.enableContinuousInput(-Math.PI, Math.PI);
+        //Sets steering PID Values using Rev Robotics Version                                            
+        m_steeringPIDController.setP(SteeringControllerPIDValues.k_steerP);
+        m_steeringPIDController.setI(SteeringControllerPIDValues.k_steerI);
+        m_steeringPIDController.setD(SteeringControllerPIDValues.k_steerD);
+
+        m_driverPIDController.setP(DriveModulePIDValues.k_driveP);
+        m_driverPIDController.setI(DriveModulePIDValues.k_driveI);
+        m_driverPIDController.setD(DriveModulePIDValues.k_driveD);
+        m_driverPIDController.setFF(DriveModulePIDValues.k_driveFF);
+
+        
+        CANCoderConfiguration canCoderConfiguration = new CANCoderConfiguration();
+        canCoderConfiguration.magnetOffsetDegrees = offset.getDegrees();
+        canCoderConfiguration.initializationStrategy = SensorInitializationStrategy.BootToAbsolutePosition;
+        canCoder.configAllSettings(canCoderConfiguration);
         }
 
 
@@ -106,11 +94,13 @@ public class SwerveModule
      *
      * @return The current state of the module.
      */
-    public SwerveModuleState getState()
-    {
-        return new SwerveModuleState(m_driveEncoder.getVelocity(), // the getVelocity() has been scaled to go from RPM to m/s 
-                                     new Rotation2d(m_steeringEncoder.getPosition()));
-    }
+
+    // public SwerveModuleState getState()
+    // {
+    //     return new SwerveModuleState(m_driveEncoder.getVelocity(), // the getVelocity() has been scaled to go from RPM to m/s
+    //                                  new Rotation2d(m_steeringEncoder.getPosition()));
+    // }
+
 
 
     /**
@@ -118,25 +108,70 @@ public class SwerveModule
      *
      * @param state Desired state with speed and angle.
      */
-    public void setDesiredState(SwerveModuleState state)
+
+    public Rotation2d getAngle(){
+        return Rotation2d.fromDegrees(canCoder.getAbsolutePosition());
+    }
+
+    public double getRawAngle() {
+        return canCoder.getAbsolutePosition();
+    }
+
+    public double getSteeringEncoderValue(){
+        return m_steeringEncoder.getPosition();
+    }
+
+    //TODO Move this to init so it's called less
+    public void setSteerToCANCoderAbsolute()
     {
-        // Calculate the drive output from the drive PID controller.
-        final var driveOutput = m_driverPIDController.calculate(m_driveEncoder.getVelocity(), state.speedMetersPerSecond);
+        if  (canCoder.getAbsolutePosition() != m_steeringEncoder.getPosition() )
+        {
+            m_steeringEncoder.setPosition(canCoder.getAbsolutePosition()); 
+        }
+    }
 
-        // Calculate the turning motor output from the turning PID controller.
-        final var steerOutput = m_turningPIDController.calculate(m_steeringEncoder.getPosition(), state.angle.getRadians());
+    double setpoint;
 
-        m_driveMotor.set(driveOutput);
-        m_steeringMotor.set(steerOutput);
+    public void setDesiredState(SwerveModuleState desiredState)
+    {      
+       //Steering Motor Calc
+       //Using Rev PID Controller
+        Rotation2d currentRotation = getAngle();
+        SwerveModuleState state = SwerveModuleState.optimize(desiredState, currentRotation);
+        Rotation2d rotationDelta = state.angle.minus(currentRotation);
+
+        double deltaTicks = (rotationDelta.getDegrees() / 360) * SwerveDriveModuleConstants.kEncoderTicksPerRotation;
+        double currentTicks = canCoder.getPosition() / canCoder.configGetFeedbackCoefficient();
+        double desiredTicks = currentTicks + deltaTicks;
+        angleMotor.set(m_steeringPIDController.calculate(currentTicks, desiredTicks));
+
+
+        //Using WPI PID Controller
+        // double steeringCurrentPos_degrees = ((m_steeringEncoder.getPosition() / m_steeringEncoder.getCountsPerRevolution())* 360) % 360; //converts the fraction of a rotation to degrees
+        // Rotation2d currentRotation = Rotation2d.fromDegrees(steeringCurrentPos_degrees);
+        // SwerveModuleState state = SwerveModuleState.optimize(desiredState, currentRotation);
+        // setpoint = steeringCurrentPos_degrees - state.angle.getDegrees();
+        // m_steeringPIDController.setReference(setpoint, ControlType.kPosition);
+
+
+       //Drive Motor Calc
+        double feetPerSecond = Units.metersToFeet(state.speedMetersPerSecond);
+        m_driverPIDController.setReference(feetPerSecond / SwerveDriveModuleConstants.kMaxSpeed, ControlType.kVoltage);
+    }
+
+    public double getSetpoint(){
+        return setpoint;
     }
 
 
-    /**
-     * Zeros all the SwerveModule encoders.
-     */
-    public void resetEncoders()
-    {
-        m_driveEncoder.setPosition(0);
-        m_steeringEncoder.setPosition(0);
-    }
+    // /** Zeros all the SwerveModule encoders. */
+    // public void resetEncoders()
+    // {
+    //     m_driveEncoder.setPosition(0);
+    //     m_steeringEncoder.setPosition(0);
+        
+    // }
 }
+
+
+
