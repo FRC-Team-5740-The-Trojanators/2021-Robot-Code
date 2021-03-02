@@ -105,15 +105,15 @@ public class SwerveModule
     * @return Relative value of CANEncoder in radians
     */
     public Rotation2d getAngle(){
-        return Rotation2d.fromDegrees(canCoder.getPosition());
+        return Rotation2d.fromDegrees(canCoder.getPosition()); //CTRE Cancoder readout
     }
 
     public double getRawAngle() {
-        return canCoder.getAbsolutePosition();
+        return canCoder.getAbsolutePosition(); //CTRE Cancoder readout
     }
 
     public double getSteeringEncoderValue(){
-        return m_steeringEncoder.getPosition();
+        return m_steeringEncoder.getPosition(); //REV SparkMax Encoder readout
     }
 
     //TODO Move this to init so it's called less
