@@ -189,56 +189,58 @@ public class DriveSubsystem extends SubsystemBase
         moduleSel_Drive_widget = Shuffleboard.getTab("Swerve Drive Tuning").add("Select Drive Swerve Module", 1).getEntry();
     }
 
-        private SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
-            new Translation2d(
-              Units.inchesToMeters(11.5),
-              Units.inchesToMeters(11.5)
-            ),
-            new Translation2d(
-              Units.inchesToMeters(11.5),
-              Units.inchesToMeters(-11.5)
-            ),
-            new Translation2d(
-              Units.inchesToMeters(-11.5),
-              Units.inchesToMeters(11.5)
-            ),
-            new Translation2d(
-              Units.inchesToMeters(-11.5),
-              Units.inchesToMeters(-11.5)
-            )
-          );
-        
-      
-
-        private SwerveModule[] modules = new SwerveModule[]{
-            new SwerveModule(new CANSparkMax(CANBusIDs.k_LeftFront_DriveMotor, MotorType.kBrushless), new CANSparkMax(CANBusIDs.k_LeftFront_SteeringMotor, MotorType.kBrushless), new CANCoder(CANBusIDs.frontLeftCANCoderId), Rotation2d.fromDegrees(SwerveDriveModuleConstants.frontLeftOffset)), // Front Left
-            new SwerveModule(new CANSparkMax(CANBusIDs.k_RightFront_DriveMotor, MotorType.kBrushless), new CANSparkMax(CANBusIDs.k_RightFront_SteeringMotor, MotorType.kBrushless), new CANCoder(CANBusIDs.frontRightCANCoderId), Rotation2d.fromDegrees(SwerveDriveModuleConstants.frontRightOffset)), // Front Right
-            new SwerveModule(new CANSparkMax(CANBusIDs.k_LeftRear_DriveMotor, MotorType.kBrushless), new CANSparkMax(CANBusIDs.k_LeftRear_SteeringMotor, MotorType.kBrushless), new CANCoder(CANBusIDs.backLeftCANCoderId), Rotation2d.fromDegrees(SwerveDriveModuleConstants.backLeftOffset)), // Back Left
-            new SwerveModule(new CANSparkMax(CANBusIDs.k_RightRear_DriveMotor, MotorType.kBrushless), new CANSparkMax(CANBusIDs.k_RightRear_SteeringMotor, MotorType.kBrushless), new CANCoder(CANBusIDs.backRightCANCoderId), Rotation2d.fromDegrees(SwerveDriveModuleConstants.backRightOffset)) //Back Right
-        };
+    private SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
+        new Translation2d(
+            Units.inchesToMeters(11.5),
+            Units.inchesToMeters(11.5)
+        ),
+        new Translation2d(
+            Units.inchesToMeters(11.5),
+            Units.inchesToMeters(-11.5)
+        ),
+        new Translation2d(
+            Units.inchesToMeters(-11.5),
+            Units.inchesToMeters(11.5)
+        ),
+        new Translation2d(
+            Units.inchesToMeters(-11.5),
+            Units.inchesToMeters(-11.5)
+        )
+    );
         
 
-          public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative, boolean calibrateGyro) {
+    private SwerveModule[] modules = new SwerveModule[]
+    {
+        new SwerveModule(new CANSparkMax(CANBusIDs.k_LeftFront_DriveMotor, MotorType.kBrushless), new CANSparkMax(CANBusIDs.k_LeftFront_SteeringMotor, MotorType.kBrushless), new CANCoder(CANBusIDs.frontLeftCANCoderId), Rotation2d.fromDegrees(SwerveDriveModuleConstants.frontLeftOffset)), // Front Left
+        new SwerveModule(new CANSparkMax(CANBusIDs.k_RightFront_DriveMotor, MotorType.kBrushless), new CANSparkMax(CANBusIDs.k_RightFront_SteeringMotor, MotorType.kBrushless), new CANCoder(CANBusIDs.frontRightCANCoderId), Rotation2d.fromDegrees(SwerveDriveModuleConstants.frontRightOffset)), // Front Right
+        new SwerveModule(new CANSparkMax(CANBusIDs.k_LeftRear_DriveMotor, MotorType.kBrushless), new CANSparkMax(CANBusIDs.k_LeftRear_SteeringMotor, MotorType.kBrushless), new CANCoder(CANBusIDs.backLeftCANCoderId), Rotation2d.fromDegrees(SwerveDriveModuleConstants.backLeftOffset)), // Back Left
+        new SwerveModule(new CANSparkMax(CANBusIDs.k_RightRear_DriveMotor, MotorType.kBrushless), new CANSparkMax(CANBusIDs.k_RightRear_SteeringMotor, MotorType.kBrushless), new CANCoder(CANBusIDs.backRightCANCoderId), Rotation2d.fromDegrees(SwerveDriveModuleConstants.backRightOffset)) //Back Right
+    };
+        
+
+        public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative, boolean calibrateGyro) {
+
+        if(calibrateGyro){
+            m_imu.reset(); //recalibrates gyro offset
+        }
     
-            if(calibrateGyro){
-                m_imu.reset(); //recalibrates gyro offset
-            }
-        
-            SwerveModuleState[] states =
+        SwerveModuleState[] states =
             SwerveDriveModuleConstants.kinematics.toSwerveModuleStates(
                 fieldRelative
-                  ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, Rotation2d.fromDegrees(-m_imu.getAngle()))
-                  : new ChassisSpeeds(xSpeed, ySpeed, rot));
-            SwerveDriveKinematics.normalizeWheelSpeeds(states, SwerveDriveModuleConstants.kMaxSpeed);
-            for (int i = 0; i < states.length; i++) {
-              SwerveModule module = modules[i];
-              SwerveModuleState state = states[i];
-              SmartDashboard.putNumber(String.valueOf(i) + "GET RAW ANGLE", module.getRawAngle());
-              SmartDashboard.putNumber(String.valueOf(i) + "GET SPEED", state.speedMetersPerSecond);
-              //below is a line to comment out from step 5
-              module.setDesiredState(state);
-              SmartDashboard.putNumber("gyro Angle", m_imu.getAngle());
-            }
+                    ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, Rotation2d.fromDegrees(-m_imu.getAngle()))
+                    : new ChassisSpeeds(xSpeed, ySpeed, rot));
+        SwerveDriveKinematics.normalizeWheelSpeeds(states, SwerveDriveModuleConstants.kMaxSpeed);
+        
+        for (int i = 0; i < states.length; i++) 
+        {
+            SwerveModule module = modules[i];
+            SwerveModuleState state = states[i];
+            SmartDashboard.putNumber(String.valueOf(i) + "GET RAW ANGLE", module.getRawAngle());
+            SmartDashboard.putNumber(String.valueOf(i) + "GET SPEED", state.speedMetersPerSecond);
+            //below is a line to comment out from step 5
+            module.setDesiredState(state);
+            SmartDashboard.putNumber("gyro Angle", m_imu.getAngle());
+        }
 
     }
     @Override
