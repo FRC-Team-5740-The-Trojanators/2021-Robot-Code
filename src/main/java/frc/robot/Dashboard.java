@@ -35,36 +35,36 @@ public class Dashboard
     }
     
 
-/*
-public void TeleopDashboard() {
+    /*
+    public void TeleopDashboard() {
 
-        this.drivePID = Teleop_Dashboard.add("Drive PID", 0).withWidget(BuiltInWidgets.kPIDController).getEntry();
-        this.steeringPID = Teleop_Dashboard.add("Steering PID", 0).withWidget(BuiltInWidgets.kPIDController).getEntry();
-        this.gyro = Teleop_Dashboard.add("Gyro", 0).withWidget(BuiltInWidgets.kGyro).getEntry();
+            this.drivePID = Teleop_Dashboard.add("Drive PID", 0).withWidget(BuiltInWidgets.kPIDController).getEntry();
+            this.steeringPID = Teleop_Dashboard.add("Steering PID", 0).withWidget(BuiltInWidgets.kPIDController).getEntry();
+            this.gyro = Teleop_Dashboard.add("Gyro", 0).withWidget(BuiltInWidgets.kGyro).getEntry();
 
+        }
+
+        public void dashboardData() throws NullPointerException 
+        {
+            try 
+            {
+                
+            }
+            catch (final Exception e) 
+            {
+                e.printStackTrace();
+            }
+        }
     }
 
-    public void dashboardData() throws NullPointerException 
-    {
-        try 
-        {
+    public void dashboardData() throws NullPointerException {
+
+        try {
             
-        }
-        catch (final Exception e) 
-        {
-            e.printStackTrace();
-        }
-    }
-}
+        } catch (final Exception e) {
 
-public void dashboardData() throws NullPointerException {
+        e.printStackTrace();
+    }  
 
-    try {
-        
-    } catch (final Exception e) {
-
-    e.printStackTrace();
-}  
-
-}*/
+    }*/
 }

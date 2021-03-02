@@ -50,8 +50,8 @@ public class SwerveModule
      * @param driveMotorChannel ID for the drive motor.
      * @param steeringMotorChannel ID for the turning motor.
      */
-    public SwerveModule(CANSparkMax driveMotor, CANSparkMax angleMotor, CANCoder canCoder, Rotation2d offset) {
-
+    public SwerveModule(CANSparkMax driveMotor, CANSparkMax angleMotor, CANCoder canCoder, Rotation2d offset)
+    {
         this.driveMotor = driveMotor;
         this.angleMotor = angleMotor;
         this.canCoder = canCoder;
@@ -63,8 +63,8 @@ public class SwerveModule
        this.m_steeringEncoder = m_steeringEncoder;
 
        //Sets steering PID values using WPI version
-         m_steeringPIDController = new PIDController(SteeringControllerPIDValues.k_steerP, 
-                                                     SteeringControllerPIDValues.k_steerI,
+        m_steeringPIDController = new PIDController(SteeringControllerPIDValues.k_steerP, 
+                                                    SteeringControllerPIDValues.k_steerI,
                                                     SteeringControllerPIDValues.k_steerD);
 
         //Sets steering PID Values using Rev Robotics Version                                            
@@ -83,7 +83,6 @@ public class SwerveModule
         canCoderConfiguration.magnetOffsetDegrees = offset.getDegrees();
         canCoderConfiguration.initializationStrategy = SensorInitializationStrategy.BootToAbsolutePosition;
         canCoder.configAllSettings(canCoderConfiguration);
-
         }
 
     /**
@@ -104,15 +103,18 @@ public class SwerveModule
      * @param state Desired state with speed and angle.
      */
 
-    public Rotation2d getAngle(){
+    public Rotation2d getAngle()
+    {
         return Rotation2d.fromDegrees(canCoder.getAbsolutePosition());
     }
 
-    public double getRawAngle() {
+    public double getRawAngle()
+    {
         return canCoder.getAbsolutePosition();
     }
 
-    public double getSteeringEncoderValue(){
+    public double getSteeringEncoderValue()
+    {
         return m_steeringEncoder.getPosition();
     }
 
@@ -154,7 +156,8 @@ public class SwerveModule
         m_driverPIDController.setReference(feetPerSecond / SwerveDriveModuleConstants.kMaxSpeed, ControlType.kVoltage);
     }
 
-    public double getSetpoint(){
+    public double getSetpoint()
+    {
         return setpoint;
     }
 
@@ -166,8 +169,4 @@ public class SwerveModule
     //     m_steeringEncoder.setPosition(0);
         
     // }
-
 }
-
-
-
