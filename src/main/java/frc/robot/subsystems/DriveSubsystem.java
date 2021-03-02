@@ -80,7 +80,6 @@ public class DriveSubsystem extends SubsystemBase
                 module.setDesiredState(state);
                 //SmartDashboard.putNumber("gyro Angle", m_imu.getAngle());
             }
-    
         }
 
 
@@ -89,7 +88,7 @@ public class DriveSubsystem extends SubsystemBase
             m_imu.reset();
         }
 
-    @Override
+        @Override
     public void periodic() {
       // This method will be called once per scheduler run
     }
