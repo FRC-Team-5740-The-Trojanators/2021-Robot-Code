@@ -67,7 +67,7 @@ public void execute() {
 
   boolean calibrate = controller.getBumper(GenericHID.Hand.kLeft);
 
-  drivetrain.drive(xSpeed, ySpeed, rot, true, calibrate);
+  drivetrain.drive(xSpeed, ySpeed, rot, true);
   
 }
 
