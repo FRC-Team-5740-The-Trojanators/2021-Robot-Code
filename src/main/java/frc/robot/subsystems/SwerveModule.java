@@ -71,6 +71,7 @@ public class SwerveModule
         m_steeringPIDController.setP(SteeringControllerPIDValues.k_steerP);
         m_steeringPIDController.setI(SteeringControllerPIDValues.k_steerI);
         m_steeringPIDController.setD(SteeringControllerPIDValues.k_steerD);
+        m_steeringPIDController.setTolerance(SteeringControllerPIDValues.k_steerAllowedError);
 
         m_driverPIDController.setP(DriveModulePIDValues.k_driveP);
         m_driverPIDController.setI(DriveModulePIDValues.k_driveI);
