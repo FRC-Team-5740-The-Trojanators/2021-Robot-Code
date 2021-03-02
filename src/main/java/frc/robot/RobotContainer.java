@@ -30,7 +30,7 @@ public class RobotContainer
 
     private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
     
-    private final DriveSubsystem m_robotDrive = new DriveSubsystem();
+    private final DriveSubsystem m_robotDrive = new DriveSubsystem(false);
 
     //private final SwerveModule m_Module = new SwerveModule();
 
@@ -44,8 +44,14 @@ public class RobotContainer
         configureButtonBindings();
  
         m_robotDrive.setDefaultCommand(new SwerveDriveCommand(m_robotDrive, m_driverController));
-        ShuffleboardTab tab = Shuffleboard.getTab("Swerve Drive Tuning");
+        //ShuffleboardTab tab = Shuffleboard.getTab("Swerve Drive Tuning");
 
+        m_robotDrive.resetIMU();
+
+        // m_robotDrive.modules[0].setEncoders();
+        // m_robotDrive.modules[1].setEncoders();
+        // m_robotDrive.modules[2].setEncoders();
+        // m_robotDrive.modules[3].setEncoders();
     }
 
     /**
@@ -57,19 +63,6 @@ public class RobotContainer
     private void configureButtonBindings()
     {
     }
-
-   
-
-    // public Command getSwerveDriveCommand()
-    // {
-    //     return new RunCommand(
-    //         () ->
-    //             m_robotDrive.drive(
-    //                 m_driverController.getX(GenericHID.Hand.kLeft),
-    //                 m_driverController.getY(GenericHID.Hand.kLeft),
-    //                 m_driverController.getX(GenericHID.Hand.kRight),
-    //                 false), m_robotDrive);
-    // }
 
     /**
      * Use this to pass the autonomous command to the main {@link Robot} class.

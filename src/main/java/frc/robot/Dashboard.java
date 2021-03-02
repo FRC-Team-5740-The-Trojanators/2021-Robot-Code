@@ -24,20 +24,19 @@ public class Dashboard
     private NetworkTableEntry steeringPID;
     private NetworkTableEntry drivePID;
 
-    public Dashboard(DriveSubsystem m_DriveSubsystem, Constants m_Constants, SwerveModule m_SwerveModule)
-    {
+
+
+    public Dashboard(DriveSubsystem m_DriveSubsystem, Constants m_Constants, SwerveModule m_SwerveModule ){
         this.driver = m_DriveSubsystem;
         this.constants = m_Constants;
         this.swerve = m_SwerveModule;
 
-        TeleopDashboard();
+        //TeleopDashboard();
     }
-        
+    
 
-
-    public void TeleopDashboard()
-    {
-        final ShuffleboardTab Teleop_Dashboard = Shuffleboard.getTab("TeleopDash");
+/*
+public void TeleopDashboard() {
 
         this.drivePID = Teleop_Dashboard.add("Drive PID", 0).withWidget(BuiltInWidgets.kPIDController).getEntry();
         this.steeringPID = Teleop_Dashboard.add("Steering PID", 0).withWidget(BuiltInWidgets.kPIDController).getEntry();
@@ -56,4 +55,16 @@ public class Dashboard
             e.printStackTrace();
         }
     }
+}
+
+public void dashboardData() throws NullPointerException {
+
+    try {
+        
+    } catch (final Exception e) {
+
+    e.printStackTrace();
+}  
+
+}*/
 }
