@@ -213,7 +213,7 @@ public class DriveSubsystem extends SubsystemBase
               SwerveModule module = modules[i];
               SwerveModuleState state = states[i];
              //SmartDashboard.putNumber(String.valueOf(i) + "SetPoint", module.getSetpoint());
-              //SmartDashboard.putNumber(String.valueOf(i) + "Steer Encoder", module.getSteeringEncoderValue());
+              SmartDashboard.putNumber(String.valueOf(i) + "Steer Encoder", module.getSteeringEncoderValue());
               //below is a line to comment out from step 5
               module.setDesiredState(state);
               //SmartDashboard.putNumber("gyro Angle", m_imu.getAngle());

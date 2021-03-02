@@ -91,7 +91,7 @@ public class SwerveModule
         m_driverPIDController = driveMotor.getPIDController();
        // m_steeringPIDController = angleMotor.getPIDController();
        m_steeringEncoder = this.angleMotor.getEncoder();
-       this.m_steeringEncoder = m_steeringEncoder;
+       //this.m_steeringEncoder = m_steeringEncoder;
 
          m_steeringPIDController = new PIDController(SteeringControllerPIDValues.k_steerP, 
                                                      SteeringControllerPIDValues.k_steerI,
@@ -100,6 +100,7 @@ public class SwerveModule
         m_steeringPIDController.setP(SteeringControllerPIDValues.k_steerP);
         m_steeringPIDController.setI(SteeringControllerPIDValues.k_steerI);
         m_steeringPIDController.setD(SteeringControllerPIDValues.k_steerD);
+        m_steeringPIDController.setTolerance(SteeringControllerPIDValues.k_steerAllowedError);
 
         m_driverPIDController.setP(DriveModulePIDValues.k_driveP);
         m_driverPIDController.setI(DriveModulePIDValues.k_driveI);
@@ -172,7 +173,7 @@ public class SwerveModule
     }
     }
 
-    double setpoint;
+    
 
     public void setDesiredState(SwerveModuleState desiredState)
     {      
@@ -192,13 +193,10 @@ public class SwerveModule
         double currentTicks = canCoder.getPosition() / canCoder.configGetFeedbackCoefficient();
         double desiredTicks = currentTicks + deltaTicks;
        angleMotor.set(m_steeringPIDController.calculate(currentTicks, desiredTicks));
-
-
+        
        //Drive Motor Calc
         double feetPerSecond = Units.metersToFeet(state.speedMetersPerSecond);
-        m_driverPIDController.setReference(feetPerSecond / SwerveDriveModuleConstants.kMaxSpeed, ControlType.kVoltage);
-
-     
+        m_driverPIDController.setReference(feetPerSecond / SwerveDriveModuleConstants.kMaxSpeed, ControlType.kVoltage);     
           
         
         // // Calculate the drive output from the drive PID controller.
@@ -215,11 +213,6 @@ public class SwerveModule
     
     
     }
-
-    public double getSetpoint(){
-        return setpoint;
-    }
-
 
 //Everything after this point was not in the Example Code
     // /** Zeros all the SwerveModule encoders. */

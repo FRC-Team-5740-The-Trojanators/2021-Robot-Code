@@ -31,21 +31,22 @@ public final class Constants
     public static final class HIDConstants 
     {
         public static final int k_DriverControllerPort = 1;
+        public static final double kDeadBand = 0.05;
     }
 
     public static final class SwerveDriveModuleConstants
     {
         //public static final double k_MaxModuleAngularSpeedRadiansPerSecond = 2 * Math.PI;
         //public static final double k_MaxModuleAngularAccelerationRadiansPerSecondSquared = 2 * Math.PI;
-        public static final double kMaxSpeed = Units.feetToMeters(95); // FIX gear ratio calc.
+        public static final double kMaxSpeed = Units.feetToMeters(15); // FIX gear ratio calc.
         public static final double kMaxAngularSpeed = 50; // ???? rotation per second
         public static double fieldCalibration = 0;
 
         //Angle offsets
-        public static double frontLeftOffset = 27.333984;
+        public static double frontLeftOffset = 20;//27.333984;
         public static double frontRightOffset = 78.574219;
-        public static double backLeftOffset = 155.195313;
-        public static double backRightOffset = 357.880859;
+        public static double backLeftOffset = 160;//155.195313;
+        public static double backRightOffset = 3;//357.880859;
 
         public static final double k_SteeringEncoderCoefficient = (Math.PI * 2) / 4096.0; // this is 2π radians, dividided by the 12-bit encoder precision 
 
@@ -111,10 +112,10 @@ public final class Constants
         }
 
         // Distance between centers of right and left wheels on robot; unit is meters
-        public static final double k_TrackWidth = 0.5842;
+        public static final double k_TrackWidth = Units.inchesToMeters(11.5);
 
         // Distance between front and back wheels on robot; unit is meters
-        public static final double k_WheelBase = 0.5842;
+        public static final double k_WheelBase = Units.inchesToMeters(11.5);
         
      
         public static SwerveDriveKinematics kinematics =
@@ -155,11 +156,11 @@ public final class Constants
             public static final double k_driveIz = 0; 
             public static final double k_driveFF = .2; // feedforward
             
-            public static final double k_driveMaxOutput = .3; 
-            public static final double k_driveMinOutput = -.3;
+            public static final double k_driveMaxOutput = 1.0; 
+            public static final double k_driveMinOutput = -1.0;
             public static final double k_driveMaxRPM = 5600;
 
-            public static final double k_driveMaxVel = 800; // rpm
+            public static final double k_driveMaxVel = 5600; // rpm
             public static final double k_driveMinVel = 0;
             public static final double k_driveMaxAcc = 1500;
 
@@ -180,8 +181,8 @@ public final class Constants
             public static final double k_steerMinOutput = -1;
             public static final double k_steerMaxRPM = 5600;
 
-            public static final double k_steerMaxVel = 2000; // rpm
-            public static final double k_steerMinVel = 0;
+            public static final double k_steerMaxVel = 5000; // rpm
+            public static final double k_steerMinVel = 0.1;
             public static final double k_steerMaxAcc = 1500;
 
             public static final double k_steerAllowedError = 0.1; // allowedErr - The allowed deviation for your setpoint vs actual position in rotations

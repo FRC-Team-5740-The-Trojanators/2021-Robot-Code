@@ -30,11 +30,11 @@ public Dashboard(DriveSubsystem m_DriveSubsystem, Constants m_Constants, SwerveM
     this.constants = m_Constants;
     this.swerve = m_SwerveModule;
 
-    TeleopDashboard();
+    //TeleopDashboard();
 }
     
 
-
+/*
 public void TeleopDashboard() {
 
 final ShuffleboardTab Teleop_Dashboard = Shuffleboard.getTab("TeleopDash");
@@ -54,4 +54,5 @@ public void dashboardData() throws NullPointerException {
     e.printStackTrace();
 }  
 
-}}
+}*/
+}

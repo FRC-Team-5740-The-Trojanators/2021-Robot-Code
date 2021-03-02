@@ -44,7 +44,7 @@ public class RobotContainer
         configureButtonBindings();
  
         m_robotDrive.setDefaultCommand(new SwerveDriveCommand(m_robotDrive, m_driverController));
-        ShuffleboardTab tab = Shuffleboard.getTab("Swerve Drive Tuning");
+        //ShuffleboardTab tab = Shuffleboard.getTab("Swerve Drive Tuning");
 
         // m_robotDrive.modules[0].setEncoders();
         // m_robotDrive.modules[1].setEncoders();
