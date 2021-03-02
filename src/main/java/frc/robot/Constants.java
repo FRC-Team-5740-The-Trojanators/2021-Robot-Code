@@ -30,20 +30,22 @@ public final class Constants
     public static final class HIDConstants 
     {
         public static final int k_DriverControllerPort = 1;
+        public static final double kDeadBand = 0.05;
     }
 
     public static final class SwerveDriveModuleConstants
     {
- 
-        public static final double kMaxSpeed = Units.feetToMeters(95); // FIX gear ratio calc.
+        //public static final double k_MaxModuleAngularSpeedRadiansPerSecond = 2 * Math.PI;
+        //public static final double k_MaxModuleAngularAccelerationRadiansPerSecondSquared = 2 * Math.PI;
+        public static final double kMaxSpeed = Units.feetToMeters(15); // FIX gear ratio calc.
         public static final double kMaxAngularSpeed = 50; // ???? rotation per second
         public static double fieldCalibration = 0;
 
         //Angle offsets
-        public static double frontLeftOffset = 27.333984;
+        public static double frontLeftOffset = 20;//27.333984;
         public static double frontRightOffset = 78.574219;
-        public static double backLeftOffset = 155.195313;
-        public static double backRightOffset = 357.880859;
+        public static double backLeftOffset = 160;//155.195313;
+        public static double backRightOffset = 3;//357.880859;
 
         public static final double k_SteeringEncoderCoefficient = (Math.PI * 2) / 4096.0; // this is 2π radians, dividided by the 12-bit encoder precision 
 
@@ -137,11 +139,11 @@ public final class Constants
             public static final double k_driveIz = 0; 
             public static final double k_driveFF = .2; // feedforward
             
-            public static final double k_driveMaxOutput = .3; 
-            public static final double k_driveMinOutput = -.3;
+            public static final double k_driveMaxOutput = 1; 
+            public static final double k_driveMinOutput = -1;
             public static final double k_driveMaxRPM = 5600;
 
-            public static final double k_driveMaxVel = 800; // rpm
+            public static final double k_driveMaxVel = 5600; // rpm
             public static final double k_driveMinVel = 0;
             public static final double k_driveMaxAcc = 1500;
 
