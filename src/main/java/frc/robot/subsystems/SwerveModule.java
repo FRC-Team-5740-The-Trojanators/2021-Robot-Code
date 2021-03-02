@@ -87,7 +87,7 @@ public class SwerveModule
         canCoderConfiguration.magnetOffsetDegrees = offset.getDegrees();
         canCoderConfiguration.initializationStrategy = SensorInitializationStrategy.BootToAbsolutePosition;
         canCoder.configAllSettings(canCoderConfiguration);
-        }
+    }
 
 
     /**
