@@ -36,11 +36,11 @@ public class SwerveDriveCommand extends CommandBase
         {
             if(stickValue < 0)
             {
-                return stickValue = -Math.sqrt(Math.abs(stickValue));
+                return stickValue = -Math.pow(Math.abs(stickValue), 2);
             }
             else
             {
-                return stickValue = Math.sqrt(stickValue);
+                return stickValue = Math.pow(stickValue, 2);
             }
         } 
         else 
