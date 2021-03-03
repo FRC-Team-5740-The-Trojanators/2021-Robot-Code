@@ -19,7 +19,7 @@ public class SwerveDriveCommand extends CommandBase
             
     private final SlewRateLimiter xspeedLimiter = new SlewRateLimiter(6);
     private final SlewRateLimiter yspeedLimiter = new SlewRateLimiter(6);
-    private final SlewRateLimiter rotLimiter = new SlewRateLimiter(6);
+    private final SlewRateLimiter rotLimiter = new SlewRateLimiter(15);
 
 
     public SwerveDriveCommand(DriveSubsystem drivetrain, XboxController controller) 
@@ -54,15 +54,15 @@ public class SwerveDriveCommand extends CommandBase
     {
         // Get the x speed.
         final var xSpeed =
-            xspeedLimiter.calculate(getJoystickWithDeadBand(controller.getY(GenericHID.Hand.kLeft)))
-            * SwerveDriveModuleConstants.kMaxSpeed;
+            -xspeedLimiter.calculate(getJoystickWithDeadBand(controller.getY(GenericHID.Hand.kLeft))
+            * SwerveDriveModuleConstants.kMaxSpeed);
             //SmartDashboard.putNumber("xspeed", xSpeed);
 
         // Get the y speed or sideways/strafe speed. Xbox controllers
         // return positive values when you pull to the right by default.
         final var ySpeed =
-            yspeedLimiter.calculate(getJoystickWithDeadBand(controller.getX(GenericHID.Hand.kLeft)))
-            * SwerveDriveModuleConstants.kMaxSpeed;
+            -yspeedLimiter.calculate(getJoystickWithDeadBand(controller.getX(GenericHID.Hand.kLeft))
+            * SwerveDriveModuleConstants.kMaxSpeed);
             //SmartDashboard.putNumber("yspeed", ySpeed);
 
         // Get the rate of angular rotation. We are inverting this because we want a
@@ -70,9 +70,9 @@ public class SwerveDriveCommand extends CommandBase
         // mathematics). Xbox controllers return positive values when you pull to
         // the right by default.
         final var rot =
-            -rotLimiter.calculate(getJoystickWithDeadBand(controller.getX(GenericHID.Hand.kRight)))
-            * SwerveDriveModuleConstants.kMaxAngularSpeed;
-            //SmartDashboard.putNumber("rot", rot);
+            -rotLimiter.calculate(getJoystickWithDeadBand(controller.getX(GenericHID.Hand.kRight))
+            * SwerveDriveModuleConstants.kMaxAngularSpeed);
+            SmartDashboard.putNumber("rot", rot);
 
         boolean calibrate = controller.getBumper(GenericHID.Hand.kLeft);
 

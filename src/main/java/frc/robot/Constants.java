@@ -33,12 +33,19 @@ public final class Constants
         public static final double kDeadBand = 0.05;
     }
 
+    
     public static final class SwerveDriveModuleConstants
     {
+      // Distance between centers of right and left wheels on robot; unit is meters
+      public static final double k_TrackWidth = 0.5842;
+
+      // Distance between front and back wheels on robot; unit is meters
+      public static final double k_WheelBase = 0.5842;
+      
         //public static final double k_MaxModuleAngularSpeedRadiansPerSecond = 2 * Math.PI;
         //public static final double k_MaxModuleAngularAccelerationRadiansPerSecondSquared = 2 * Math.PI;
-        public static final double kMaxSpeed = Units.feetToMeters(15); // FIX gear ratio calc.
-        public static final double kMaxAngularSpeed = 50; // ???? rotation per second
+        public static final double kMaxSpeed = 0.75 * Units.feetToMeters(15); // FIX gear ratio calc.
+        public static final double kMaxAngularSpeed = 0.5 * Math.sqrt(2 * k_TrackWidth * k_TrackWidth) * Math.PI * Units.feetToMeters(15); // ???? rotation per second
         public static double fieldCalibration = 0;
 
         //Angle offsets
@@ -113,14 +120,7 @@ public final class Constants
     
             public static final MotorType k_SwerveLeftRear_Drive = MotorType.kBrushless;
             public static final MotorType k_SwerveLeftRear_Steering = MotorType.kBrushless;
-        }
-
-        // Distance between centers of right and left wheels on robot; unit is meters
-        public static final double k_TrackWidth = 0.5842;
-
-        // Distance between front and back wheels on robot; unit is meters
-        public static final double k_WheelBase = 0.5842;
-        
+        }        
      
         public static SwerveDriveKinematics kinematics =
             new SwerveDriveKinematics(
@@ -169,7 +169,7 @@ public final class Constants
             public static final double k_steerMinVel = 0;
             public static final double k_steerMaxAcc = 1500;
 
-            public static final double k_steerAllowedError = 0.1; // allowedErr - The allowed deviation for your setpoint vs actual position in rotations
+            public static final double k_steerDeadband = 0.05; // Deadband on the motor controller
             public static final int k_steerSmartMotionSlot = 0; // Is the gain schedule slot, the value is a number between 0 and 3. Each slot has its own set of gain values and can be changed in each control frame using SetReference().
 
         }

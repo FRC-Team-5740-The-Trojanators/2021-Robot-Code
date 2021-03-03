@@ -52,23 +52,23 @@ public class DriveSubsystem extends SubsystemBase
     // /** Creates a new DriveSubsystem. */
     public DriveSubsystem( boolean calibrateGyro)
     {
-        modules[0].setSteerToCANCoderAbsolute();
-        modules[1].setSteerToCANCoderAbsolute();
-        modules[2].setSteerToCANCoderAbsolute();
-        modules[3].setSteerToCANCoderAbsolute();
+        //modules[0].setSteerToCANCoderAbsolute();
+        //modules[1].setSteerToCANCoderAbsolute();
+        //modules[2].setSteerToCANCoderAbsolute();
+        //modules[3].setSteerToCANCoderAbsolute();
 
-        if(calibrateGyro)
-        {
-            modules[0].setSteerToCANCoderAbsolute();
-            modules[1].setSteerToCANCoderAbsolute();
-            modules[2].setSteerToCANCoderAbsolute();
-            modules[3].setSteerToCANCoderAbsolute();
+        //if(calibrateGyro)
+        //{
+        //    modules[0].setSteerToCANCoderAbsolute();
+        //    modules[1].setSteerToCANCoderAbsolute();
+        //    modules[2].setSteerToCANCoderAbsolute();
+        //    modules[3].setSteerToCANCoderAbsolute();
 
             if(calibrateGyro)
             {
                 m_imu.reset(); //recalibrates gyro offset
             }
-        }
+        //}
     }
 
     public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) 
@@ -76,14 +76,14 @@ public class DriveSubsystem extends SubsystemBase
         SwerveModuleState[] states =
         SwerveDriveModuleConstants.kinematics.toSwerveModuleStates(
             fieldRelative
-                ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, Rotation2d.fromDegrees(-m_imu.getAngle()))
+                ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, Rotation2d.fromDegrees(m_imu.getAngle()))
                 : new ChassisSpeeds(xSpeed, ySpeed, rot));
         SwerveDriveKinematics.normalizeWheelSpeeds(states, SwerveDriveModuleConstants.kMaxSpeed);
         for (int i = 0; i < states.length; i++) 
         {
             SwerveModule module = modules[i];
             SwerveModuleState state = states[i];
-            //SmartDashboard.putNumber(String.valueOf(i) + "SetPoint", module.getSetpoint());
+            SmartDashboard.putNumber(String.valueOf(i) + "Drive Velocity", module.getDriveMotor());
             //SmartDashboard.putNumber(String.valueOf(i) + "Steer Encoder", module.getSteeringEncoderValue());
             //below is a line to comment out from step 5
             module.setDesiredState(state);

@@ -75,7 +75,6 @@ public class SwerveModule
         m_steeringPIDController.setP(SteeringControllerPIDValues.k_steerP);
         m_steeringPIDController.setI(SteeringControllerPIDValues.k_steerI);
         m_steeringPIDController.setD(SteeringControllerPIDValues.k_steerD);
-        m_steeringPIDController.setTolerance(SteeringControllerPIDValues.k_steerAllowedError);
 
         m_driverPIDController.setP(DriveModulePIDValues.k_driveP);
         m_driverPIDController.setI(DriveModulePIDValues.k_driveI);
@@ -110,7 +109,7 @@ public class SwerveModule
     */
     public Rotation2d getAngle()
     {
-        return Rotation2d.fromDegrees(canCoder.getPosition());
+        return Rotation2d.fromDegrees(canCoder.getAbsolutePosition());
     }
 
     public double getRawAngle()
@@ -143,6 +142,7 @@ public class SwerveModule
     {      
        //Steering Motor Calc
        //Using WPI PID Controller
+        double setAngle;
         Rotation2d currentRotation = getAngle();
         SwerveModuleState state = SwerveModuleState.optimize(desiredState, currentRotation);
         Rotation2d rotationDelta = state.angle.minus(currentRotation); //takes our current rotatation and subtracts the last state rotation
@@ -150,8 +150,15 @@ public class SwerveModule
         double deltaTicks = (rotationDelta.getDegrees() / 360) * SwerveDriveModuleConstants.kEncoderTicksPerRotation;
         double currentTicks = canCoder.getPosition() / canCoder.configGetFeedbackCoefficient();
         double desiredTicks = currentTicks + deltaTicks;
-        angleMotor.set(m_steeringPIDController.calculate(currentTicks, desiredTicks));
-
+        setAngle = m_steeringPIDController.calculate(currentTicks, desiredTicks);
+        if(Math.abs(setAngle) > SteeringControllerPIDValues.k_steerDeadband)
+        {
+            angleMotor.set(setAngle);
+        } 
+        else 
+        {
+            angleMotor.set(0);
+        } 
 
         //Using Rev PID Controller
         // double steeringCurrentPos_degrees = ((m_steeringEncoder.getPosition() / m_steeringEncoder.getCountsPerRevolution())* 360) % 360; //converts the fraction of a rotation to degrees
@@ -162,10 +169,16 @@ public class SwerveModule
 
 
        //Drive Motor Calc
-        double feetPerSecond = Units.metersToFeet(state.speedMetersPerSecond);
-        m_driverPIDController.setReference(feetPerSecond / SwerveDriveModuleConstants.kMaxSpeed, ControlType.kVoltage);
+        //double feetPerSecond = Units.metersToFeet(state.speedMetersPerSecond);
+        m_driverPIDController.setReference(state.speedMetersPerSecond / SwerveDriveModuleConstants.kMaxSpeed, ControlType.kDutyCycle);
     }
 
+
+
+    public double getDriveMotor()
+    {
+        return driveMotor.get();
+    }
     public double getSetpoint()
     {
         return setpoint;
