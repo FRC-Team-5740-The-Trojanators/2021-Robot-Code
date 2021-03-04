@@ -173,5 +173,8 @@ public final class Constants
             public static final int k_steerSmartMotionSlot = 0; // Is the gain schedule slot, the value is a number between 0 and 3. Each slot has its own set of gain values and can be changed in each control frame using SetReference().
 
         }
+
+        
+
     }
 }

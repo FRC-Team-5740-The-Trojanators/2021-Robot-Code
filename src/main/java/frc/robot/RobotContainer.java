@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.Constants.HIDConstants;
+import frc.robot.commands.AutonomousDrive;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.SwerveDriveCommand;
 import frc.robot.subsystems.DriveSubsystem;
@@ -28,9 +29,11 @@ public class RobotContainer
     // The robot's subsystems and commands are defined here...
     private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
-    private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+   // private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
     
     private final DriveSubsystem m_robotDrive = new DriveSubsystem(false);
+
+    private final AutonomousDrive m_autonomousDrive = new AutonomousDrive(m_robotDrive);
 
     //private final SwerveModule m_Module = new SwerveModule();
 
@@ -72,6 +75,6 @@ public class RobotContainer
     public Command getAutonomousCommand()
     {
         // An ExampleCommand will run in autonomous
-        return m_autoCommand;
+        return m_autonomousDrive;
     }
 }
