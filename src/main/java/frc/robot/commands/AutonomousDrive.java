@@ -69,6 +69,7 @@ public class AutonomousDrive extends CommandBase {
   @Override
   public void initialize() {
     loadTrajectory();
+    //m_driveSubsystem.resetIMU();
     m_xController = new PIDController(.01, 0, 0.1);
     m_yController = new PIDController(0, 0, 0);
     m_trapezoidProfile = new TrapezoidProfile.Constraints(Math.PI * 2, Math.PI);
