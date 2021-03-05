@@ -60,6 +60,7 @@ public class AutonomousDrive extends CommandBase {
   /** Creates a new AutonomousDrive. */
   public AutonomousDrive(DriveSubsystem driveSubsystem) {
     m_driveSubsystem = driveSubsystem;
+    m_goal = new Trajectory.State();
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(driveSubsystem);
   }
@@ -87,7 +88,7 @@ public class AutonomousDrive extends CommandBase {
 
       ChassisSpeeds adjustedSpeeds = m_driveController.calculate(m_driveSubsystem.getPose(), m_goal, Rotation2d.fromDegrees(0));
       m_pose2d = m_driveSubsystem.getPose();
-      m_pose2d = m_driveSubsystem.updateOdometry();
+      //m_pose2d = m_driveSubsystem.updateOdometry();
       m_driveSubsystem.drive(adjustedSpeeds.vxMetersPerSecond, adjustedSpeeds.vyMetersPerSecond, adjustedSpeeds.omegaRadiansPerSecond, false);
       SmartDashboard.putNumber("X Velocity", adjustedSpeeds.vxMetersPerSecond);
       SmartDashboard.putNumber("Y Velocity", adjustedSpeeds.vyMetersPerSecond);

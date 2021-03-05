@@ -35,6 +35,10 @@ public class DriveSubsystem extends SubsystemBase
 {
     // The gyro sensor
     public static final ADIS16470_IMU m_imu = new ADIS16470_IMU();
+    private Pose2d m_pose = new Pose2d();
+
+    private SwerveModuleState[] m_states = new SwerveModuleState[4];
+
 
 
     // Odometry class for tracking robot pose
@@ -72,25 +76,30 @@ public class DriveSubsystem extends SubsystemBase
     }
 
     public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) 
-    {            
-        SwerveModuleState[] states =
+    {       
+      m_states =
         SwerveDriveModuleConstants.kinematics.toSwerveModuleStates(
             fieldRelative
                 ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, Rotation2d.fromDegrees(m_imu.getAngle()))
                 : new ChassisSpeeds(xSpeed, ySpeed, rot));
-        SwerveDriveKinematics.normalizeWheelSpeeds(states, SwerveDriveModuleConstants.kMaxSpeed);
-        for (int i = 0; i < states.length; i++) 
+        SwerveDriveKinematics.normalizeWheelSpeeds(m_states, SwerveDriveModuleConstants.kMaxSpeed);
+        for (int i = 0; i < m_states.length; i++) 
         {
             SwerveModule module = modules[i];
-            SwerveModuleState state = states[i];
             SmartDashboard.putNumber(String.valueOf(i) + "Drive Velocity", module.getDriveMotor());
             //SmartDashboard.putNumber(String.valueOf(i) + "Steer Encoder", module.getSteeringEncoderValue());
             //below is a line to comment out from step 5
-            module.setDesiredState(state);
+            module.setDesiredState(m_states[i]);
             //SmartDashboard.putNumber("gyro Angle", m_imu.getAngle());
-        }
+        } 
+
     }
 
+
+    public SwerveModuleState[] getStates()
+    {
+        return m_states;
+    }
 
     public void resetIMU()
     {
@@ -103,6 +112,10 @@ public class DriveSubsystem extends SubsystemBase
     public void periodic()
     {
       // This method will be called once per scheduler run
+      var gyroAngle = Rotation2d.fromDegrees(-m_imu.getAngle());
+
+      //m_pose = m_odometry.update(gyroAngle, modules[0].)
+      
     }
   
     @Override
@@ -124,7 +137,7 @@ public class DriveSubsystem extends SubsystemBase
      */
     public Pose2d getPose()
     {
-       return m_odometry.getPoseMeters();
+      return m_odometry.update(Rotation2d.fromDegrees(-m_imu.getAngle()), m_states[0], m_states[1], m_states[2], m_states[3]);
     }
 
     /**
@@ -136,6 +149,10 @@ public class DriveSubsystem extends SubsystemBase
     {
         m_odometry.resetPosition(pose, m_imu.getRotation2d());
     }
+
+//    public Pose2d updateOdometry(){
+//        return m_odometry.update(m_imu.getAngle(), /*get module states here*/);
+//     }
 
 
 //     /** 
