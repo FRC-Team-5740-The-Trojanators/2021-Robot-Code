@@ -71,7 +71,7 @@ public class AutonomousDrive extends CommandBase {
   public void initialize() {
     loadTrajectory();
     //m_driveSubsystem.resetIMU();
-    m_xController = new PIDController(.01, 0, 0.1);
+    m_xController = new PIDController(1, 0, 0);
     m_yController = new PIDController(0, 0, 0);
     m_trapezoidProfile = new TrapezoidProfile.Constraints(Math.PI * 2, Math.PI);
     m_rotController = new ProfiledPIDController(0, 0, 0, m_trapezoidProfile);

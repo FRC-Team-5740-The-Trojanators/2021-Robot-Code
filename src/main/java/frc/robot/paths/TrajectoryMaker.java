@@ -31,15 +31,20 @@ public class TrajectoryMaker
     public static Trajectory MakeATrajectory()
     {
         List<Trajectory.State> states = new ArrayList<>();
-        for(int i = 0; i < ATestPath.aTestPath.length; i++)
+        for(int i = 0; i < FiveMeterPath.FiveMeterPath.length; i++)
         {
-            double timeAtI = ATestPath.aTestPath[i][TIME];
-            double velocityAtI = ATestPath.aTestPath[i][VELOCITY];
-            double accelerationAtI = ATestPath.aTestPath[i][ACCEL];
-            double xAtI = ATestPath.aTestPath[i][X];
-            double yAtI = ATestPath.aTestPath[i][Y];
-            double headingAtI = ATestPath.aTestPath[i][HOLOHEADING];
-            double curveAtI = ATestPath.aTestPath[i][CURVERAD];
+
+            FiveMeterPath.FiveMeterPath[i][HOLOHEADING] *= Math.PI/ 180;
+            FiveMeterPath.FiveMeterPath[i][CURVERAD] *= Math.PI/ 180;
+
+            double timeAtI = FiveMeterPath.FiveMeterPath[i][TIME];
+            double velocityAtI = FiveMeterPath.FiveMeterPath[i][VELOCITY];
+            double accelerationAtI = FiveMeterPath.FiveMeterPath[i][ACCEL];
+            double xAtI = FiveMeterPath.FiveMeterPath[i][X];
+            double yAtI = FiveMeterPath.FiveMeterPath[i][Y];
+            double headingAtI = FiveMeterPath.FiveMeterPath[i][HOLOHEADING];
+            double curveAtI = FiveMeterPath.FiveMeterPath[i][CURVERAD];
+
 
             Rotation2d rotation = new Rotation2d(headingAtI);
             Pose2d Pose = new Pose2d(xAtI, yAtI, rotation);

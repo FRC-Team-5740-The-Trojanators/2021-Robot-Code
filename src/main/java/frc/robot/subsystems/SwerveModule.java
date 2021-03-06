@@ -36,8 +36,8 @@ import edu.wpi.first.wpilibj.util.Units;
  */
 public class SwerveModule
 {
-    // // CTRE SRX Magnetic Encoder signal; encoder is external and mounted on the swerve module
-    private CANEncoder m_steeringEncoder;
+   // private CANCoder m_steeringEncoder;
+    private CANEncoder m_driveEncoder;
 
     // PID Loops using the Spark API
     private CANPIDController m_driverPIDController;
@@ -45,7 +45,8 @@ public class SwerveModule
 
     private CANSparkMax driveMotor;
     private CANSparkMax angleMotor;
-    private CANCoder canCoder;
+    //CTRE SRX Magnetic Encoder signal; encoder is external and mounted on the swerve module
+    private CANCoder m_moduleSteeringEncoder;
     private Rotation2d offset;
 
     /**
@@ -58,13 +59,11 @@ public class SwerveModule
     {
         this.driveMotor = driveMotor;
         this.angleMotor = angleMotor;
-        this.canCoder = canCoder;
+        this.m_moduleSteeringEncoder = canCoder;
         this.offset = offset;
 
         m_driverPIDController = driveMotor.getPIDController();
        // m_steeringPIDController = angleMotor.getPIDController();
-       m_steeringEncoder = this.angleMotor.getEncoder();
-       this.m_steeringEncoder = m_steeringEncoder;
 
        //Sets steering PID values using WPI version
         m_steeringPIDController = new PIDController(SteeringControllerPIDValues.k_steerP, 
@@ -94,12 +93,12 @@ public class SwerveModule
      *
      * @return The current state of the module.
      */
-
-    // public SwerveModuleState getState()
-    // {
-    //     return new SwerveModuleState(m_driveEncoder.getVelocity(), // the getVelocity() has been scaled to go from RPM to m/s
-    //                                  new Rotation2d(m_steeringEncoder.getPosition()));
-    // }
+    
+    //TODO Properly scale the velocity
+    public SwerveModuleState getState()
+    {
+        return new SwerveModuleState(m_driveEncoder.getVelocity(), Rotation2d.fromDegrees(m_moduleSteeringEncoder.getPosition()));
+    }
 
   
 
@@ -109,26 +108,17 @@ public class SwerveModule
     */
     public Rotation2d getAngle()
     {
-        return Rotation2d.fromDegrees(canCoder.getAbsolutePosition());
+        return Rotation2d.fromDegrees(m_moduleSteeringEncoder.getAbsolutePosition());
     }
 
     public double getRawAngle()
     {
-        return canCoder.getAbsolutePosition();
+        return m_moduleSteeringEncoder.getAbsolutePosition();
     }
 
     public double getSteeringEncoderValue()
     {
-        return m_steeringEncoder.getPosition();
-    }
-
-    //TODO Move this to init so it's called less
-    public void setSteerToCANCoderAbsolute()
-    {
-        if  (canCoder.getAbsolutePosition() != m_steeringEncoder.getPosition() )
-        {
-            m_steeringEncoder.setPosition(canCoder.getAbsolutePosition()); 
-        }
+        return m_moduleSteeringEncoder.getPosition();
     }
 
     double setpoint;
@@ -148,7 +138,7 @@ public class SwerveModule
         Rotation2d rotationDelta = state.angle.minus(currentRotation); //takes our current rotatation and subtracts the last state rotation
 
         double deltaTicks = (rotationDelta.getDegrees() / 360) * SwerveDriveModuleConstants.kEncoderTicksPerRotation;
-        double currentTicks = canCoder.getPosition() / canCoder.configGetFeedbackCoefficient();
+        double currentTicks = m_moduleSteeringEncoder.getPosition() / m_moduleSteeringEncoder.configGetFeedbackCoefficient();
         double desiredTicks = currentTicks + deltaTicks;
         setAngle = m_steeringPIDController.calculate(currentTicks, desiredTicks);
         if(Math.abs(setAngle) > SteeringControllerPIDValues.k_steerDeadband)
