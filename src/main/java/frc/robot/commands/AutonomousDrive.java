@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants.SwerveDriveModuleConstants;
+import frc.robot.paths.TrajectoryMaker;
 import frc.robot.subsystems.DriveSubsystem;
 
 public class AutonomousDrive extends CommandBase {
@@ -44,17 +45,17 @@ public class AutonomousDrive extends CommandBase {
   
   public void loadTrajectory()
   {
-    String trajectoryJSON = "output/StraightLine5.wpilib.json"; //Change this file name to change the path
-    m_trajectory = new Trajectory();
-    try
-    {
-      Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
-      m_trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-    }
-    catch (IOException ex)
-    {
-      DriverStation.reportError("Unable to open trajectory File: " + trajectoryJSON, ex.getStackTrace());
-    }
+   // String trajectoryJSON = "output/StraightLine5.wpilib.json"; //Change this file name to change the path
+    m_trajectory = TrajectoryMaker.MakeATrajectory();
+    // try
+    // {
+    //   Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
+    //   m_trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+    // }
+    // catch (IOException ex)
+    // {
+    //   DriverStation.reportError("Unable to open trajectory File: " + trajectoryJSON, ex.getStackTrace());
+    // }
   }
 
   /** Creates a new AutonomousDrive. */
