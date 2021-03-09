@@ -118,8 +118,9 @@ public class DriveSubsystem extends SubsystemBase
       // This method will be called once per scheduler run
       var gyroAngle = Rotation2d.fromDegrees(-m_imu.getAngle());
 
-      //m_pose = m_odometry.update(gyroAngle, modules[0].)
-      
+     // m_pose = m_odometry.update(gyroAngle, modules[0].getState(), modules[1].getState(), modules[2].getState(), modules[3].getState());
+     m_odometry.update(gyroAngle, modules[0].getState(), modules[1].getState(), modules[2].getState(), modules[3].getState());
+
     }
   
     @Override
@@ -135,13 +136,9 @@ public class DriveSubsystem extends SubsystemBase
      */
     public Pose2d getPose()
     {
-    Rotation2d Angle = Rotation2d.fromDegrees(-m_imu.getAngle());
-    SwerveModuleState FrontLeft =  m_states[0];
-    SwerveModuleState FrontRight =  m_states[1];
-    SwerveModuleState BackLeft =  m_states[2];
-    SwerveModuleState BackRight =  m_states[3];
+    
+    return m_odometry.getPoseMeters();
 
-    return m_odometry.update(Angle, FrontLeft, FrontRight, BackLeft, BackRight);
     }
 
     /**
