@@ -63,6 +63,7 @@ public class SwerveModule
         this.offset = offset;
 
         m_driverPIDController = driveMotor.getPIDController();
+        m_driveEncoder = driveMotor.getEncoder(); 
        // m_steeringPIDController = angleMotor.getPIDController();
 
        //Sets steering PID values using WPI version
@@ -168,6 +169,11 @@ public class SwerveModule
     public double getDriveMotor()
     {
         return driveMotor.get();
+    }
+
+    public double getDriveVelocity()
+    {
+        return m_driveEncoder.getVelocity();
     }
 
 

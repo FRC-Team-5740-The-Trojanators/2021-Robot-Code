@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.controller.HolonomicDriveController;
@@ -71,15 +72,17 @@ public class AutonomousDrive extends CommandBase {
   public void initialize() {
     loadTrajectory();
     //m_driveSubsystem.resetIMU();
-    m_xController = new PIDController(1, 0, 0);
-    m_yController = new PIDController(0, 0, 0);
+    m_xController = new PIDController(.002, 0, 0);
+    m_yController = new PIDController(.003, 0, 0);
     m_trapezoidProfile = new TrapezoidProfile.Constraints(Math.PI * 2, Math.PI);
-    m_rotController = new ProfiledPIDController(0, 0, 0, m_trapezoidProfile);
+    m_rotController = new ProfiledPIDController(.002, 0, 0, m_trapezoidProfile);
 
     m_driveController = new HolonomicDriveController(m_xController, m_yController, m_rotController);
     m_timer = new Timer();
     m_timer.reset();
     m_timer.start();
+
+    m_driveSubsystem.resetOdometry(new Pose2d(new Translation2d(0, 0), new Rotation2d(0)));
   }
   
   // Called every time the scheduler runs while the command is scheduled.
@@ -87,9 +90,10 @@ public class AutonomousDrive extends CommandBase {
   public void execute() {
     if (m_timer.get() < m_trajectory.getTotalTimeSeconds()) {
       m_goal = m_trajectory.sample(m_timer.get());
+      var m_rotation = m_goal.poseMeters.getRotation();
 
-      ChassisSpeeds adjustedSpeeds = m_driveController.calculate(m_driveSubsystem.getPose(), m_goal, Rotation2d.fromDegrees(0));
-      //m_pose2d = m_driveSubsystem.getPose();
+      ChassisSpeeds adjustedSpeeds = m_driveController.calculate(m_driveSubsystem.getPose(), m_goal, m_rotation);
+      m_pose2d = m_driveSubsystem.getPose();
       //m_pose2d = m_driveSubsystem.updateOdometry();
       m_driveSubsystem.drive(adjustedSpeeds.vxMetersPerSecond, adjustedSpeeds.vyMetersPerSecond, adjustedSpeeds.omegaRadiansPerSecond, false);
       SmartDashboard.putNumber("X Velocity", adjustedSpeeds.vxMetersPerSecond);

@@ -77,5 +77,21 @@ public class SwerveDriveCommand extends CommandBase
         boolean calibrate = controller.getBumper(GenericHID.Hand.kLeft);
 
         drivetrain.drive(xSpeed, ySpeed, rot, true);
+
+        SmartDashboard.putNumber("Commanded X Velocity", xSpeed);
+        SmartDashboard.putNumber("Commanded Y Velocity", ySpeed);
+        SmartDashboard.putNumber("Commanded Rot Speed", rot);
+
+        SmartDashboard.putNumber("Reading X Velocity LeftFront", drivetrain.getModules()[0].getDriveVelocity());
+        SmartDashboard.putNumber("Reading X Velocity RightFront", drivetrain.getModules()[1].getDriveVelocity());
+        SmartDashboard.putNumber("Reading X Velocity LeftRear", drivetrain.getModules()[2].getDriveVelocity());
+        SmartDashboard.putNumber("Reading X Velocity RightRear", drivetrain.getModules()[3].getDriveVelocity());
+
+        // SmartDashboard.putNumber("Reading Y Velocity", ySpeed);
+        // SmartDashboard.putNumber("Reading Rot Speed", rot);
+
+        SmartDashboard.putNumber("Current X Position", drivetrain.getPose().getX());
+        SmartDashboard.putNumber("Current Y Position", drivetrain.getPose().getY());
+        
     }
 }

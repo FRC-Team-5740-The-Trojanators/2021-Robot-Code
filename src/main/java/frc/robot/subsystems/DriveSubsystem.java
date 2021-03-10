@@ -47,7 +47,7 @@ public class DriveSubsystem extends SubsystemBase
 
     // Odometry class for tracking robot pose
     SwerveDriveOdometry m_odometry =
-        new SwerveDriveOdometry(SwerveDriveModuleConstants.kinematics, new Rotation2d(m_imu.getAngle())); // TODO: use radians here?
+        new SwerveDriveOdometry(SwerveDriveModuleConstants.kinematics, Rotation2d.fromDegrees(m_imu.getAngle()));
 
     public SwerveModule[] modules = new SwerveModule[]
      {
@@ -90,7 +90,7 @@ public class DriveSubsystem extends SubsystemBase
         for (int i = 0; i < m_states.length; i++) 
         {
             SwerveModule module = modules[i];
-            SmartDashboard.putNumber(String.valueOf(i) + "Drive Velocity", module.getDriveMotor());
+            SmartDashboard.putNumber(String.valueOf(i) + " Drive Velocity", module.getDriveMotor());
             //SmartDashboard.putNumber(String.valueOf(i) + "Steer Encoder", module.getSteeringEncoderValue());
             //below is a line to comment out from step 5
             module.setDesiredState(m_states[i]);
@@ -110,8 +110,6 @@ public class DriveSubsystem extends SubsystemBase
         m_imu.reset();
     }
 
-
-
     @Override
     public void periodic()
     {
@@ -120,7 +118,6 @@ public class DriveSubsystem extends SubsystemBase
 
      // m_pose = m_odometry.update(gyroAngle, modules[0].getState(), modules[1].getState(), modules[2].getState(), modules[3].getState());
      m_odometry.update(gyroAngle, modules[0].getState(), modules[1].getState(), modules[2].getState(), modules[3].getState());
-
     }
   
     @Override
@@ -139,6 +136,16 @@ public class DriveSubsystem extends SubsystemBase
     
     return m_odometry.getPoseMeters();
 
+    }
+
+    public SwerveDriveOdometry getOdometry()
+    {
+        return m_odometry;
+    }
+
+    public SwerveModule[] getModules()
+    {
+        return modules;
     }
 
     /**
