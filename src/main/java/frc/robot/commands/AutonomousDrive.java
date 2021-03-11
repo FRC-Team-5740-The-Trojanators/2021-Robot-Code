@@ -72,8 +72,8 @@ public class AutonomousDrive extends CommandBase {
   public void initialize() {
     loadTrajectory();
     //m_driveSubsystem.resetIMU();
-    m_xController = new PIDController(.002, 0, 0);
-    m_yController = new PIDController(.003, 0, 0);
+    m_xController = new PIDController(.005, 0, 0);
+    m_yController = new PIDController(.005, 0, 0);
     m_trapezoidProfile = new TrapezoidProfile.Constraints(Math.PI * 2, Math.PI);
     m_rotController = new ProfiledPIDController(.002, 0, 0, m_trapezoidProfile);
 
@@ -102,7 +102,12 @@ public class AutonomousDrive extends CommandBase {
       SmartDashboard.putNumber("Current X Position", m_pose2d.getX());
       SmartDashboard.putNumber("Current Y Position", m_pose2d.getY());
 
-      } else {
+      SmartDashboard.putNumber("Reading X Velocity LeftFront", m_driveSubsystem.getModules()[0].getDriveVelocity());
+      SmartDashboard.putNumber("Reading X Velocity RightFront", m_driveSubsystem.getModules()[1].getDriveVelocity());
+      SmartDashboard.putNumber("Reading X Velocity LeftRear", m_driveSubsystem.getModules()[2].getDriveVelocity());
+      SmartDashboard.putNumber("Reading X Velocity RightRear", m_driveSubsystem.getModules()[3].getDriveVelocity());
+     
+    } else {
       m_driveSubsystem.drive(0, 0, 0, false);
 
     }

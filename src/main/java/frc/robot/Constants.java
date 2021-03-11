@@ -44,7 +44,8 @@ public final class Constants
       
         //public static final double k_MaxModuleAngularSpeedRadiansPerSecond = 2 * Math.PI;
         //public static final double k_MaxModuleAngularAccelerationRadiansPerSecondSquared = 2 * Math.PI;
-        public static final double kMaxSpeed = 0.75 * Units.feetToMeters(15); // FIX gear ratio calc.
+        public static final double kMaxSpeed = Units.feetToMeters(15);
+        public static final double kXYjoystickCoefficient = .75;
         public static final double kMaxAngularSpeed = 0.5 * Math.sqrt(2 * k_TrackWidth * k_TrackWidth) * Math.PI * Units.feetToMeters(15); // ???? rotation per second
         public static double fieldCalibration = 0;
 
@@ -71,7 +72,9 @@ public final class Constants
         public static final int k_RevNEOEncoderCtsPerRev = 42; // the NEO's hall-effect encoder is 42 counts/rev
 
         public static final double k_WheelDiameterMeters = 0.0985;
+        public static final double k_WheelCircumference = k_WheelDiameterMeters * Math.PI;
         public static final double k_MK3SwerveModuleGearRatio = 6.86;
+        public static final double k_CANCoderVelocityCoeffient = k_WheelCircumference / (60 * k_MK3SwerveModuleGearRatio); //This converts RPMs to m/s
 
         public static final double k_DriveEncoderDistancePerPulse =
             // Assumes the encoders are directly mounted on the wheel shafts
@@ -132,12 +135,12 @@ public final class Constants
 
         public static final class DriveModulePIDValues
         {
-            public static final double k_driveP = 15.0;
+            public static final double k_driveP = 20.0;
             public static final double k_driveI = 0.01;
             public static final double k_driveD = 0.1;
 
             public static final double k_driveIz = 0; 
-            public static final double k_driveFF = .2; // feedforward
+            public static final double k_driveFF = 1; // feedforward
             
             public static final double k_driveMaxOutput = 1; 
             public static final double k_driveMinOutput = -1;

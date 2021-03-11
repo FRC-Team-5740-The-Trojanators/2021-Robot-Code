@@ -86,6 +86,8 @@ public class SwerveModule
         canCoderConfiguration.magnetOffsetDegrees = offset.getDegrees();
         canCoderConfiguration.initializationStrategy = SensorInitializationStrategy.BootToAbsolutePosition;
         canCoder.configAllSettings(canCoderConfiguration);
+
+        m_driveEncoder.setVelocityConversionFactor(SwerveDriveModuleConstants.k_CANCoderVelocityCoeffient);
     }
 
 
@@ -142,6 +144,7 @@ public class SwerveModule
         double currentTicks = m_moduleSteeringEncoder.getPosition() / m_moduleSteeringEncoder.configGetFeedbackCoefficient();
         double desiredTicks = currentTicks + deltaTicks;
         setAngle = m_steeringPIDController.calculate(currentTicks, desiredTicks);
+
         if(Math.abs(setAngle) > SteeringControllerPIDValues.k_steerDeadband)
         {
             angleMotor.set(setAngle);
