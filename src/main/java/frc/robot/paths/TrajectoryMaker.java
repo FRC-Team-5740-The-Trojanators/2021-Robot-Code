@@ -31,19 +31,19 @@ public class TrajectoryMaker
     public static Trajectory MakeATrajectory()
     {
         List<Trajectory.State> states = new ArrayList<>();
-        for(int i = 0; i < FiveMeterPath.FiveMeterPath.length; i++)
+        for(int i = 0; i < TenMeterPath.TenMeterPath.length; i++)
         {
 
-            FiveMeterPath.FiveMeterPath[i][HOLOHEADING] *= Math.PI/ 180;
-            FiveMeterPath.FiveMeterPath[i][CURVERAD] *= Math.PI/ 180;
+            TenMeterPath.TenMeterPath[i][HOLOHEADING] *= Math.PI/ 180;
+            TenMeterPath.TenMeterPath[i][CURVERAD] *= Math.PI/ 180;
 
-            double timeAtI = FiveMeterPath.FiveMeterPath[i][TIME];
-            double velocityAtI = FiveMeterPath.FiveMeterPath[i][VELOCITY];
-            double accelerationAtI = FiveMeterPath.FiveMeterPath[i][ACCEL];
-            double xAtI = FiveMeterPath.FiveMeterPath[i][X];
-            double yAtI = FiveMeterPath.FiveMeterPath[i][Y];
-            double headingAtI = FiveMeterPath.FiveMeterPath[i][HOLOHEADING];
-            double curveAtI = FiveMeterPath.FiveMeterPath[i][CURVERAD];
+            double timeAtI = TenMeterPath.TenMeterPath[i][TIME];
+            double velocityAtI = TenMeterPath.TenMeterPath[i][VELOCITY];
+            double accelerationAtI = TenMeterPath.TenMeterPath[i][ACCEL];
+            double xAtI = TenMeterPath.TenMeterPath[i][X];
+            double yAtI = TenMeterPath.TenMeterPath[i][Y];
+            double headingAtI = TenMeterPath.TenMeterPath[i][HOLOHEADING];
+            double curveAtI = TenMeterPath.TenMeterPath[i][CURVERAD];
 
 
             Rotation2d rotation = new Rotation2d(headingAtI);
