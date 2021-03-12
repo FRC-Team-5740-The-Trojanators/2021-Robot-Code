@@ -145,6 +145,17 @@ public class DriveSubsystem extends SubsystemBase
 
     }
 
+    public double getPoseX(){
+
+        return m_odometry.getPoseMeters().getX();
+    }
+
+    public double getPoseY(){
+
+        return m_odometry.getPoseMeters().getY();
+    }
+
+
     public SwerveDriveOdometry getOdometry()
     {
         return m_odometry;
