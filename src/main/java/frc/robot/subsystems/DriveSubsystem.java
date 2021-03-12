@@ -77,6 +77,12 @@ public class DriveSubsystem extends SubsystemBase
                 m_imu.reset(); //recalibrates gyro offset
             }
         //}
+
+        modules[0].resetDriveEncoder();
+        modules[1].resetDriveEncoder();
+        modules[2].resetDriveEncoder();
+        modules[3].resetDriveEncoder();
+
     }
 
     public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) 
@@ -118,6 +124,7 @@ public class DriveSubsystem extends SubsystemBase
 
      // m_pose = m_odometry.update(gyroAngle, modules[0].getState(), modules[1].getState(), modules[2].getState(), modules[3].getState());
      m_odometry.update(gyroAngle, modules[0].getState(), modules[1].getState(), modules[2].getState(), modules[3].getState());
+    
     }
   
     @Override

@@ -75,19 +75,22 @@ public class SwerveModule
         m_steeringPIDController.setP(SteeringControllerPIDValues.k_steerP);
         m_steeringPIDController.setI(SteeringControllerPIDValues.k_steerI);
         m_steeringPIDController.setD(SteeringControllerPIDValues.k_steerD);
+        m_steeringPIDController.setTolerance(SteeringControllerPIDValues.k_ToleranceInTicks);
 
         m_driverPIDController.setP(DriveModulePIDValues.k_driveP);
         m_driverPIDController.setI(DriveModulePIDValues.k_driveI);
         m_driverPIDController.setD(DriveModulePIDValues.k_driveD);
         m_driverPIDController.setFF(DriveModulePIDValues.k_driveFF);
 
+        m_driverPIDController.setOutputRange(-1, 1);
         
         CANCoderConfiguration canCoderConfiguration = new CANCoderConfiguration();
         canCoderConfiguration.magnetOffsetDegrees = offset.getDegrees();
         canCoderConfiguration.initializationStrategy = SensorInitializationStrategy.BootToAbsolutePosition;
         canCoder.configAllSettings(canCoderConfiguration);
 
-        m_driveEncoder.setVelocityConversionFactor(SwerveDriveModuleConstants.k_CANCoderVelocityCoeffient);
+        m_driveEncoder.setVelocityConversionFactor(SwerveDriveModuleConstants.k_CANEncoderVelocityCoefficient);
+        m_driveEncoder.setPositionConversionFactor(SwerveDriveModuleConstants.k_CANEncoderPositionCoefficient);
     }
 
 
@@ -147,7 +150,7 @@ public class SwerveModule
 
         if(Math.abs(setAngle) > SteeringControllerPIDValues.k_steerDeadband)
         {
-            angleMotor.set(setAngle);
+          angleMotor.set(setAngle);
         } 
         else 
         {
@@ -185,12 +188,19 @@ public class SwerveModule
         return setpoint;
     }
 
+    public double getSparkMaxPosition(){
+        return m_driveEncoder.getPosition();
+    }
 
-    // /** Zeros all the SwerveModule encoders. */
-    // public void resetEncoders()
-    // {
-    //     m_driveEncoder.setPosition(0);
-    //     m_steeringEncoder.setPosition(0);
+    public double getRotationDegrees(){
+        return m_moduleSteeringEncoder.getPosition();
+    }
+
+    /** Zeros all the SwerveModule encoders. */
+    public void resetDriveEncoder()
+    {
+        m_driveEncoder.setPosition(0);
+        m_moduleSteeringEncoder.setPosition(0);
         
-    // }
+    }
 }

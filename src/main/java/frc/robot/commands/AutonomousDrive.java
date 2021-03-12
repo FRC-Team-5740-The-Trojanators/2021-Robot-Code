@@ -91,9 +91,10 @@ public class AutonomousDrive extends CommandBase {
     if (m_timer.get() < m_trajectory.getTotalTimeSeconds()) {
       m_goal = m_trajectory.sample(m_timer.get());
       var m_rotation = m_goal.poseMeters.getRotation();
-
-      ChassisSpeeds adjustedSpeeds = m_driveController.calculate(m_driveSubsystem.getPose(), m_goal, m_rotation);
       m_pose2d = m_driveSubsystem.getPose();
+
+      ChassisSpeeds adjustedSpeeds = m_driveController.calculate(m_pose2d, m_goal, m_rotation);
+      
       //m_pose2d = m_driveSubsystem.updateOdometry();
       m_driveSubsystem.drive(adjustedSpeeds.vxMetersPerSecond, adjustedSpeeds.vyMetersPerSecond, adjustedSpeeds.omegaRadiansPerSecond, false);
       SmartDashboard.putNumber("X Velocity", adjustedSpeeds.vxMetersPerSecond);

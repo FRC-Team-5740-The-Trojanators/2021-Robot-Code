@@ -74,7 +74,8 @@ public final class Constants
         public static final double k_WheelDiameterMeters = 0.0985;
         public static final double k_WheelCircumference = k_WheelDiameterMeters * Math.PI;
         public static final double k_MK3SwerveModuleGearRatio = 6.86;
-        public static final double k_CANCoderVelocityCoeffient = k_WheelCircumference / (60 * k_MK3SwerveModuleGearRatio); //This converts RPMs to m/s
+        public static final double k_CANEncoderVelocityCoefficient = k_WheelCircumference / (60 * k_MK3SwerveModuleGearRatio); //This converts RPMs to m/s
+        public static final double k_CANEncoderPositionCoefficient = k_WheelCircumference / k_MK3SwerveModuleGearRatio;
 
         public static final double k_DriveEncoderDistancePerPulse =
             // Assumes the encoders are directly mounted on the wheel shafts
@@ -157,9 +158,9 @@ public final class Constants
 
         public static final class SteeringControllerPIDValues
         {
-            public static final double k_steerP = 0.0005;
+            public static final double k_steerP = 0.0008;
             public static final double k_steerI= 0;
-            public static final double k_steerD = 0;
+            public static final double k_steerD = 0.000008;
 
             public static final double k_steerIz = 0; 
             public static final double k_steerFF = 0; // feedforward
@@ -172,9 +173,10 @@ public final class Constants
             public static final double k_steerMinVel = 0;
             public static final double k_steerMaxAcc = 1500;
 
-            public static final double k_steerDeadband = 0.05; // Deadband on the motor controller
+            public static final double k_steerDeadband = 0.02; // Deadband on the motor controller
             public static final int k_steerSmartMotionSlot = 0; // Is the gain schedule slot, the value is a number between 0 and 3. Each slot has its own set of gain values and can be changed in each control frame using SetReference().
 
+            public static final double k_ToleranceInTicks = 1;
         }
 
         

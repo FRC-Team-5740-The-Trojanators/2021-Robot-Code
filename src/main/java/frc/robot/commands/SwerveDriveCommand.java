@@ -36,7 +36,7 @@ public class SwerveDriveCommand extends CommandBase
         {
             if(stickValue < 0)
             {
-                return stickValue = -Math.pow(Math.abs(stickValue), 2);
+                return stickValue = -Math.pow(stickValue, 2);
             }
             else
             {
@@ -92,6 +92,18 @@ public class SwerveDriveCommand extends CommandBase
 
         SmartDashboard.putNumber("Current X Position", drivetrain.getPose().getX());
         SmartDashboard.putNumber("Current Y Position", drivetrain.getPose().getY());
+
+        SmartDashboard.putNumber(("Get Position LeftFront"), drivetrain.getModules()[0].getSparkMaxPosition());
+        SmartDashboard.putNumber(("Get Position RightFront"), drivetrain.getModules()[1].getSparkMaxPosition());
+        SmartDashboard.putNumber(("Get Position LeftRear"), drivetrain.getModules()[2].getSparkMaxPosition());
+        SmartDashboard.putNumber(("Get Position RightRear"), drivetrain.getModules()[3].getSparkMaxPosition());
+
+        SmartDashboard.putNumber(("Get Rotation LeftFront"), drivetrain.getModules()[0].getRotationDegrees());
+        SmartDashboard.putNumber(("Get Rotation RightFront"), drivetrain.getModules()[1].getRotationDegrees());
+        SmartDashboard.putNumber(("Get Rotation LeftRear"), drivetrain.getModules()[2].getRotationDegrees());
+        SmartDashboard.putNumber(("Get Rotation RightRear"), drivetrain.getModules()[3].getRotationDegrees());
+
+
         
     }
 }
