@@ -77,10 +77,10 @@ public class SwerveModule
         m_steeringPIDController.setD(SteeringControllerPIDValues.k_steerD);
         m_steeringPIDController.setTolerance(SteeringControllerPIDValues.k_ToleranceInTicks);
 
-        m_driverPIDController.setP(DriveModulePIDValues.k_driveP);
+        //m_driverPIDController.setP(DriveModulePIDValues.k_driveP);
         m_driverPIDController.setI(DriveModulePIDValues.k_driveI);
         m_driverPIDController.setD(DriveModulePIDValues.k_driveD);
-        m_driverPIDController.setFF(DriveModulePIDValues.k_driveFF);
+       // m_driverPIDController.setFF(DriveModulePIDValues.k_driveFF);
 
         m_driverPIDController.setOutputRange(-1, 1);
         
@@ -92,7 +92,6 @@ public class SwerveModule
         m_driveEncoder.setVelocityConversionFactor(SwerveDriveModuleConstants.k_CANEncoderVelocityCoefficient);
         m_driveEncoder.setPositionConversionFactor(SwerveDriveModuleConstants.k_CANEncoderPositionCoefficient);
     }
-
 
     /**
      * Returns the current state of the module.
@@ -172,6 +171,25 @@ public class SwerveModule
     }
 
 
+    public void setDriveP(double value)
+    {
+        m_driverPIDController.setP(value);
+    }
+
+    public void setDriveI(double value)
+    {
+        m_driverPIDController.setI(value);
+    }
+
+    public void setDriveD(double value)
+    {
+        m_driverPIDController.setD(value);
+    }
+
+    public void setDriveFF(double value)
+    {
+        m_driverPIDController.setFF(value);
+    }
 
     public double getDriveMotor()
     {

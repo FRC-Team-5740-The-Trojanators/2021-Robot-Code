@@ -77,12 +77,12 @@ public class DriveSubsystem extends SubsystemBase
                 m_imu.reset(); //recalibrates gyro offset
             }
         //}
-
-        modules[0].resetDriveEncoder();
-        modules[1].resetDriveEncoder();
-        modules[2].resetDriveEncoder();
-        modules[3].resetDriveEncoder();
-
+        for(int i = 0; i < 4; i++)
+        {
+            modules[i].resetDriveEncoder();
+            modules[i].setDriveP(SwerveDriveModuleConstants.DriveModulePIDValues.k_driveP[i]);
+            modules[i].setDriveFF(SwerveDriveModuleConstants.DriveModulePIDValues.k_driveFF[i]);
+        }
     }
 
     public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) 

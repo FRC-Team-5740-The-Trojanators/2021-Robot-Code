@@ -36,6 +36,14 @@ public final class Constants
     
     public static final class SwerveDriveModuleConstants
     {
+        public static enum k_SwerveDriveModules
+        {
+            leftFront,
+            rightFront,
+            leftRear,
+            rightRear,
+        };
+
       // Distance between centers of right and left wheels on robot; unit is meters
       public static final double k_TrackWidth = 0.5842;
 
@@ -136,16 +144,29 @@ public final class Constants
 
         public static final class DriveModulePIDValues
         {
-            public static final double k_driveP = .01;
+            public static final double k_driveP[] = 
+            {
+                .01,
+                .01,
+                .01,
+                .01,
+            };
+
             public static final double k_driveI = 0.0;
             public static final double k_driveD = 0.0;
 
             public static final double k_driveIz = 0; 
-            public static final double k_driveFF = 0.22; // feedforward
+            public static final double k_driveFF[] = 
+            {
+                .215,
+                .22,
+                .224,
+                .228,
+            };
             
             public static final double k_driveMaxOutput = 1; 
             public static final double k_driveMinOutput = -1;
-            public static final double k_driveMaxRPM = 5600;
+            public static final double k_driveMaxRPM = 5600; 
 
             public static final double k_driveMaxVel = 5600; // rpm
             public static final double k_driveMinVel = 0;
@@ -160,7 +181,7 @@ public final class Constants
         {
             public static final double k_steerP = 0.0008;
             public static final double k_steerI= 0;
-            public static final double k_steerD = 0.000008;
+            public static final double k_steerD = 0.000008; 
 
             public static final double k_steerIz = 0; 
             public static final double k_steerFF = 0; // feedforward
