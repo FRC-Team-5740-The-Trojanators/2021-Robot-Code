@@ -93,6 +93,8 @@ public class SwerveDriveCommand extends CommandBase
         SmartDashboard.putNumber("Current X Position", drivetrain.getPose().getX());
         SmartDashboard.putNumber("Current Y Position", drivetrain.getPose().getY());
 
+        SmartDashboard.putNumber("DRIVE P", drivetrain.modules[0].getDrivePIDF("p"));
+
         SmartDashboard.putNumber(("Get Position LeftFront"), drivetrain.getModules()[0].getSparkMaxPosition());
         SmartDashboard.putNumber(("Get Position RightFront"), drivetrain.getModules()[1].getSparkMaxPosition());
         SmartDashboard.putNumber(("Get Position LeftRear"), drivetrain.getModules()[2].getSparkMaxPosition());

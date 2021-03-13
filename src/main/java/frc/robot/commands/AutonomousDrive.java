@@ -118,9 +118,20 @@ public class AutonomousDrive extends CommandBase {
       SmartDashboard.putNumber("trajectory time", m_trajectory.getTotalTimeSeconds());
      
     } else {
-      SmartDashboard.putNumber("else", m_timer.get());
+      m_goal = m_trajectory.getStates().get(m_trajectory.getStates().size() - 1); // ensures last state gets executed
+      var m_rotation = m_goal.poseMeters.getRotation(); 
+      m_pose2d = m_driveSubsystem.getPose();
+      
+      SmartDashboard.putNumber("timer", m_timer.get());
+      SmartDashboard.putNumber("trajectory time", m_trajectory.getTotalTimeSeconds());
+     
+      m_driveSubsystem.getPose();
+      
+      SmartDashboard.putNumber("Current X Position", m_driveSubsystem.getPoseX());
+      SmartDashboard.putNumber("Current Y Position", m_driveSubsystem.getPoseY());
+      SmartDashboard.putNumber("m_rotation", m_rotation.getDegrees());
       m_isFinished = true;
-
+    
     }
     
     
@@ -130,7 +141,6 @@ public class AutonomousDrive extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     m_driveSubsystem.drive(0, 0, 0, false);
-    m_driveSubsystem.resetOdometry(new Pose2d(new Translation2d(0, 0), new Rotation2d(0)));
   }
 
   // Returns true when the command should end.

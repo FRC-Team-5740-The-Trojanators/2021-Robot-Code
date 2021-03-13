@@ -167,7 +167,8 @@ public class SwerveModule
 
        //Drive Motor Calc
         //double feetPerSecond = Units.metersToFeet(state.speedMetersPerSecond);
-        m_driverPIDController.setReference(state.speedMetersPerSecond / SwerveDriveModuleConstants.kMaxSpeed, ControlType.kDutyCycle);
+       // m_driverPIDController.setReference(state.speedMetersPerSecond / SwerveDriveModuleConstants.kMaxSpeed, ControlType.kDutyCycle);
+       m_driverPIDController.setReference(state.speedMetersPerSecond, ControlType.kVelocity);
     }
 
 
@@ -194,6 +195,27 @@ public class SwerveModule
 
     public double getRotationDegrees(){
         return m_moduleSteeringEncoder.getPosition();
+    }
+
+    public double getDrivePIDF(String parameter){
+        if(parameter.toLowerCase() == "p")
+        {
+            return m_driverPIDController.getP();
+        }else if(parameter.toLowerCase() == "i")
+        {
+            return m_driverPIDController.getI();
+        }else if(parameter.toLowerCase() == "d")
+        {
+            return m_driverPIDController.getD();
+        }else if(parameter.toLowerCase() == "ff")
+        {
+            return m_driverPIDController.getFF();
+        }
+        else
+        {
+            return -1;
+        }
+
     }
 
     /** Zeros all the SwerveModule encoders. */

@@ -96,7 +96,7 @@ public class DriveSubsystem extends SubsystemBase
         for (int i = 0; i < m_states.length; i++) 
         {
             SwerveModule module = modules[i];
-            SmartDashboard.putNumber(String.valueOf(i) + " Drive Velocity", module.getDriveMotor());
+            SmartDashboard.putNumber(String.valueOf(i) + " Drive Velocity", module.getDriveVelocity());
             //SmartDashboard.putNumber(String.valueOf(i) + "Steer Encoder", module.getSteeringEncoderValue());
             //below is a line to comment out from step 5
             module.setDesiredState(m_states[i]);
