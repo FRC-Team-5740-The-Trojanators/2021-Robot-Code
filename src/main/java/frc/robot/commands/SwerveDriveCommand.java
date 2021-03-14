@@ -76,8 +76,8 @@ public class SwerveDriveCommand extends CommandBase
 
         boolean calibrate = controller.getBumper(GenericHID.Hand.kLeft);
 
-       // drivetrain.drive(xSpeed, ySpeed, rot, true);
-       drivetrain.drive(3, 0, 0, true);
+        drivetrain.drive(xSpeed, ySpeed, rot, true);
+       // drivetrain.drive(3, 0, 0, true);
 
         SmartDashboard.putNumber("Commanded X Velocity", xSpeed);
         SmartDashboard.putNumber("Commanded Y Velocity", ySpeed);

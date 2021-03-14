@@ -31,16 +31,16 @@ public class TrajectoryMaker
     public static Trajectory MakeATrajectory()
     {
         List<Trajectory.State> states = new ArrayList<>();
-        for(int i = 0; i < FiveMeterPath.FiveMeterPath.length - 1 ; i++)
+        for(int i = 0; i < RotateInPlacePath.RotateInPlacePath.length - 1 ; i++)
         {
 
-            double timeAtI = FiveMeterPath.FiveMeterPath[i][TIME];
-            double velocityAtI = FiveMeterPath.FiveMeterPath[i][VELOCITY];
-            double accelerationAtI = FiveMeterPath.FiveMeterPath[i][ACCEL];
-            double xAtI = FiveMeterPath.FiveMeterPath[i][X];
-            double yAtI = FiveMeterPath.FiveMeterPath[i][Y];
-            double headingAtI = FiveMeterPath.FiveMeterPath[i][HOLOHEADING] * Math.PI/ 180;
-            double curveAtI = FiveMeterPath.FiveMeterPath[i][CURVERAD] * Math.PI/ 180;
+            double timeAtI = RotateInPlacePath.RotateInPlacePath[i][TIME];
+            double velocityAtI = RotateInPlacePath.RotateInPlacePath[i][VELOCITY];
+            double accelerationAtI = RotateInPlacePath.RotateInPlacePath[i][ACCEL];
+            double xAtI = RotateInPlacePath.RotateInPlacePath[i][X];
+            double yAtI = RotateInPlacePath.RotateInPlacePath[i][Y];
+            double headingAtI = RotateInPlacePath.RotateInPlacePath[i][HOLOHEADING] * Math.PI/ 180;
+            double curveAtI = RotateInPlacePath.RotateInPlacePath[i][CURVERAD] * Math.PI/ 180;
 
             Rotation2d rotation = new Rotation2d(headingAtI);
             Pose2d Pose = new Pose2d(xAtI, yAtI, rotation);

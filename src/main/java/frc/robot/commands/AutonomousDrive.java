@@ -76,10 +76,10 @@ public class AutonomousDrive extends CommandBase {
     //m_driveSubsystem.resetIMU();
     m_isFinished = false;
 
-    m_xController = new PIDController(.005, 0, 0);
-    m_yController = new PIDController(.005, 0, 0);
-    m_trapezoidProfile = new TrapezoidProfile.Constraints(Math.PI * 2, Math.PI);
-    m_rotController = new ProfiledPIDController(.002, 0, 0, m_trapezoidProfile);
+    m_xController = new PIDController(.00001, 0, 0);
+    m_yController = new PIDController(.00001, 0, 0);
+    m_trapezoidProfile = new TrapezoidProfile.Constraints(2, 10);
+    m_rotController = new ProfiledPIDController(.2, 0, 0, m_trapezoidProfile);
 
     m_driveController = new HolonomicDriveController(m_xController, m_yController, m_rotController);
     m_timer = new Timer();
@@ -101,7 +101,7 @@ public class AutonomousDrive extends CommandBase {
       ChassisSpeeds adjustedSpeeds = m_driveController.calculate(m_driveSubsystem.getPose(), m_goal, m_rotation);
       
       //m_pose2d = m_driveSubsystem.updateOdometry();
-      m_driveSubsystem.drive(adjustedSpeeds.vxMetersPerSecond, adjustedSpeeds.vyMetersPerSecond, adjustedSpeeds.omegaRadiansPerSecond, false);
+      m_driveSubsystem.drive(adjustedSpeeds.vxMetersPerSecond, adjustedSpeeds.vyMetersPerSecond, adjustedSpeeds.omegaRadiansPerSecond * SwerveDriveModuleConstants.k_RobotRadius, false);
       SmartDashboard.putNumber("X Velocity", adjustedSpeeds.vxMetersPerSecond);
       SmartDashboard.putNumber("Y Velocity", adjustedSpeeds.vyMetersPerSecond);
       SmartDashboard.putNumber("Rot Speed", adjustedSpeeds.omegaRadiansPerSecond);

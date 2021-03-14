@@ -49,6 +49,8 @@ public final class Constants
 
       // Distance between front and back wheels on robot; unit is meters
       public static final double k_WheelBase = 0.5842;
+
+      public static final double k_RobotRadius = .4131; //distance from center of robot to the wheel in m
       
         //public static final double k_MaxModuleAngularSpeedRadiansPerSecond = 2 * Math.PI;
         //public static final double k_MaxModuleAngularAccelerationRadiansPerSecondSquared = 2 * Math.PI;
@@ -61,7 +63,7 @@ public final class Constants
         public static double frontLeftOffset = 20;//27.333984;
         public static double frontRightOffset = 78.574219;
         public static double backLeftOffset = 160;//155.195313;
-        public static double backRightOffset = 3;//357.880859;
+        public static double backRightOffset = 2;//357.880859;
 
         public static final double k_SteeringEncoderCoefficient = (Math.PI * 2) / 4096.0; // this is 2π radians, dividided by the 12-bit encoder precision 
 
