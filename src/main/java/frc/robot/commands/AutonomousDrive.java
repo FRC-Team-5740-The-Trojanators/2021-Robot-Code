@@ -130,7 +130,7 @@ public class AutonomousDrive extends CommandBase {
       SmartDashboard.putNumber("Current X Position", m_driveSubsystem.getPoseX());
       SmartDashboard.putNumber("Current Y Position", m_driveSubsystem.getPoseY());
       SmartDashboard.putNumber("m_rotation", m_rotation.getDegrees());
-      m_isFinished = true;
+      isFinished();
     
     }
     
@@ -146,6 +146,7 @@ public class AutonomousDrive extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    m_isFinished = true;
     return m_isFinished;
   }
 }
