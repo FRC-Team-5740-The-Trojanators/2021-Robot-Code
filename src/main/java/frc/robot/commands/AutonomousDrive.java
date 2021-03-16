@@ -4,11 +4,6 @@
 
 package frc.robot.commands;
 
-import java.io.IOException;
-import java.nio.file.Path;
-
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
@@ -19,11 +14,8 @@ import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.controller.HolonomicDriveController;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
-import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.Subsystem;
-import frc.robot.Constants.SwerveDriveModuleConstants;
 import frc.robot.paths.TrajectoryMaker;
 import frc.robot.subsystems.DriveSubsystem;
 
@@ -42,7 +34,6 @@ public class AutonomousDrive extends CommandBase {
   private Trajectory.State m_goal;
   private Timer m_timer;
   private Boolean m_isFinished;
-  private Pose2d m_pose2d;
   
   public void loadTrajectory()
   {
@@ -73,7 +64,7 @@ public class AutonomousDrive extends CommandBase {
   @Override
   public void initialize() {
     loadTrajectory();
-    //m_driveSubsystem.resetIMU();
+    
     m_isFinished = false;
 
     m_xController = new PIDController(.00001, 0, 0);
@@ -83,63 +74,48 @@ public class AutonomousDrive extends CommandBase {
 
     m_driveController = new HolonomicDriveController(m_xController, m_yController, m_rotController);
     m_timer = new Timer();
+    m_driveSubsystem.resetOdometry(new Pose2d(new Translation2d(0, 0), new Rotation2d(0)));
     m_timer.reset();
     m_timer.start();
-
-    m_driveSubsystem.resetOdometry(new Pose2d(new Translation2d(0, 0), new Rotation2d(0)));
   }
   
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    if (m_timer.get() < m_trajectory.getTotalTimeSeconds())
+  public void execute() 
+  {
+    m_goal = m_trajectory.sample(m_timer.get());
+
+    ChassisSpeeds adjustedSpeeds = m_driveController.calculate(m_driveSubsystem.getPose(), m_goal, m_goal.poseMeters.getRotation());
+    
+    m_driveSubsystem.autoDrive(adjustedSpeeds);
+
+    SmartDashboard.putNumber("X Velocity", adjustedSpeeds.vxMetersPerSecond);
+    SmartDashboard.putNumber("Y Velocity", adjustedSpeeds.vyMetersPerSecond);
+    SmartDashboard.putNumber("Rot Speed", adjustedSpeeds.omegaRadiansPerSecond);
+    SmartDashboard.putNumber("Current X Position", m_driveSubsystem.getPoseX());
+    SmartDashboard.putNumber("Current Y Position", m_driveSubsystem.getPoseY());
+    SmartDashboard.putNumber("rotation rate", m_driveSubsystem.getGyroRate());
+
+    SmartDashboard.putNumber("Reading X Velocity LeftFront", m_driveSubsystem.getModules()[0].getDriveVelocity());
+    SmartDashboard.putNumber("Reading X Velocity RightFront", m_driveSubsystem.getModules()[1].getDriveVelocity());
+    SmartDashboard.putNumber("Reading X Velocity LeftRear", m_driveSubsystem.getModules()[2].getDriveVelocity());
+    SmartDashboard.putNumber("Reading X Velocity RightRear", m_driveSubsystem.getModules()[3].getDriveVelocity());
+
+    SmartDashboard.putNumber("timer", m_timer.get());
+    SmartDashboard.putNumber("trajectory time", m_trajectory.getTotalTimeSeconds());
+    if (m_timer.get() > m_trajectory.getTotalTimeSeconds())
     {
-      m_goal = m_trajectory.sample(m_timer.get());
-      var m_rotation = m_goal.poseMeters.getRotation();
-      m_pose2d = m_driveSubsystem.getPose();
-
-      ChassisSpeeds adjustedSpeeds = m_driveController.calculate(m_driveSubsystem.getPose(), m_goal, m_rotation);
-      
-      //m_pose2d = m_driveSubsystem.updateOdometry();
-      m_driveSubsystem.drive(adjustedSpeeds.vxMetersPerSecond, adjustedSpeeds.vyMetersPerSecond, adjustedSpeeds.omegaRadiansPerSecond * SwerveDriveModuleConstants.k_RobotRadius, false);
-      SmartDashboard.putNumber("X Velocity", adjustedSpeeds.vxMetersPerSecond);
-      SmartDashboard.putNumber("Y Velocity", adjustedSpeeds.vyMetersPerSecond);
-      SmartDashboard.putNumber("Rot Speed", adjustedSpeeds.omegaRadiansPerSecond);
-      SmartDashboard.putNumber("Current X Position", m_driveSubsystem.getPoseX());
-      SmartDashboard.putNumber("Current Y Position", m_driveSubsystem.getPoseY());
-      SmartDashboard.putNumber("m_rotation", m_rotation.getDegrees());
-
-      SmartDashboard.putNumber("Reading X Velocity LeftFront", m_driveSubsystem.getModules()[0].getDriveVelocity());
-      SmartDashboard.putNumber("Reading X Velocity RightFront", m_driveSubsystem.getModules()[1].getDriveVelocity());
-      SmartDashboard.putNumber("Reading X Velocity LeftRear", m_driveSubsystem.getModules()[2].getDriveVelocity());
-      SmartDashboard.putNumber("Reading X Velocity RightRear", m_driveSubsystem.getModules()[3].getDriveVelocity());
-
-      SmartDashboard.putNumber("timer", m_timer.get());
-      SmartDashboard.putNumber("trajectory time", m_trajectory.getTotalTimeSeconds());
-     
-    } else {
-      m_goal = m_trajectory.getStates().get(m_trajectory.getStates().size() - 1); // ensures last state gets executed
-      var m_rotation = m_goal.poseMeters.getRotation(); 
-      m_pose2d = m_driveSubsystem.getPose();
-      
-      SmartDashboard.putNumber("timer", m_timer.get());
-      SmartDashboard.putNumber("trajectory time", m_trajectory.getTotalTimeSeconds());
-     
-      m_driveSubsystem.getPose();
-      
-      SmartDashboard.putNumber("Current X Position", m_driveSubsystem.getPoseX());
-      SmartDashboard.putNumber("Current Y Position", m_driveSubsystem.getPoseY());
-      SmartDashboard.putNumber("m_rotation", m_rotation.getDegrees());
       m_isFinished = true;
-    
+      m_timer.stop();
     }
-    
-    
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
+  public void end(boolean interrupted)
+  {
+    m_isFinished = true;
+    m_timer.stop();
     m_driveSubsystem.drive(0, 0, 0, false);
   }
 

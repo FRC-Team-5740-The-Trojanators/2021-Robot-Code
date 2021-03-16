@@ -75,6 +75,7 @@ public class DriveSubsystem extends SubsystemBase
             if(calibrateGyro)
             {
                 m_imu.reset(); //recalibrates gyro offset
+                m_imu.getRate();
             }
         //}
         for(int i = 0; i < 4; i++)
@@ -105,6 +106,21 @@ public class DriveSubsystem extends SubsystemBase
 
     }
 
+
+    public void autoDrive(ChassisSpeeds adjustedSpeeds) 
+    {       
+        m_states = SwerveDriveModuleConstants.kinematics.toSwerveModuleStates(adjustedSpeeds);
+        SwerveDriveKinematics.normalizeWheelSpeeds(m_states, SwerveDriveModuleConstants.kMaxSpeed);
+        for (int i = 0; i < m_states.length; i++) 
+        {
+            SwerveModule module = modules[i];
+            module.setDesiredState(m_states[i]);
+        } 
+    }
+
+    public double getGyroRate(){
+        return m_imu.getRate();
+    }
 
     public SwerveModuleState[] getStates()
     {
