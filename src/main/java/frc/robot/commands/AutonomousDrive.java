@@ -152,7 +152,7 @@ public class AutonomousDrive extends CommandBase {
       SmartDashboard.putNumber("m_rotation", m_rotation.getDegrees());
       //isFinished();
       m_isFinished = true;
-    }
+  }
     
     
   }
@@ -166,6 +166,7 @@ public class AutonomousDrive extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    m_isFinished = true;
     return m_isFinished;
   }
 }
