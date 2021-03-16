@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.List;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
@@ -19,10 +20,13 @@ import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.controller.HolonomicDriveController;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.Constants;
 import frc.robot.Constants.SwerveDriveModuleConstants;
 import frc.robot.paths.TrajectoryMaker;
 import frc.robot.subsystems.DriveSubsystem;
@@ -59,11 +63,20 @@ public class AutonomousDrive extends CommandBase {
     // }
   }
 
+  public void trajectoryGenerator()
+  {
+    TrajectoryConfig config = new TrajectoryConfig(Constants.SwerveDriveModuleConstants.kMaxSpeed, 1).setKinematics(Constants.SwerveDriveModuleConstants.kinematics);
+  
+    m_trajectory = TrajectoryGenerator.generateTrajectory(new Pose2d(0,0, new Rotation2d(0)), List.of(new Translation2d(1, 0), new Translation2d(2, 0)), new Pose2d(3, 0, new Rotation2d(0)), config);
+    
+  }
+   
+
   /** Creates a new AutonomousDrive. */
   public AutonomousDrive(DriveSubsystem driveSubsystem) {
     m_driveSubsystem = driveSubsystem;
     m_goal = new Trajectory.State();
-    m_trajectory = new Trajectory();
+    //m_trajectory = new Trajectory();
     m_isFinished = false;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(driveSubsystem);
@@ -72,21 +85,24 @@ public class AutonomousDrive extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    loadTrajectory();
+    //loadTrajectory();
+    trajectoryGenerator();
     //m_driveSubsystem.resetIMU();
     m_isFinished = false;
 
-    m_xController = new PIDController(.00001, 0, 0);
-    m_yController = new PIDController(.00001, 0, 0);
-    m_trapezoidProfile = new TrapezoidProfile.Constraints(2, 10);
-    m_rotController = new ProfiledPIDController(.2, 0, 0, m_trapezoidProfile);
+    m_xController = new PIDController(.01, 0, 0);
+    m_yController = new PIDController(.01, 0, 0);
+    m_trapezoidProfile = new TrapezoidProfile.Constraints(Math.PI, 2 * Math.PI);
+    m_rotController = new ProfiledPIDController(.002, 0, 0, m_trapezoidProfile);
 
     m_driveController = new HolonomicDriveController(m_xController, m_yController, m_rotController);
     m_timer = new Timer();
     m_timer.reset();
     m_timer.start();
 
-    m_driveSubsystem.resetOdometry(new Pose2d(new Translation2d(0, 0), new Rotation2d(0)));
+   // m_driveSubsystem.resetOdometry(new Pose2d(new Translation2d(0, 0), new Rotation2d(0)));
+    m_driveSubsystem.resetOdometry(m_trajectory.getInitialPose());
+
   }
   
   // Called every time the scheduler runs while the command is scheduled.
@@ -98,10 +114,10 @@ public class AutonomousDrive extends CommandBase {
       var m_rotation = m_goal.poseMeters.getRotation();
       m_pose2d = m_driveSubsystem.getPose();
 
-      ChassisSpeeds adjustedSpeeds = m_driveController.calculate(m_driveSubsystem.getPose(), m_goal, m_rotation);
+      ChassisSpeeds adjustedSpeeds = m_driveController.calculate(m_pose2d, m_goal, m_rotation);
       
       //m_pose2d = m_driveSubsystem.updateOdometry();
-      m_driveSubsystem.drive(adjustedSpeeds.vxMetersPerSecond, adjustedSpeeds.vyMetersPerSecond, adjustedSpeeds.omegaRadiansPerSecond * SwerveDriveModuleConstants.k_RobotRadius, false);
+      m_driveSubsystem.drive(adjustedSpeeds.vxMetersPerSecond, adjustedSpeeds.vyMetersPerSecond, adjustedSpeeds.omegaRadiansPerSecond /* SwerveDriveModuleConstants.k_RobotRadius*/, false);
       SmartDashboard.putNumber("X Velocity", adjustedSpeeds.vxMetersPerSecond);
       SmartDashboard.putNumber("Y Velocity", adjustedSpeeds.vyMetersPerSecond);
       SmartDashboard.putNumber("Rot Speed", adjustedSpeeds.omegaRadiansPerSecond);
@@ -122,6 +138,10 @@ public class AutonomousDrive extends CommandBase {
       var m_rotation = m_goal.poseMeters.getRotation(); 
       m_pose2d = m_driveSubsystem.getPose();
       
+      ChassisSpeeds adjustedSpeeds = m_driveController.calculate(m_pose2d, m_goal, m_rotation);
+      
+      m_driveSubsystem.drive(adjustedSpeeds.vxMetersPerSecond, adjustedSpeeds.vyMetersPerSecond, adjustedSpeeds.omegaRadiansPerSecond /* SwerveDriveModuleConstants.k_RobotRadius*/, false);
+      
       SmartDashboard.putNumber("timer", m_timer.get());
       SmartDashboard.putNumber("trajectory time", m_trajectory.getTotalTimeSeconds());
      
@@ -130,8 +150,8 @@ public class AutonomousDrive extends CommandBase {
       SmartDashboard.putNumber("Current X Position", m_driveSubsystem.getPoseX());
       SmartDashboard.putNumber("Current Y Position", m_driveSubsystem.getPoseY());
       SmartDashboard.putNumber("m_rotation", m_rotation.getDegrees());
+      //isFinished();
       m_isFinished = true;
-    
     }
     
     

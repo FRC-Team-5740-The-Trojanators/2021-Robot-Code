@@ -105,6 +105,24 @@ public class DriveSubsystem extends SubsystemBase
 
     }
 
+    // public void autoDrive(ChassisSpeeds adjustedSpeeds) 
+    // {       
+    //   m_states =
+    //     SwerveDriveModuleConstants.kinematics.toSwerveModuleStates(adjustedSpeeds);
+          
+    //     SwerveDriveKinematics.normalizeWheelSpeeds(m_states, SwerveDriveModuleConstants.kMaxSpeed);
+    //     for (int i = 0; i < m_states.length; i++) 
+    //     {
+    //         SwerveModule module = modules[i];
+    //         SmartDashboard.putNumber(String.valueOf(i) + " Drive Velocity", module.getDriveVelocity());
+    //         //SmartDashboard.putNumber(String.valueOf(i) + "Steer Encoder", module.getSteeringEncoderValue());
+    //         //below is a line to comment out from step 5
+    //         module.setDesiredState(m_states[i]);
+    //         //SmartDashboard.putNumber("gyro Angle", m_imu.getAngle());
+    //     } 
+
+    // }
+
 
     public SwerveModuleState[] getStates()
     {

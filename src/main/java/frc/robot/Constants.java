@@ -56,7 +56,7 @@ public final class Constants
         //public static final double k_MaxModuleAngularAccelerationRadiansPerSecondSquared = 2 * Math.PI;
         public static final double kMaxSpeed = Units.feetToMeters(15);
         public static final double kXYjoystickCoefficient = .75;
-        public static final double kMaxAngularSpeed = 0.5 * Math.sqrt(2 * k_TrackWidth * k_TrackWidth) * Math.PI * Units.feetToMeters(15); // ???? rotation per second
+        public static final double kMaxAngularSpeed = Units.feetToMeters(15) / k_RobotRadius; //Gives in radians / s (/s is implied);
         public static double fieldCalibration = 0;
 
         //Angle offsets

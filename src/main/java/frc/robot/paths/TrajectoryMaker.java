@@ -9,6 +9,7 @@ import java.util.List;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
+import frc.robot.Constants;
 
 
 
@@ -31,16 +32,16 @@ public class TrajectoryMaker
     public static Trajectory MakeATrajectory()
     {
         List<Trajectory.State> states = new ArrayList<>();
-        for(int i = 0; i < RotateInPlacePath.RotateInPlacePath.length - 1 ; i++)
+        for(int i = 0; i < Y5MeterPath.Y5MeterPath.length - 1 ; i++)
         {
 
-            double timeAtI = RotateInPlacePath.RotateInPlacePath[i][TIME];
-            double velocityAtI = RotateInPlacePath.RotateInPlacePath[i][VELOCITY];
-            double accelerationAtI = RotateInPlacePath.RotateInPlacePath[i][ACCEL];
-            double xAtI = RotateInPlacePath.RotateInPlacePath[i][X];
-            double yAtI = RotateInPlacePath.RotateInPlacePath[i][Y];
-            double headingAtI = RotateInPlacePath.RotateInPlacePath[i][HOLOHEADING] * Math.PI/ 180;
-            double curveAtI = RotateInPlacePath.RotateInPlacePath[i][CURVERAD] * Math.PI/ 180;
+            double timeAtI = Y5MeterPath.Y5MeterPath[i][TIME];
+            double velocityAtI = Y5MeterPath.Y5MeterPath[i][VELOCITY];
+            double accelerationAtI = Y5MeterPath.Y5MeterPath[i][ACCEL];
+            double xAtI = Y5MeterPath.Y5MeterPath[i][X];
+            double yAtI = Y5MeterPath.Y5MeterPath[i][Y];
+            double headingAtI = Y5MeterPath.Y5MeterPath[i][HOLOHEADING] * Math.PI/ 180;
+            double curveAtI = Y5MeterPath.Y5MeterPath[i][CURVERAD] * Math.PI/ 180 / Constants.SwerveDriveModuleConstants.k_RobotRadius;
 
             Rotation2d rotation = new Rotation2d(headingAtI);
             Pose2d Pose = new Pose2d(xAtI, yAtI, rotation);
