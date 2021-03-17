@@ -12,6 +12,7 @@ import frc.robot.Constants.HIDConstants;
 import frc.robot.commands.AutonomousDrive;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.SwerveDriveCommand;
+import frc.robot.paths.PathsGenerator;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.SwerveModule;
@@ -43,6 +44,12 @@ public class RobotContainer
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer()
     {
+        System.out.println("here!");
+        PathsGenerator pg = new PathsGenerator();
+        pg.exportTrajectory();
+        System.out.println("now here!");
+
+
         // Configure the button bindings
         configureButtonBindings();
  
