@@ -67,8 +67,12 @@ public class AutonomousDrive extends CommandBase {
   {
     TrajectoryConfig config = new TrajectoryConfig(Constants.SwerveDriveModuleConstants.kMaxSpeed, 1).setKinematics(Constants.SwerveDriveModuleConstants.kinematics);
   
-    m_trajectory = TrajectoryGenerator.generateTrajectory(new Pose2d(0,0, new Rotation2d(0)), List.of(new Translation2d(1, 0), new Translation2d(2, 0)), new Pose2d(3, 0, new Rotation2d(0)), config);
+    //m_trajectory = TrajectoryGenerator.generateTrajectory(new Pose2d(0,0, new Rotation2d(0)), List.of(new Translation2d(1, 0), new Translation2d(2, 0)), new Pose2d(3, 0, new Rotation2d(0)), config);
     
+    //m_trajectory = TrajectoryGenerator.generateTrajectory(new Pose2d(0,0, new Rotation2d(0)), List.of(new Translation2d(0, 1), new Translation2d(0, 1.5), new Translation2d(0, 2), new Translation2d(0, 2.5)), new Pose2d(0, 3, new Rotation2d(0)), config);
+   
+  m_trajectory = TrajectoryGenerator.generateTrajectory(List.of(new Pose2d(0, 0, new Rotation2d(0)), new Pose2d(2.8, 0, new Rotation2d(0)), new Pose2d(3, 0, new Rotation2d(0)), new Pose2d(3, 1, new Rotation2d(0))), config);
+  
   }
    
 
@@ -93,7 +97,7 @@ public class AutonomousDrive extends CommandBase {
     m_xController = new PIDController(.01, 0, 0);
     m_yController = new PIDController(.01, 0, 0);
     m_trapezoidProfile = new TrapezoidProfile.Constraints(Math.PI, 2 * Math.PI);
-    m_rotController = new ProfiledPIDController(.002, 0, 0, m_trapezoidProfile);
+    m_rotController = new ProfiledPIDController(.000002, 0, 0, m_trapezoidProfile);
 
     m_driveController = new HolonomicDriveController(m_xController, m_yController, m_rotController);
     m_timer = new Timer();
@@ -166,7 +170,6 @@ public class AutonomousDrive extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    m_isFinished = true;
     return m_isFinished;
   }
 }
