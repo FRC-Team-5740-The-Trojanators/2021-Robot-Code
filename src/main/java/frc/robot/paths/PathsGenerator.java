@@ -6,8 +6,10 @@ import java.util.List;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.file.Path;
 
 import edu.wpi.first.wpilibj.geometry.Pose2d;
@@ -16,6 +18,7 @@ import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
+import edu.wpi.first.wpilibj.trajectory.Trajectory.State;
 import frc.robot.Constants;
 
 public class PathsGenerator {
@@ -51,6 +54,9 @@ public class PathsGenerator {
     public void exportTrajectory() //throws JsonProcessingException
     {
         String traj = new String();
+        //Time, Velocity, Acceleration, X, Y, rotation, curvature
+    
+
         try
         {
             traj = TrajectoryUtil.serializeTrajectory(m_trajectory);
@@ -60,10 +66,24 @@ public class PathsGenerator {
             System.out.println("Exception found: " + e.getMessage());
         }
 
-        try
+        try(PrintWriter writer = new PrintWriter(new File("test.csv")))
         {
-            BufferedWriter writer = new BufferedWriter(new FileWriter("testTraj.txt"));
-            writer.write(traj);
+            var states = m_trajectory.getStates();
+            StringBuilder SB = new StringBuilder("Time, Velocity, Acceleration, X, Y, rotation, curvature");
+            //BufferedWriter writer = new BufferedWriter(new FileWriter("testTraj.txt"));
+            // SB.append('\n');
+            // SB.append(states.get(0));
+            // SB.append('\n');
+            // SB.append(states.get(1));
+            // SB.append('\n');
+
+            for (State state : states) {
+                SB.append("\n");
+                SB.append(state);
+            }
+
+            writer.write(SB.toString());
+
             writer.close();
         }
         catch (IOException iox)
