@@ -18,6 +18,7 @@ import frc.robot.Constants;
  * and creates a List<State> object to pass into the Trajectory 
  * class constructor.
  */
+@Deprecated
 public class TrajectoryMaker 
 {
     private final static int TIME = 0;

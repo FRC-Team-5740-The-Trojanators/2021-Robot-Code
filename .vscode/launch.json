@@ -5,23 +5,30 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "type": "java",
-      "name": "Launch Main",
-      "request": "launch",
-      "mainClass": "frc.robot.Main",
-      "projectName": "2021-Robot-Code"
+        "type": "java",
+        "name": "Launch Main",
+        "request": "launch",
+        "mainClass": "frc.robot.Main",
+        "projectName": "2021 Robot Code"
     },
     {
-      "type": "wpilib",
-      "name": "WPILib Desktop Debug",
-      "request": "launch",
-      "desktop": true
+        "type": "java",
+        "name": "Launch Main",
+        "request": "launch",
+        "mainClass": "frc.robot.Main",
+        "projectName": "2021-Robot-Code"
     },
     {
-      "type": "wpilib",
-      "name": "WPILib roboRIO Debug",
-      "request": "launch",
-      "desktop": false
+        "type": "wpilib",
+        "name": "WPILib Desktop Debug",
+        "request": "launch",
+        "desktop": true
+    },
+    {
+        "type": "wpilib",
+        "name": "WPILib roboRIO Debug",
+        "request": "launch",
+        "desktop": false
     }
-  ]
+]
 }

@@ -6,18 +6,20 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.Constants.HIDConstants;
 import frc.robot.commands.AutonomousDrive;
-import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.SwerveDriveCommand;
-import frc.robot.paths.PathsGenerator;
+
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
-import frc.robot.subsystems.SwerveModule;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.RunCommand;
+
+import frc.robot.paths.ExamplePath1;
+import frc.robot.paths.ExamplePath2;
+import frc.robot.paths.TrajectoriesExporter;
+
+
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -45,8 +47,12 @@ public class RobotContainer
     public RobotContainer()
     {
         System.out.println("here!");
-        PathsGenerator pg = new PathsGenerator();
-        pg.exportTrajectory();
+ 
+        var traj = ExamplePath1.getTrajectory();
+        TrajectoriesExporter.exportTrajectoryToCSV(traj, ExamplePath1.getTrajectoryName());
+        TrajectoriesExporter.exportTrajectoryToHumanReadable(traj, ExamplePath1.getTrajectoryName());
+
+        TrajectoriesExporter.exportTrajectoryToHumanReadable(ExamplePath2.getTrajectory(), ExamplePath2.getTrajectoryName());
         System.out.println("now here!");
 
 

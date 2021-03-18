@@ -65,7 +65,7 @@ public class AutonomousDrive extends CommandBase {
 
   public void trajectoryGenerator()
   {
-    TrajectoryConfig config = new TrajectoryConfig(Constants.SwerveDriveModuleConstants.kMaxSpeed, 1).setKinematics(Constants.SwerveDriveModuleConstants.kinematics);
+    TrajectoryConfig config = new TrajectoryConfig(Constants.SwerveDriveModuleConstants.k_MaxSpeed, 1).setKinematics(Constants.SwerveDriveModuleConstants.kinematics);
   
     //m_trajectory = TrajectoryGenerator.generateTrajectory(new Pose2d(0,0, new Rotation2d(0)), List.of(new Translation2d(1, 0), new Translation2d(2, 0)), new Pose2d(3, 0, new Rotation2d(0)), config);
     

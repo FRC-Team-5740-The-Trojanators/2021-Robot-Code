@@ -5,6 +5,7 @@
 package frc.robot.paths;
 
 /** Add your docs here. */
+@Deprecated
 public class Y5MeterPath {
     public static double[][] Y5MeterPath = new double[][] {
         {0,0,0,0,0,92,39.7587},

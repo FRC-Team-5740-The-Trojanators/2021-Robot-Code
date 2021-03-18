@@ -44,17 +44,20 @@ public final class Constants
             rightRear,
         };
 
-      // Distance between centers of right and left wheels on robot; unit is meters
-      public static final double k_TrackWidth = 0.5842;
+        // Distance between centers of right and left wheels on robot; unit is meters
+        public static final double k_TrackWidth = 0.5842;
 
-      // Distance between front and back wheels on robot; unit is meters
-      public static final double k_WheelBase = 0.5842;
+        // Distance between front and back wheels on robot; unit is meters
+        public static final double k_WheelBase = 0.5842;
 
-      public static final double k_RobotRadius = .4131; //distance from center of robot to the wheel in m
-      
+        public static final double k_RobotRadius = .4131; //distance from center of robot to the wheel in m
+        
         //public static final double k_MaxModuleAngularSpeedRadiansPerSecond = 2 * Math.PI;
         //public static final double k_MaxModuleAngularAccelerationRadiansPerSecondSquared = 2 * Math.PI;
-        public static final double kMaxSpeed = Units.feetToMeters(15);
+        
+        public static final double k_MaxSpeed = Units.feetToMeters(15); // unit is m/s
+        public static final double k_MaxAcceleration = 10; // unit is m/s/s (aka, m/s^2)
+        
         public static final double kXYjoystickCoefficient = .75;
         public static final double kMaxAngularSpeed = Units.feetToMeters(15) / k_RobotRadius; //Gives in radians / s (/s is implied);
         public static double fieldCalibration = 0;
