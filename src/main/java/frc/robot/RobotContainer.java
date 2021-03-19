@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 
 import frc.robot.paths.ExamplePath1;
 import frc.robot.paths.ExamplePath2;
+import frc.robot.paths.SlalomPath;
 import frc.robot.paths.TrajectoriesExporter;
 
 
@@ -46,14 +47,14 @@ public class RobotContainer
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer()
     {
-        System.out.println("here!");
+        //System.out.println("here!");
  
-        var traj = ExamplePath1.getTrajectory();
-        TrajectoriesExporter.exportTrajectoryToCSV(traj, ExamplePath1.getTrajectoryName());
-        TrajectoriesExporter.exportTrajectoryToHumanReadable(traj, ExamplePath1.getTrajectoryName());
+        var traj = SlalomPath.getTrajectory();
+        TrajectoriesExporter.exportTrajectoryToCSV(traj, SlalomPath.getTrajectoryName());
+        TrajectoriesExporter.exportTrajectoryToHumanReadable(traj, SlalomPath.getTrajectoryName());
 
-        TrajectoriesExporter.exportTrajectoryToHumanReadable(ExamplePath2.getTrajectory(), ExamplePath2.getTrajectoryName());
-        System.out.println("now here!");
+        // TrajectoriesExporter.exportTrajectoryToHumanReadable(ExamplePath2.getTrajectory(), ExamplePath2.getTrajectoryName());
+        // System.out.println("now here!");
 
 
         // Configure the button bindings

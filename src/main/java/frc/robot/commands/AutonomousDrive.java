@@ -28,6 +28,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants;
 import frc.robot.Constants.SwerveDriveModuleConstants;
+import frc.robot.paths.ExamplePath1;
 import frc.robot.paths.TrajectoryMaker;
 import frc.robot.subsystems.DriveSubsystem;
 
@@ -50,30 +51,20 @@ public class AutonomousDrive extends CommandBase {
   
   public void loadTrajectory()
   {
-   // String trajectoryJSON = "output/StraightLine5.wpilib.json"; //Change this file name to change the path
-    m_trajectory = TrajectoryMaker.MakeATrajectory();
-    // try
-    // {
-    //   Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
-    //   m_trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-    // }
-    // catch (IOException ex)
-    // {
-    //   DriverStation.reportError("Unable to open trajectory File: " + trajectoryJSON, ex.getStackTrace());
-    // }
+    m_trajectory = ExamplePath1.getTrajectory(); //change path name based on path we want to follow
   }
 
-  public void trajectoryGenerator()
-  {
-    TrajectoryConfig config = new TrajectoryConfig(Constants.SwerveDriveModuleConstants.k_MaxSpeed, 1).setKinematics(Constants.SwerveDriveModuleConstants.kinematics);
+  // public void trajectoryGenerator()
+  // {
+  //   TrajectoryConfig config = new TrajectoryConfig(Constants.SwerveDriveModuleConstants.k_MaxSpeed, 1).setKinematics(Constants.SwerveDriveModuleConstants.kinematics);
   
-    //m_trajectory = TrajectoryGenerator.generateTrajectory(new Pose2d(0,0, new Rotation2d(0)), List.of(new Translation2d(1, 0), new Translation2d(2, 0)), new Pose2d(3, 0, new Rotation2d(0)), config);
+  //   //m_trajectory = TrajectoryGenerator.generateTrajectory(new Pose2d(0,0, new Rotation2d(0)), List.of(new Translation2d(1, 0), new Translation2d(2, 0)), new Pose2d(3, 0, new Rotation2d(0)), config);
     
-    //m_trajectory = TrajectoryGenerator.generateTrajectory(new Pose2d(0,0, new Rotation2d(0)), List.of(new Translation2d(0, 1), new Translation2d(0, 1.5), new Translation2d(0, 2), new Translation2d(0, 2.5)), new Pose2d(0, 3, new Rotation2d(0)), config);
+  //   //m_trajectory = TrajectoryGenerator.generateTrajectory(new Pose2d(0,0, new Rotation2d(0)), List.of(new Translation2d(0, 1), new Translation2d(0, 1.5), new Translation2d(0, 2), new Translation2d(0, 2.5)), new Pose2d(0, 3, new Rotation2d(0)), config);
    
-  m_trajectory = TrajectoryGenerator.generateTrajectory(List.of(new Pose2d(0, 0, new Rotation2d(0)), new Pose2d(2.8, 0, new Rotation2d(0)), new Pose2d(3, 0, new Rotation2d(0)), new Pose2d(3, 1, new Rotation2d(0))), config);
+  // m_trajectory = TrajectoryGenerator.generateTrajectory(List.of(new Pose2d(0, 0, new Rotation2d(0)), new Pose2d(2.8, 0, new Rotation2d(0)), new Pose2d(3, 0, new Rotation2d(0)), new Pose2d(3, 1, new Rotation2d(0))), config);
   
-  }
+  // }
    
 
   /** Creates a new AutonomousDrive. */
@@ -89,8 +80,7 @@ public class AutonomousDrive extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    //loadTrajectory();
-    trajectoryGenerator();
+    loadTrajectory();
     //m_driveSubsystem.resetIMU();
     m_isFinished = false;
 

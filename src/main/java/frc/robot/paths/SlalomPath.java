@@ -14,27 +14,27 @@ import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import frc.robot.Constants;
 
-/**
- * An example of a Trajectory Generator. Replace the name of the Trajectory and the points to match 
- * we actually need to follow.
- */
-public class ExamplePath2
+public class SlalomPath
 {
-    private static String trajectoryName = "Example Trajectory 2"; //!!!! Change this for each new trajectory!
+    private static String trajectoryName = "Slalom Path";
 
     private static TrajectoryConfig trajectoryConfiguration = new TrajectoryConfig(Constants.SwerveDriveModuleConstants.k_MaxSpeed, 1)
                                                             .setKinematics(Constants.SwerveDriveModuleConstants.kinematics);
 
 
-                                    // x    y      heading
-    private static Pose2d start = new Pose2d(0.0, 0.0, new Rotation2d(Math.PI/2));
+                                            // x    y      heading
+    private static Pose2d start = new Pose2d(1.016, 0.762, new Rotation2d(0));
 
-    private static Pose2d point1 = new Pose2d(0.50, 0.50, Rotation2d.fromDegrees( 0.0));
-    private static Pose2d point2 = new Pose2d(1.00, -0.50, Rotation2d.fromDegrees(65.0));
-    private static Pose2d point3 = new Pose2d(2.00, -2.00, Rotation2d.fromDegrees(90.0));
-    private static Pose2d point4 = new Pose2d(2.50, 2.50, Rotation2d.fromDegrees(110.5));
+    private static Pose2d point1 = new Pose2d(3.048, 2.286, Rotation2d.fromDegrees(0));
+    private static Pose2d point2 = new Pose2d(6.096, 2.286, Rotation2d.fromDegrees(0));
+    private static Pose2d point3 = new Pose2d(7.366, 0.762, Rotation2d.fromDegrees(0));
+    private static Pose2d point4 = new Pose2d(8.636, 1.778, Rotation2d.fromDegrees(0));
+    private static Pose2d point5 = new Pose2d(7.366, 2.54, Rotation2d.fromDegrees(0));
+    private static Pose2d point6 = new Pose2d(6.35, .762, Rotation2d.fromDegrees(0));
+    private static Pose2d point7 = new Pose2d(3.048, .762, Rotation2d.fromDegrees(0));
+    private static Pose2d point8 = new Pose2d(1.778, 2.032, Rotation2d.fromDegrees(0));
 
-    private static Pose2d end =    new Pose2d(3.25, 3.00, new Rotation2d(Math.PI));
+    private static Pose2d end =    new Pose2d(1.016, 2.54, new Rotation2d(0));
 
     /**
      * Generates the Trajectory
@@ -43,7 +43,7 @@ public class ExamplePath2
     public static Trajectory getTrajectory()
     {
         return TrajectoryGenerator.generateTrajectory(
-            List.of(start, point1, point2, point3, point4, end), 
+            List.of(start, point1, point2, point3, point4, point5, point6, point7, point8, end), 
             trajectoryConfiguration);
     }
 

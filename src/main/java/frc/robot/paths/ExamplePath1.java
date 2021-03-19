@@ -22,13 +22,8 @@ public class ExamplePath1
 {
     private static String trajectoryName = "Example Trajectory 1"; //!!!! Change this for each new trajectory!
 
-    private static double maxVelocityMetersPerSecond = Constants.SwerveDriveModuleConstants.k_MaxSpeed;
-    private static double maxAccelerationMetersPerSecondSq = Constants.SwerveDriveModuleConstants.k_MaxAcceleration;
-
-    private static TrajectoryConfig trajectoryConfiguration = new TrajectoryConfig(
-                        maxVelocityMetersPerSecond, 
-                        maxAccelerationMetersPerSecondSq)
-                        .setKinematics(Constants.SwerveDriveModuleConstants.kinematics);
+    private static TrajectoryConfig trajectoryConfiguration = new TrajectoryConfig(Constants.SwerveDriveModuleConstants.k_MaxSpeed, 1)
+                                                            .setKinematics(Constants.SwerveDriveModuleConstants.kinematics);
 
                                     // x    y      heading
     private static Pose2d start = new Pose2d(0.0, 0.0, new Rotation2d(0.0));
