@@ -31,6 +31,8 @@ public final class Constants
     {
         public static final int k_DriverControllerPort = 1;
         public static final double kDeadBand = 0.05;
+        public static final int kA = 1;
+        public static final int kB = 2;
     }
 
     

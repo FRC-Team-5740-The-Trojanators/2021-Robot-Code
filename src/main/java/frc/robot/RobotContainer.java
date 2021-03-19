@@ -13,7 +13,7 @@ import frc.robot.commands.SwerveDriveCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
-
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.paths.ExamplePath1;
 import frc.robot.paths.ExamplePath2;
 import frc.robot.paths.TrajectoriesExporter;
@@ -42,6 +42,9 @@ public class RobotContainer
 
     // The driver's controller
     XboxController m_driverController = new XboxController(HIDConstants.k_DriverControllerPort);
+
+    //The Button Binding Names
+    public static JoystickButton intakeOut, intakeIn;
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer()
@@ -78,6 +81,8 @@ public class RobotContainer
      */
     private void configureButtonBindings()
     {
+        intakeOut = new JoystickButton(m_driverController , HIDConstants.kA);
+        intakeIn = new JoystickButton(m_driverController , HIDConstants.kB);
     }
 
     /**
