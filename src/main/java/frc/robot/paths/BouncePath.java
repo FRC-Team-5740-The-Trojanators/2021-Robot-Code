@@ -9,6 +9,7 @@ import java.util.List;
 
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
@@ -25,15 +26,15 @@ public class BouncePath
                                             // x    y      heading
     private static Pose2d start = new Pose2d(1.016, 2.286, new Rotation2d(0));
 
-    private static Pose2d point1 = new Pose2d(2.032, 2.54, Rotation2d.fromDegrees(0));
-    private static Pose2d point2 = new Pose2d(2.286, 3.81, Rotation2d.fromDegrees(0));
-    private static Pose2d point3 = new Pose2d(3.302, 1.016, Rotation2d.fromDegrees(0));
-    private static Pose2d point4 = new Pose2d(4.318, 1.016, Rotation2d.fromDegrees(0));
-    private static Pose2d point5 = new Pose2d(4.572, 3.81, Rotation2d.fromDegrees(0));
-    private static Pose2d point6 = new Pose2d(4.826, 1.016, Rotation2d.fromDegrees(0));
-    private static Pose2d point7 = new Pose2d(6.35, 1.016, Rotation2d.fromDegrees(0));
-    private static Pose2d point8 = new Pose2d(6.858, 3.81, Rotation2d.fromDegrees(0));
-    private static Pose2d point9 = new Pose2d(7.112, 2.54, Rotation2d.fromDegrees(0));
+    private static  Translation2d point1 = new  Translation2d(2.032, 2.54  );
+    private static  Translation2d point2 = new  Translation2d(2.286, 3.81  );
+    private static  Translation2d point3 = new  Translation2d(3.302, 1.016  );
+    private static  Translation2d point4 = new  Translation2d(4.318, 1.017  );
+    private static  Translation2d point5 = new  Translation2d(4.572, 3.81  );
+    private static  Translation2d point6 = new  Translation2d(4.826, 1.016  );
+    private static  Translation2d point7 = new  Translation2d(6.35, 1.017  );
+    private static  Translation2d point8 = new  Translation2d(6.858, 3.81  );
+    private static  Translation2d point9 = new  Translation2d(7.112, 2.54  );
 
     private static Pose2d end =    new Pose2d(8.128, 2.286, new Rotation2d(0));
 
@@ -44,7 +45,7 @@ public class BouncePath
     public static Trajectory getTrajectory()
     {
         return TrajectoryGenerator.generateTrajectory(
-            List.of(start, point1, point2, point3, point4, point5, point6, point7, point8, point9, end), 
+           start, List.of(point1, point2, point3, point4, point5, point6, point7, point8, point9), end,
             trajectoryConfiguration);
     }
 

@@ -9,6 +9,7 @@ import java.util.List;
 
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
@@ -28,7 +29,7 @@ public class BlankPath
                                             // x    y      heading
     private static Pose2d start = new Pose2d(0.0, 0.0, new Rotation2d(Math.PI/2));
 
-    private static Pose2d point1 = new Pose2d(0, 0, Rotation2d.fromDegrees(0));
+    private static Translation2d point1 = new Translation2d(0, 0);
 
     private static Pose2d end =    new Pose2d(3.25, 3.00, new Rotation2d(Math.PI));
 
@@ -39,7 +40,7 @@ public class BlankPath
     public static Trajectory getTrajectory()
     {
         return TrajectoryGenerator.generateTrajectory(
-            List.of(start, point1, end), 
+           start, List.of(point1), end,
             trajectoryConfiguration);
     }
 

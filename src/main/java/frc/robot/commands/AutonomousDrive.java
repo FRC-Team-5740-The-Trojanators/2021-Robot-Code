@@ -29,6 +29,7 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants;
 import frc.robot.Constants.SwerveDriveModuleConstants;
 import frc.robot.paths.ExamplePath1;
+import frc.robot.paths.SlalomPath;
 import frc.robot.paths.TrajectoryMaker;
 import frc.robot.subsystems.DriveSubsystem;
 
@@ -51,7 +52,7 @@ public class AutonomousDrive extends CommandBase {
   
   public void loadTrajectory()
   {
-    m_trajectory = ExamplePath1.getTrajectory(); //change path name based on path we want to follow
+    m_trajectory = SlalomPath.getTrajectory(); //change path name based on path we want to follow
   }
 
   // public void trajectoryGenerator()
