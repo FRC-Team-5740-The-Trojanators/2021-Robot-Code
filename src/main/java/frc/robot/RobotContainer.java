@@ -8,10 +8,13 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.HIDConstants;
 import frc.robot.commands.AutonomousDrive;
+import frc.robot.commands.IntakeExtend;
+import frc.robot.commands.IntakeRun;
 import frc.robot.commands.SwerveDriveCommand;
 
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.paths.ExamplePath1;
@@ -38,13 +41,15 @@ public class RobotContainer
 
     private final AutonomousDrive m_autonomousDrive = new AutonomousDrive(m_robotDrive);
 
+    private final IntakeSubsystem m_intake = new IntakeSubsystem();
+
     //private final SwerveModule m_Module = new SwerveModule();
 
     // The driver's controller
     XboxController m_driverController = new XboxController(HIDConstants.k_DriverControllerPort);
 
     //The Button Binding Names
-    public static JoystickButton intakeOut, intakeIn;
+    public static JoystickButton intakeFlip, intakeRun;
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer()
@@ -81,8 +86,12 @@ public class RobotContainer
      */
     private void configureButtonBindings()
     {
-        intakeOut = new JoystickButton(m_driverController , HIDConstants.kA);
-        intakeIn = new JoystickButton(m_driverController , HIDConstants.kB);
+        intakeFlip = new JoystickButton(m_driverController , HIDConstants.kA);
+        intakeRun = new JoystickButton(m_driverController , HIDConstants.kB);
+        
+        intakeFlip.toggleWhenPressed(new IntakeExtend(m_intake, m_driverController));
+        intakeRun.toggleWhenPressed(new IntakeRun(m_intake, m_driverController));
+
     }
 
     /**

@@ -29,11 +29,34 @@ public final class Constants
 {
     public static final class HIDConstants 
     {
+        /**
+         * kA = 1;
+         * kB = 2;
+         * kX = 3; 
+         * kY = 4;
+         * kLB = 5;
+         * kRB = 6;
+         * kSelect = 7;
+         * kStart = 8;
+         * kLeftStickPress = 9;
+         * kRightStickPress = 10;
+         */
+
         public static final int k_DriverControllerPort = 1;
         public static final double kDeadBand = 0.05;
         public static final int kA = 1;
         public static final int kB = 2;
+        public static final int kX = 3;
     }
+
+    public static final class IntakeSubsystemConstants
+    {
+        public static final double k_intakeMotorSpeed = 1.0;
+        public static final double k_intakeReverseMotorSpeed = -1.0;
+        public static final double k_intakeStopMotorSpeed = 0.0;
+    }
+
+
 
     
     public static final class SwerveDriveModuleConstants
