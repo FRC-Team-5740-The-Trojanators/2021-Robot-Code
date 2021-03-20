@@ -9,6 +9,7 @@ import java.util.List;
 
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
@@ -23,31 +24,22 @@ public class BarrelRacePath
 
 
                                             // x    y      heading
-    private static Pose2d start = new Pose2d(0.0, 0.0, new Rotation2d(Math.PI/2));
+    private static Pose2d start = new Pose2d(.9652, 2.08, new Rotation2d(0));
 
-    private static Pose2d point1 = new Pose2d(2.3, 1.5, Rotation2d.fromDegrees(0));
-    private static Pose2d point2 = new Pose2d(2.5, 2.8, Rotation2d.fromDegrees(0));
-    private static Pose2d point3 = new Pose2d(2.3, 3.8, Rotation2d.fromDegrees(0));
-    private static Pose2d point4 = new Pose2d(1.8, 4.2, Rotation2d.fromDegrees(0));
-    private static Pose2d point5 = new Pose2d(1.3, 4.3, Rotation2d.fromDegrees(0));
-    private static Pose2d point6 = new Pose2d(1, 3.8, Rotation2d.fromDegrees(0));
-    private static Pose2d point7 = new Pose2d(1.3, 3.3, Rotation2d.fromDegrees(0));
-    private static Pose2d point8 = new Pose2d(2, 3.6, Rotation2d.fromDegrees(0));
-    private static Pose2d point9 = new Pose2d(2.3, 4.3, Rotation2d.fromDegrees(0));
-    private static Pose2d point10 = new Pose2d(2.5, 5.6, Rotation2d.fromDegrees(0));
-    private static Pose2d point11 = new Pose2d(2.8, 6.6, Rotation2d.fromDegrees(0));
-    private static Pose2d point12 = new Pose2d(3.4, 6.6, Rotation2d.fromDegrees(0));
-    private static Pose2d point13 = new Pose2d(3.4, 5.3, Rotation2d.fromDegrees(0));
-    private static Pose2d point14 = new Pose2d(1.8, 6.1, Rotation2d.fromDegrees(0));
-    private static Pose2d point15 = new Pose2d(1.3, 7.4, Rotation2d.fromDegrees(0));
-    private static Pose2d point16 = new Pose2d(1.3, 8, Rotation2d.fromDegrees(0));
-    private static Pose2d point17 = new Pose2d(1.8, 8.4, Rotation2d.fromDegrees(0));
-    private static Pose2d point18 = new Pose2d(2.2, 8.1, Rotation2d.fromDegrees(0));
-    private static Pose2d point19 = new Pose2d(2.3, 7.9, Rotation2d.fromDegrees(0));
-    private static Pose2d point20 = new Pose2d(2.8, 4.1, Rotation2d.fromDegrees(0));
-    private static Pose2d point21 = new Pose2d(2.8, 1.5, Rotation2d.fromDegrees(0));
+    private static Translation2d point1 = new Translation2d(3.81, 2.286 );
+    private static Translation2d point2 = new Translation2d(4.318, 1.27 );
+    private static Translation2d point3 = new Translation2d(3.302, 1.22 );
+    private static Translation2d point4 = new Translation2d(3.81, 2.08 );
+    private static Translation2d point5 = new Translation2d(5.89, 2.49 );
+    private static Translation2d point6 = new Translation2d(6.5, 3.429 );
+    private static Translation2d point7 = new Translation2d(5.41, 3.3 );
+    private static Translation2d point8 = new Translation2d(5.89, 2.2 );
+    private static Translation2d point9 = new Translation2d(7.37, 1.09 );
+    private static Translation2d point10 = new Translation2d(8.255, 1.524 );
+    private static Translation2d point11 = new Translation2d(7.366, 2.26 );
+    private static Translation2d point12 = new Translation2d(4.06, 2.57 );
 
-    private static Pose2d end =    new Pose2d(3.25, 3.00, new Rotation2d(Math.PI));
+    private static Pose2d end = new Pose2d(.965, 2.54, new Rotation2d(0));
 
     /**
      * Generates the Trajectory
@@ -56,7 +48,8 @@ public class BarrelRacePath
     public static Trajectory getTrajectory()
     {
         return TrajectoryGenerator.generateTrajectory(
-            List.of(start, point1, point2, point3, point4, point5, point6, point7, point8, point9, point10, point11, point12, point13, point14, point15, point16, point17, point18, point19, point20, point21, end), 
+            start, List.of( point1, point2, point3, point4, point5, point6, point7, point8, point9, point10, point11,
+            point12), end,
             trajectoryConfiguration);
     }
 
