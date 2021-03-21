@@ -28,16 +28,16 @@ public class BouncePath
 
     private static  Translation2d point1 = new  Translation2d(2.032, 2.54);
     private static  Translation2d point2 = new  Translation2d(2.35, 3.81);
-    private static  Translation2d point3 = new  Translation2d(3.35, 1.010);
-    private static  Translation2d point4 = new  Translation2d(4.62, 1.10);
+    private static  Translation2d point3 = new  Translation2d(3.35, 1.0);
+    private static  Translation2d point4 = new  Translation2d(4.62, 1.1);
     private static  Translation2d point5 = new  Translation2d(4.64, 2.4);
     private static  Translation2d point6 = new  Translation2d(4.66, 2.9);
     private static  Translation2d point7 = new  Translation2d(4.7, 3.5);
-    private static  Translation2d point8 = new  Translation2d(4.95, .49);
+    private static  Translation2d point8 = new  Translation2d(4.95, .4);
     private static  Translation2d point9 = new  Translation2d(6.59, .51);
     private static  Translation2d point10 = new  Translation2d(6.79, 1.5);
     private static  Translation2d point11 = new  Translation2d(6.81, 2.7);
-    private static  Translation2d point12 = new  Translation2d(6.82, 3.3);
+    private static  Translation2d point12 = new  Translation2d(6.85, 3.3);
     private static  Translation2d point13 = new  Translation2d(7.11, 1.91);
 
     private static Pose2d end = new Pose2d(8.4, 1.8, new Rotation2d(0));
