@@ -26,17 +26,21 @@ public class BouncePath
                                             // x    y      heading
     private static Pose2d start = new Pose2d(1.016, 2.286, new Rotation2d(0));
 
-    private static  Translation2d point1 = new  Translation2d(2.032, 2.54  );
-    private static  Translation2d point2 = new  Translation2d(2.286, 3.81  );
-    private static  Translation2d point3 = new  Translation2d(3.302, 1.016  );
-    private static  Translation2d point4 = new  Translation2d(4.318, 1.017  );
-    private static  Translation2d point5 = new  Translation2d(4.572, 3.81  );
-    private static  Translation2d point6 = new  Translation2d(4.826, 1.016  );
-    private static  Translation2d point7 = new  Translation2d(6.35, 1.017  );
-    private static  Translation2d point8 = new  Translation2d(6.858, 3.81  );
-    private static  Translation2d point9 = new  Translation2d(7.112, 2.54  );
+    private static  Translation2d point1 = new  Translation2d(2.032, 2.54);
+    private static  Translation2d point2 = new  Translation2d(2.35, 3.81);
+    private static  Translation2d point3 = new  Translation2d(3.35, 1.010);
+    private static  Translation2d point4 = new  Translation2d(4.62, 1.10);
+    private static  Translation2d point5 = new  Translation2d(4.64, 2.4);
+    private static  Translation2d point6 = new  Translation2d(4.66, 2.9);
+    private static  Translation2d point7 = new  Translation2d(4.7, 3.5);
+    private static  Translation2d point8 = new  Translation2d(4.95, .49);
+    private static  Translation2d point9 = new  Translation2d(6.59, .51);
+    private static  Translation2d point10 = new  Translation2d(6.79, 1.5);
+    private static  Translation2d point11 = new  Translation2d(6.81, 2.7);
+    private static  Translation2d point12 = new  Translation2d(6.82, 3.3);
+    private static  Translation2d point13 = new  Translation2d(7.11, 1.91);
 
-    private static Pose2d end =    new Pose2d(8.128, 2.286, new Rotation2d(0));
+    private static Pose2d end = new Pose2d(8.4, 1.8, new Rotation2d(0));
 
     /**
      * Generates the Trajectory
@@ -45,7 +49,7 @@ public class BouncePath
     public static Trajectory getTrajectory()
     {
         return TrajectoryGenerator.generateTrajectory(
-           start, List.of(point1, point2, point3, point4, point5, point6, point7, point8, point9), end,
+           start, List.of(point1, point2, point3, point4, point5, point6, point7, point8, point9, point10, point11, point12, point13), end,
             trajectoryConfiguration);
     }
 

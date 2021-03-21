@@ -28,6 +28,9 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants;
 import frc.robot.Constants.SwerveDriveModuleConstants;
+import frc.robot.paths.BarrelRacePath;
+import frc.robot.paths.BouncePath;
+import frc.robot.paths.FiveMeterPath;
 import frc.robot.paths.SlalomPath;
 import frc.robot.paths.TrajectoryMaker;
 import frc.robot.subsystems.DriveSubsystem;
@@ -51,7 +54,7 @@ public class AutonomousDrive extends CommandBase {
   
   public void loadTrajectory()
   {
-    m_trajectory = SlalomPath.getTrajectory(); //change path name based on path we want to follow
+    m_trajectory = BouncePath.getTrajectory(); //change path name based on path we want to follow
   }
 
   // public void trajectoryGenerator()
@@ -87,7 +90,9 @@ public class AutonomousDrive extends CommandBase {
     m_xController = new PIDController(.01, 0, 0);
     m_yController = new PIDController(.01, 0, 0);
     m_trapezoidProfile = new TrapezoidProfile.Constraints(Math.PI, 2 * Math.PI);
-    m_rotController = new ProfiledPIDController(.000002, 0, 0, m_trapezoidProfile);
+    m_rotController = new ProfiledPIDController(.02, 0, 0, m_trapezoidProfile);
+   // m_rotController.reset(new TrapezoidProfile.State(0,0)); //(0,0) are position and velocity
+   // m_rotController.enableContinuousInput(-Math.PI, Math.PI);
 
     m_driveController = new HolonomicDriveController(m_xController, m_yController, m_rotController);
     m_timer = new Timer();
