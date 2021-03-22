@@ -118,7 +118,10 @@ public final class Constants
             public static final int k_RightRear_DriveMotor = 7; 
             public static final int backRightCANCoderId = 12; 
             public static final int k_RightRear_SteeringMotor = 8;   
-          }
+          
+            public static final int k_lowerShooterWheel = 13;
+            public static final int k_upperShooterWheel = 14;
+        }
         
         /**
          * The Motor controller we're using can control both brushed and brushless DC motors. 
@@ -137,6 +140,9 @@ public final class Constants
     
             public static final MotorType k_SwerveLeftRear_Drive = MotorType.kBrushless;
             public static final MotorType k_SwerveLeftRear_Steering = MotorType.kBrushless;
+
+            public static final MotorType k_lowerShooterWheel = MotorType.kBrushless;
+            public static final MotorType k_upperShooterWheel = MotorType.kBrushless;
         }        
      
         public static SwerveDriveKinematics kinematics =
@@ -205,6 +211,15 @@ public final class Constants
             public static final double k_ToleranceInTicks = 1;
         }
 
+        public static final class ShooterPIDValues
+        {
+            public static final double k_shooterP = .1;
+            public static final double k_shooterI = 0;
+            public static final double k_shooterD = 0;
+            public static final double k_shooterFF = 0;
+            public static final double k_minShooterOutput = 0;
+            public static final double k_maxShooterOutput = 1;
+        }
         
 
     }
