@@ -4,9 +4,16 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.ControlType;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.SwerveDriveModuleConstants.CANBusIDs;
+import frc.robot.Constants.SwerveDriveModuleConstants.ShooterPIDValues;
 
 public class ShooterSubsystem extends SubsystemBase {
   /** Creates a new ShooterSubsystem. */
@@ -14,11 +21,30 @@ public class ShooterSubsystem extends SubsystemBase {
   public double measuredX, tlong, thor, skewOffsetDegrees, actualXx;
   public final double pixelsToDegrees = .1419047619;
 
+  private CANSparkMax flyWheelMotor;
+  private TalonSRX hoodMotor;
+
+  private CANSparkMax lowerShooterWheel = new CANSparkMax(CANBusIDs.k_lowerShooterWheel, MotorType.kBrushless);
+  private CANSparkMax upperShooterWheel = new CANSparkMax(CANBusIDs.k_upperShooterWheel, MotorType.kBrushless);
+
   private NetworkTableEntry shuffleDistance;
   private NetworkTableEntry abs, quad, kp, ki, kd, kff, period, pos, setPoint, height;
   
   public ShooterSubsystem() {
     ledOff();
+  }
+
+  public void configShooterMotors()
+  {
+    lowerShooterWheel.restoreFactoryDefaults();
+    upperShooterWheel.restoreFactoryDefaults();
+
+    lowerShooterWheel.getPIDController().setP(ShooterPIDValues.k_shooterP);
+    lowerShooterWheel.getPIDController().setI(ShooterPIDValues.k_shooterI);
+    lowerShooterWheel.getPIDController().setD(ShooterPIDValues.k_shooterD);
+    lowerShooterWheel.getPIDController().setFF(ShooterPIDValues.k_shooterFF);
+    lowerShooterWheel.getPIDController().setOutputRange(ShooterPIDValues.k_minShooterOutput, ShooterPIDValues.k_maxShooterOutput);
+
   }
 
   @Override
@@ -68,4 +94,19 @@ public class ShooterSubsystem extends SubsystemBase {
   public void ledOff() {
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
   }
+
+  public void setShooterSpeed(double speed)
+    {
+      lowerShooterWheel.set(speed);
+    }
+
+    public void stopShooter()
+    {
+      lowerShooterWheel.set(0);
+    }
+    
+    public void setShooterRPM(int rpm)
+    {
+      lowerShooterWheel.getPIDController().setReference(rpm, ControlType.kVelocity);
+    }
 }
