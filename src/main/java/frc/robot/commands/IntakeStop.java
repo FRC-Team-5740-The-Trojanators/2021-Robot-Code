@@ -33,7 +33,6 @@ public class IntakeStop extends CommandBase {
   @Override
   public void execute()
   {
-    m_intake.stopIntakeMotors();
   }
 
   // Called once the command ends or is interrupted.

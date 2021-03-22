@@ -8,39 +8,45 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.IntakeSubsystem;
 
-public class IntakeRetract extends CommandBase {
-  
+public class IntakeMotors extends CommandBase {
+  /** Creates a new IntakeOperationCommand. */
   private final IntakeSubsystem m_intake;
   private final XboxController m_controller;
-  /** Creates a new IntakePneumaticCommand. */
-  public IntakeRetract(IntakeSubsystem intake, XboxController controller) {
+
+  public IntakeMotors(IntakeSubsystem intake, XboxController controller)
+  {
+    // Use addRequirements() here to declare subsystem dependencies.
     m_intake = intake;
     addRequirements(m_intake);
-    // Use addRequirements() here to declare subsystem dependencies.
+
     m_controller = controller;
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() 
+  public void initialize()
   {
-
+    m_intake.startIntakeMotors();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() 
+  public void execute()
   {
-    m_intake.extendIntake();
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted)
+  {
+    m_intake.stopIntakeMotors();
+  }
 
   // Returns true when the command should end.
   @Override
-  public boolean isFinished() {
+  public boolean isFinished()
+  {
+    m_intake.stopIntakeMotors();
     return false;
   }
 }
