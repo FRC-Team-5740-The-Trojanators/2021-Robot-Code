@@ -4,9 +4,12 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -21,11 +24,12 @@ public class ShooterSubsystem extends SubsystemBase {
   public double measuredX, tlong, thor, skewOffsetDegrees, actualXx;
   public final double pixelsToDegrees = .1419047619;
 
-  private CANSparkMax flyWheelMotor;
   private TalonSRX hoodMotor;
 
-  private CANSparkMax lowerShooterWheel = new CANSparkMax(CANBusIDs.k_lowerShooterWheel, MotorType.kBrushless);
-  private CANSparkMax upperShooterWheel = new CANSparkMax(CANBusIDs.k_upperShooterWheel, MotorType.kBrushless);
+  private CANSparkMax ShooterMotorOne = new CANSparkMax(CANBusIDs.k_ShooterMotorOne, MotorType.kBrushless);
+  private CANSparkMax ShooterMotorTwo = new CANSparkMax(CANBusIDs.k_ShooterMotorTwo, MotorType.kBrushless);
+
+  private VictorSPX indexerWheel;
 
   private NetworkTableEntry shuffleDistance;
   private NetworkTableEntry abs, quad, kp, ki, kd, kff, period, pos, setPoint, height;
@@ -36,15 +40,20 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public void configShooterMotors()
   {
-    lowerShooterWheel.restoreFactoryDefaults();
-    upperShooterWheel.restoreFactoryDefaults();
+    ShooterMotorOne.restoreFactoryDefaults();
+    ShooterMotorTwo.restoreFactoryDefaults();
 
-    lowerShooterWheel.getPIDController().setP(ShooterPIDValues.k_shooterP);
-    lowerShooterWheel.getPIDController().setI(ShooterPIDValues.k_shooterI);
-    lowerShooterWheel.getPIDController().setD(ShooterPIDValues.k_shooterD);
-    lowerShooterWheel.getPIDController().setFF(ShooterPIDValues.k_shooterFF);
-    lowerShooterWheel.getPIDController().setOutputRange(ShooterPIDValues.k_minShooterOutput, ShooterPIDValues.k_maxShooterOutput);
+    ShooterMotorTwo.follow(ShooterMotorOne, true);
 
+
+    ShooterMotorOne.getPIDController().setP(ShooterPIDValues.k_shooterP);
+    ShooterMotorOne.getPIDController().setI(ShooterPIDValues.k_shooterI);
+    ShooterMotorOne.getPIDController().setD(ShooterPIDValues.k_shooterD);
+    ShooterMotorOne.getPIDController().setFF(ShooterPIDValues.k_shooterFF);
+    ShooterMotorOne.getPIDController().setOutputRange(ShooterPIDValues.k_minShooterOutput, ShooterPIDValues.k_maxShooterOutput);
+
+    ShooterMotorOne.setIdleMode(IdleMode.kCoast);
+    ShooterMotorTwo.setIdleMode(IdleMode.kCoast);
   }
 
   @Override
@@ -97,16 +106,24 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public void setShooterSpeed(double speed)
     {
-      lowerShooterWheel.set(speed);
+      ShooterMotorOne.set(speed);
     }
 
     public void stopShooter()
     {
-      lowerShooterWheel.set(0);
+      ShooterMotorOne.set(0);
     }
     
     public void setShooterRPM(int rpm)
     {
-      lowerShooterWheel.getPIDController().setReference(rpm, ControlType.kVelocity);
+      ShooterMotorOne.getPIDController().setReference(rpm, ControlType.kVelocity);
+    }
+
+    public void runIndexerWheel(){
+      indexerWheel.set(ControlMode.PercentOutput, 1);
+    }
+
+    public void actuateHood(){
+      
     }
 }
