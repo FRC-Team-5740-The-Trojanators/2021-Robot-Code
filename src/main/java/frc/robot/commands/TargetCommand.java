@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
@@ -31,14 +32,23 @@ public class TargetCommand extends CommandBase {
     m_shooter.ledOn();
   }
 
+  public void turnShooter(){
+    var tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
+
+    if(tx > 1)
+    {
+      m_drivetrain.drive(0, 0, -0.2, false);
+    } else if(tx < -1)
+    {
+      m_drivetrain.drive(0, 0, 0.2, false);
+    }
+  }
+
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute()
   {
-    if(m_shooter.getX() == 1 && m_shooter.getY() == 1 && m_shooter.seesTarget())
-    {
-      //TODO adjust robot pose
-    };
+    turnShooter();
   }
 
   // Called once the command ends or is interrupted.

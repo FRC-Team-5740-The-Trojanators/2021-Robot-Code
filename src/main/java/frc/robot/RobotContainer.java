@@ -83,8 +83,11 @@ public class RobotContainer
 
         // Configure the button bindings
         configureButtonBindings();
- 
-        m_robotDrive.setDefaultCommand(new SwerveDriveCommand(m_robotDrive, m_driverController));
+        //TODO uncomment line 63
+       // m_robotDrive.setDefaultCommand(new SwerveDriveCommand(m_robotDrive, m_driverController));
+
+       m_robotDrive.setDefaultCommand(new TargetCommand(m_shooter, m_robotDrive, m_driverController));
+
         //ShuffleboardTab tab = Shuffleboard.getTab("Swerve Drive Tuning");
 
         NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
@@ -124,5 +127,6 @@ public class RobotContainer
     {
         // An ExampleCommand will run in autonomous
         return m_autonomousDrive;
+
     }
 }
