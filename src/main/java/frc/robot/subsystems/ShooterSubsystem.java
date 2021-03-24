@@ -14,8 +14,10 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.SwerveDriveModuleConstants.CANBusIDs;
+import frc.robot.Constants.SwerveDriveModuleConstants.HoodConstants;
 import frc.robot.Constants.SwerveDriveModuleConstants.ShooterPIDValues;
 
 public class ShooterSubsystem extends SubsystemBase {
@@ -34,8 +36,11 @@ public class ShooterSubsystem extends SubsystemBase {
   private NetworkTableEntry shuffleDistance;
   private NetworkTableEntry abs, quad, kp, ki, kd, kff, period, pos, setPoint, height;
   
+  private PIDController m_hoodPID;
+
   public ShooterSubsystem() {
     ledOff();
+    m_hoodPID = new PIDController(HoodConstants.k_hoodP, HoodConstants.k_hoodI, HoodConstants.k_hoodD, HoodConstants.k_hoodFF);
   }
 
   public void configShooterMotors()
@@ -80,6 +85,11 @@ public class ShooterSubsystem extends SubsystemBase {
     }
   }
 
+  public void hoodSetSetpoint(double setpoint)
+  {
+    m_hoodPID.setSetpoint(setpoint);
+  }
+
   public double getSkew() {
     return NetworkTableInstance.getDefault().getTable("limelight").getEntry("ts").getDouble(0);
   }
@@ -121,9 +131,5 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public void runIndexerWheel(){
       indexerWheel.set(ControlMode.PercentOutput, 1);
-    }
-
-    public void actuateHood(){
-      
     }
 }
