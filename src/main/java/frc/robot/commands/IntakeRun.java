@@ -6,21 +6,19 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 
-public class TargetCommand extends CommandBase {
-  /** Creates a new TargetCommand. */
- ShooterSubsystem m_shooter;
- DriveSubsystem m_drivetrain;
- XboxController m_controller;
+public class IntakeRun extends CommandBase {
+  /** Creates a new IntakeOperationCommand. */
+  private final IntakeSubsystem m_intake;
+  private final XboxController m_controller;
 
-  public TargetCommand(ShooterSubsystem shooter, DriveSubsystem drivetrain, XboxController controller)
+  public IntakeRun(IntakeSubsystem intake, XboxController controller)
   {
-    m_shooter = shooter;
-    m_drivetrain = drivetrain;
-    addRequirements(m_shooter, m_drivetrain);
     // Use addRequirements() here to declare subsystem dependencies.
+    m_intake = intake;
+    addRequirements(m_intake);
+
     m_controller = controller;
   }
 
@@ -28,26 +26,26 @@ public class TargetCommand extends CommandBase {
   @Override
   public void initialize()
   {
-    m_shooter.ledOn();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute()
   {
-    if(m_shooter.getX() == 1 && m_shooter.getY() == 1 && m_shooter.seesTarget())
-    {
-      //TODO adjust robot pose
-    };
+    m_intake.startIntakeMotors();
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted)
+  {
+    m_intake.stopIntakeMotors();
+  }
 
   // Returns true when the command should end.
   @Override
-  public boolean isFinished() {
+  public boolean isFinished()
+  {
     return false;
   }
 }

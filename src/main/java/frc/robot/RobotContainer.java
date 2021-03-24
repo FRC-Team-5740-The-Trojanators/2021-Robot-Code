@@ -9,7 +9,9 @@ import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.HIDConstants;
 import frc.robot.commands.AutonomousDrive;
 import frc.robot.commands.IntakeFlip;
-import frc.robot.commands.IntakeMotors;
+import frc.robot.commands.IntakeRun;
+import frc.robot.commands.IntakeReverse;
+import frc.robot.commands.IntakeStop;
 import frc.robot.commands.SwerveDriveCommand;
 
 import frc.robot.subsystems.DriveSubsystem;
@@ -45,10 +47,14 @@ public class RobotContainer
     // The driver's controller
     XboxController m_driverController = new XboxController(HIDConstants.k_DriverControllerPort);
 
+    private final IntakeRun m_intakeRun = new IntakeRun(m_intake, m_driverController);
+    private final IntakeStop m_intakeStop = new IntakeStop(m_intake, m_driverController);
+    private final IntakeReverse m_intakeReverse = new IntakeReverse(m_intake, m_driverController);
+
     //private final SwerveModule m_Module = new SwerveModule();
 
     //The Button Binding Names
-    public static JoystickButton intakeFlip, intakeRun;
+    public static JoystickButton intakeFlip, intakeRun, intakeStop, intakeReverse;
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer()
@@ -89,7 +95,8 @@ public class RobotContainer
         intakeRun = new JoystickButton(m_driverController , HIDConstants.kB);
         
         intakeFlip.toggleWhenPressed(new StartEndCommand(m_intake::extendIntake, m_intake::retractIntake, m_intake));
-        intakeRun.toggleWhenPressed(new StartEndCommand(m_intake::startIntakeMotors, m_intake::reverseIntakeMotors, m_intake));
+        intakeRun.whileHeld(m_intakeRun);
+        intakeReverse.whileHeld(m_intakeReverse);
     }
 
     /**

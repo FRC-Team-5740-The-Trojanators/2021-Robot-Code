@@ -8,7 +8,6 @@ import com.ctre.phoenix.VelocityPeriod;
 import com.ctre.phoenix.motorcontrol.VictorSPXControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
-import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Solenoid;
 import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.*;
@@ -19,19 +18,11 @@ import frc.robot.Constants.IntakeSubsystemConstants;
 public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new IntakeSubsystem. */
   private final VictorSPX m_intakeMotor;
-  private final Compressor m_intakeCompressor = new Compressor(0); //fake address
   private final DoubleSolenoid m_intakeSolenoid = new DoubleSolenoid(1, 3); //fake address
 
   public IntakeSubsystem() {
      m_intakeMotor = new VictorSPX(99); //fake DeviceID
      m_intakeSolenoid.set(kOff);
-
-     m_intakeCompressor.setClosedLoopControl(true);
-
-     boolean enabled = m_intakeCompressor.enabled();
-     boolean pressureSwitch = m_intakeCompressor.getPressureSwitchValue();
-     double current = m_intakeCompressor.getCompressorCurrent();
-
   }
 
   @Override
