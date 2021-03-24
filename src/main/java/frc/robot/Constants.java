@@ -31,6 +31,9 @@ public final class Constants
     {
         public static final int k_DriverControllerPort = 1;
         public static final double kDeadBand = 0.05;
+        public static final int kX = 3;
+        public static final int kY = 4;
+
     }
 
     
@@ -119,8 +122,9 @@ public final class Constants
             public static final int backRightCANCoderId = 12; 
             public static final int k_RightRear_SteeringMotor = 8;   
           
-            public static final int k_lowerShooterWheel = 13;
-            public static final int k_upperShooterWheel = 14;
+            //TODO Check CANIDs
+            public static final int k_ShooterMotorOne = 13;
+            public static final int k_ShooterMotorTwo = 14;
         }
         
         /**

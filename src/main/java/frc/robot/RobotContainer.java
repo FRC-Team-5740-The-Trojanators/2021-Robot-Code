@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.HIDConstants;
 import frc.robot.commands.AutonomousDrive;
+<<<<<<< HEAD
 import frc.robot.commands.SwerveDriveCommand;
 
 import frc.robot.subsystems.DriveSubsystem;
@@ -24,6 +25,19 @@ import frc.robot.paths.TrajectoriesExporter;
 
 
 
+=======
+import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.ShootCommand;
+import frc.robot.commands.SwerveDriveCommand;
+import frc.robot.commands.TargetCommand;
+import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.SwerveModule;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+>>>>>>> b62a4e62ed8f4e14d36b559d4f22d7efb839021d
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -42,11 +56,18 @@ public class RobotContainer
 
     private final AutonomousDrive m_autonomousDrive = new AutonomousDrive(m_robotDrive);
 
+    private final ShooterSubsystem m_shooter = new ShooterSubsystem();
+
     //private final SwerveModule m_Module = new SwerveModule();
 
     // The driver's controller
     XboxController m_driverController = new XboxController(HIDConstants.k_DriverControllerPort);
 
+    private final TargetCommand m_target = new TargetCommand(m_shooter,m_robotDrive, m_driverController);
+
+    private final ShootCommand m_shoot = new ShootCommand(m_shooter, m_robotDrive, m_driverController);
+
+    JoystickButton shooterRun, targetShooter;
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer()
     {
@@ -87,6 +108,11 @@ public class RobotContainer
      */
     private void configureButtonBindings()
     {
+        shooterRun = new JoystickButton(m_driverController, HIDConstants.kX);
+        targetShooter = new JoystickButton(m_driverController, HIDConstants.kY);
+
+        shooterRun.whenPressed(m_shoot);
+        targetShooter.whenPressed(m_target);
     }
 
     /**
