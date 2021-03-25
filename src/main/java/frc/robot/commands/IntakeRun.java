@@ -11,15 +11,15 @@ import frc.robot.subsystems.IntakeSubsystem;
 public class IntakeRun extends CommandBase {
   /** Creates a new IntakeOperationCommand. */
   private final IntakeSubsystem m_intake;
-  private final XboxController m_controller;
+  private boolean m_isFinished = false;
 
-  public IntakeRun(IntakeSubsystem intake, XboxController controller)
+
+  public IntakeRun(IntakeSubsystem intake)
   {
     // Use addRequirements() here to declare subsystem dependencies.
     m_intake = intake;
     addRequirements(m_intake);
 
-    m_controller = controller;
   }
 
   // Called when the command is initially scheduled.
@@ -40,12 +40,13 @@ public class IntakeRun extends CommandBase {
   public void end(boolean interrupted)
   {
     m_intake.stopIntakeMotors();
+    m_isFinished = true;
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished()
   {
-    return false;
+    return m_isFinished;
   }
 }

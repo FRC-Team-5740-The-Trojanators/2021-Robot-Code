@@ -47,9 +47,9 @@ public class RobotContainer
     // The driver's controller
     XboxController m_driverController = new XboxController(HIDConstants.k_DriverControllerPort);
 
-    private final IntakeRun m_intakeRun = new IntakeRun(m_intake, m_driverController);
-    private final IntakeStop m_intakeStop = new IntakeStop(m_intake, m_driverController);
-    private final IntakeReverse m_intakeReverse = new IntakeReverse(m_intake, m_driverController);
+    private final IntakeRun m_intakeRun = new IntakeRun(m_intake);
+    private final IntakeStop m_intakeStop = new IntakeStop(m_intake);
+    private final IntakeReverse m_intakeReverse = new IntakeReverse(m_intake);
 
     //private final SwerveModule m_Module = new SwerveModule();
 
@@ -93,6 +93,7 @@ public class RobotContainer
     {
         intakeFlip = new JoystickButton(m_driverController , HIDConstants.kA);
         intakeRun = new JoystickButton(m_driverController , HIDConstants.kB);
+        intakeReverse = new JoystickButton(m_driverController, HIDConstants.kX);
         
         intakeFlip.toggleWhenPressed(new StartEndCommand(m_intake::extendIntake, m_intake::retractIntake, m_intake));
         intakeRun.whileHeld(m_intakeRun);

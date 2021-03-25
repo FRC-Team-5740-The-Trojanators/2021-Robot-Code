@@ -23,6 +23,7 @@ public class IntakeSubsystem extends SubsystemBase {
   public IntakeSubsystem() {
      m_intakeMotor = new VictorSPX(99); //fake DeviceID
      m_intakeSolenoid.set(kOff);
+     stopIntakeMotors();
   }
 
   @Override

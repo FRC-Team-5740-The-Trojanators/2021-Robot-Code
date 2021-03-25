@@ -12,13 +12,12 @@ import edu.wpi.first.wpilibj2.command.StartEndCommand;
 public class IntakeFlip extends CommandBase {
   
   private final IntakeSubsystem m_intake;
-  private final XboxController m_controller;
+
   /** Creates a new IntakePneumaticCommand. */
-  public IntakeFlip(Runnable onInit, Runnable onEnd, IntakeSubsystem intake, XboxController controller) {
+  public IntakeFlip(Runnable onInit, Runnable onEnd, IntakeSubsystem intake) {
     m_intake = intake;
     addRequirements(m_intake);
     // Use addRequirements() here to declare subsystem dependencies.
-    m_controller = controller;
   }
 
   // Called when the command is initially scheduled.

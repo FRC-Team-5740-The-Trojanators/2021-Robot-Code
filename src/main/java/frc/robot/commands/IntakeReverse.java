@@ -11,15 +11,12 @@ import frc.robot.subsystems.IntakeSubsystem;
 public class IntakeReverse extends CommandBase {
   /** Creates a new IntakeReverse. */
   private final IntakeSubsystem m_intake;
-  private final XboxController m_controller;
-  
-  public IntakeReverse(IntakeSubsystem intake, XboxController controller)
+    
+  public IntakeReverse(IntakeSubsystem intake)
   {
     // Use addRequirements() here to declare subsystem dependencies.
     m_intake = intake;
     addRequirements(m_intake);
-
-    m_controller = controller;
   }
 
   // Called when the command is initially scheduled.
