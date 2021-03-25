@@ -225,6 +225,30 @@ public final class Constants
             public static final double k_maxShooterOutput = 1;
         }
         
+        public static final class ShooterConstants
+        {
+            public static final double shooterRotationRight = 0.02;
+            public static final double shooterRotationLeft = -0.02;
+        }
+
+        public static final class HoodConstants
+        {
+            public static final double k_hoodP = .1;
+            public static final double k_hoodI = 0;
+            public static final double k_hoodD = 0;
+            public static final double k_hoodFF = 0;
+            public static final double k_minShooterOutput = 0;
+            public static final double k_maxShooterOutput = 1;
+
+            public static final double setpointValue = 1;
+
+            public static double limelightAngle = 1000000; // angle that the limelight is set at
+        
+            public static double limelightHeight = 1000000000; //from ground to limelight
+            public static double goalHeight = 1000000; // from ground to goal
+            public static double heightDifference = goalHeight - limelightHeight;
+        }
+        
 
     }
 }
