@@ -85,6 +85,7 @@ public final class Constants
         
         public static final double kXYjoystickCoefficient = .75;
         public static final double kMaxAngularSpeed = Units.feetToMeters(15) / k_RobotRadius; //Gives in radians / s (/s is implied);
+        public static final double kRotCoefficient = .5;
         public static double fieldCalibration = 0;
 
         //Angle offsets
