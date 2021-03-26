@@ -12,6 +12,7 @@ import frc.robot.commands.SwerveDriveCommand;
 
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.SwerveModule;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.paths.BarrelRacePath;
 import frc.robot.paths.BouncePath;
@@ -37,9 +38,10 @@ public class RobotContainer
     
     private final DriveSubsystem m_robotDrive = new DriveSubsystem(false);
 
+    //private final SwerveModule m_Module = new SwerveModule();
+
     private final AutonomousDrive m_autonomousDrive = new AutonomousDrive(m_robotDrive);
 
-    //private final SwerveModule m_Module = new SwerveModule();
 
     // The driver's controller
     XboxController m_driverController = new XboxController(HIDConstants.k_DriverControllerPort);

@@ -34,6 +34,7 @@ import frc.robot.paths.FiveMeterPath;
 import frc.robot.paths.SlalomPath;
 import frc.robot.paths.TrajectoryMaker;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.SwerveModule;
 
 public class AutonomousDrive extends CommandBase {
 
@@ -101,7 +102,7 @@ public class AutonomousDrive extends CommandBase {
 
    // m_driveSubsystem.resetOdometry(new Pose2d(new Translation2d(0, 0), new Rotation2d(0)));
     m_driveSubsystem.resetOdometry(m_trajectory.getInitialPose());
-
+    m_driveSubsystem.resetEncoders();
   }
   
   // Called every time the scheduler runs while the command is scheduled.

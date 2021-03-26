@@ -135,6 +135,12 @@ public class DriveSubsystem extends SubsystemBase
 
     // }
 
+    public void resetEncoders(){
+        modules[0].resetDriveEncoder();
+        modules[1].resetDriveEncoder();
+        modules[2].resetDriveEncoder();
+        modules[3].resetDriveEncoder();
+    }
 
     public SwerveModuleState[] getStates()
     {
