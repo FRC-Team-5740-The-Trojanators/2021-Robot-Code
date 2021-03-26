@@ -83,7 +83,9 @@ public class TrajectoriesExporter
         try (PrintWriter writer = new PrintWriter(new File(filename + ".txt")))
         {
             var states = trajectory.getStates();
-            var sb = new StringBuilder("Time (s), Velocity (m/s), Acceleration (m/s/s), X (m), Y (m), Rotation (rads), Rotation (deg), Curvature (rads/m)\n\n");
+            var sb = new StringBuilder();
+
+            sb.append("Time (s), Velocity (m/s), Acceleration (m/s/s), X (m), Y (m), Rotation (rads), Rotation (deg), Curvature (rads/m)\n\n");
 
             for (State state : states)
             {
@@ -120,7 +122,18 @@ public class TrajectoriesExporter
                 sb.append(" (rads/m)\n");
             }
 
-            sb.append("\n");
+            sb.append("\n\n");
+
+            sb.append("Trajectory Summary: ");
+
+            sb.append("Total Seconds: ");
+            sb.append(String.format("%.2f", trajectory.getTotalTimeSeconds()));
+            sb.append(" (s); ");
+
+            sb.append("Total points in the Trajectory: ");
+            sb.append(String.format("%d", trajectory.getStates().size()));
+            sb.append("\n<EOF>");
+
             writer.write(sb.toString());
             writer.close();
         }
