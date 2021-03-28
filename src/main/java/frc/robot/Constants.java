@@ -165,7 +165,7 @@ public final class Constants
             public static final MotorType k_SwerveLeftRear_Steering = MotorType.kBrushless;
         }        
      
-        public static SwerveDriveKinematics kinematics =
+        public static final SwerveDriveKinematics kinematics =
             new SwerveDriveKinematics(
                 new Translation2d(k_WheelBase / 2, k_TrackWidth / 2),    // Left Front
                 new Translation2d(k_WheelBase / 2, -k_TrackWidth / 2),   // Right Front
@@ -189,10 +189,10 @@ public final class Constants
             public static final double k_driveIz = 0; 
             public static final double k_driveFF[] = 
             {
-                .215,
-                .22,
-                .224,
-                .228,
+                .220,
+                .233,
+                .237,
+                .233
             };
             
             public static final double k_driveMaxOutput = 1; 
@@ -213,19 +213,19 @@ public final class Constants
            // public static final double k_steerP = 0.0007;
            public static final double k_steerP[] = 
            {
-               0.0008, //LeftFront
-               0.0007, //RightFront
-               0.0007, //LeftRear
-               0.0007, //RightRear
+               0.0006, //LeftFront
+               0.00065, //RightFront
+               0.0005, //LeftRear
+               0.0006, //RightRear
            };
             public static final double k_steerI= 0;
             //public static final double k_steerD = 0.000009; 
             public static final double k_steerD[] = 
             {
-                0.000009,
-                0.000009,
-                0.000009,
-                0.000009,
+                0.000007,
+                0.000008,
+                0.000008,
+                0.000008,
             };
 
             public static final double k_steerIz = 0; 

@@ -55,7 +55,7 @@ public class AutonomousDrive extends CommandBase {
   
   public void loadTrajectory()
   {
-    m_trajectory = BouncePath.getTrajectory(); //change path name based on path we want to follow
+    m_trajectory = FiveMeterPath.getTrajectory(); //change path name based on path we want to follow
   }
 
   // public void trajectoryGenerator()
@@ -88,10 +88,10 @@ public class AutonomousDrive extends CommandBase {
     //m_driveSubsystem.resetIMU();
     m_isFinished = false;
 
-    m_xController = new PIDController(.01, 0, 0);
-    m_yController = new PIDController(.01, 0, 0);
-    m_trapezoidProfile = new TrapezoidProfile.Constraints(Math.PI, 2 * Math.PI);
-    m_rotController = new ProfiledPIDController(.02, 0, 0, m_trapezoidProfile);
+    m_xController = new PIDController(.02, 0, 0);
+    m_yController = new PIDController(.02, 0, 0);
+    m_trapezoidProfile = new TrapezoidProfile.Constraints(10, 20);
+    m_rotController = new ProfiledPIDController(.015, 0, 0, m_trapezoidProfile);
    // m_rotController.reset(new TrapezoidProfile.State(0,0)); //(0,0) are position and velocity
    // m_rotController.enableContinuousInput(-Math.PI, Math.PI);
 
@@ -116,19 +116,34 @@ public class AutonomousDrive extends CommandBase {
 
       ChassisSpeeds adjustedSpeeds = m_driveController.calculate(m_pose2d, m_goal, m_rotation);
       
-      //m_pose2d = m_driveSubsystem.updateOdometry();
+      m_pose2d = m_driveSubsystem.updateOdometry();
       m_driveSubsystem.drive(adjustedSpeeds.vxMetersPerSecond, adjustedSpeeds.vyMetersPerSecond, adjustedSpeeds.omegaRadiansPerSecond /* SwerveDriveModuleConstants.k_RobotRadius*/, false);
-      SmartDashboard.putNumber("X Velocity", adjustedSpeeds.vxMetersPerSecond);
-      SmartDashboard.putNumber("Y Velocity", adjustedSpeeds.vyMetersPerSecond);
-      SmartDashboard.putNumber("Rot Speed", adjustedSpeeds.omegaRadiansPerSecond);
+      // SmartDashboard.putNumber("X Velocity", adjustedSpeeds.vxMetersPerSecond);
+      // SmartDashboard.putNumber("Y Velocity", adjustedSpeeds.vyMetersPerSecond);
+      // SmartDashboard.putNumber("Rot Speed", adjustedSpeeds.omegaRadiansPerSecond);
+
       SmartDashboard.putNumber("Current X Position", m_driveSubsystem.getPoseX());
       SmartDashboard.putNumber("Current Y Position", m_driveSubsystem.getPoseY());
-      SmartDashboard.putNumber("m_rotation", m_rotation.getDegrees());
+      SmartDashboard.putNumber("Goal X Position", m_goal.poseMeters.getX());
+      SmartDashboard.putNumber("Goal Y Position", m_goal.poseMeters.getY());
+      SmartDashboard.putNumber("Error X Position", m_goal.poseMeters.getX() -  m_driveSubsystem.getPoseX());
+      SmartDashboard.putNumber("Error Y Position", m_goal.poseMeters.getY() -  m_driveSubsystem.getPoseY());
+      SmartDashboard.putNumber("Odometry X Position", m_pose2d.getX());
+      SmartDashboard.putNumber("Odometry Y Position", m_pose2d.getY());
 
-      SmartDashboard.putNumber("Reading X Velocity LeftFront", m_driveSubsystem.getModules()[0].getDriveVelocity());
-      SmartDashboard.putNumber("Reading X Velocity RightFront", m_driveSubsystem.getModules()[1].getDriveVelocity());
-      SmartDashboard.putNumber("Reading X Velocity LeftRear", m_driveSubsystem.getModules()[2].getDriveVelocity());
-      SmartDashboard.putNumber("Reading X Velocity RightRear", m_driveSubsystem.getModules()[3].getDriveVelocity());
+
+      SmartDashboard.putNumber("Current Rotation", m_rotation.getDegrees());
+      SmartDashboard.putNumber("Goal Rotation", m_goal.poseMeters.getRotation().getDegrees());
+
+
+      //SmartDashboard.putNumber("Reading X Velocity LeftFront", m_driveSubsystem.getModules()[0].getDriveVelocity());
+      // SmartDashboard.putNumber("Reading X Velocity RightFront", m_driveSubsystem.getModules()[1].getDriveVelocity());
+      // SmartDashboard.putNumber("Reading X Velocity LeftRear", m_driveSubsystem.getModules()[2].getDriveVelocity());
+      // SmartDashboard.putNumber("Reading X Velocity RightRear", m_driveSubsystem.getModules()[3].getDriveVelocity());
+
+      SmartDashboard.putNumber("Goal Velocity", m_goal.velocityMetersPerSecond);
+      SmartDashboard.putNumber("Error Velocity", m_goal.velocityMetersPerSecond - m_driveSubsystem.getModules()[0].getDriveVelocity());
+
 
       SmartDashboard.putNumber("timer", m_timer.get());
       SmartDashboard.putNumber("trajectory time", m_trajectory.getTotalTimeSeconds());
@@ -146,11 +161,22 @@ public class AutonomousDrive extends CommandBase {
       SmartDashboard.putNumber("trajectory time", m_trajectory.getTotalTimeSeconds());
      
       m_driveSubsystem.getPose();
-      
-      SmartDashboard.putNumber("Current X Position", m_driveSubsystem.getPoseX());
-      SmartDashboard.putNumber("Current Y Position", m_driveSubsystem.getPoseY());
-      SmartDashboard.putNumber("m_rotation", m_rotation.getDegrees());
-      //isFinished();
+
+      //SmartDashboard.putNumber("Current X Position", m_driveSubsystem.getPoseX());
+      //SmartDashboard.putNumber("Current Y Position", m_driveSubsystem.getPoseY());
+      SmartDashboard.putNumber("Goal X Position", m_goal.poseMeters.getX());
+      SmartDashboard.putNumber("Goal Y Position", m_goal.poseMeters.getY());
+      SmartDashboard.putNumber("Error X Position", m_goal.poseMeters.getX() -  m_driveSubsystem.getPoseX());
+      SmartDashboard.putNumber("Error Y Position", m_goal.poseMeters.getY() -  m_driveSubsystem.getPoseY());
+
+      SmartDashboard.putNumber("Current X Position", m_driveSubsystem.getPose().getX());
+      SmartDashboard.putNumber("Current Y Position", m_driveSubsystem.getPose().getY());
+
+
+
+      SmartDashboard.putNumber("Current Rotation", m_rotation.getDegrees());
+      SmartDashboard.putNumber("Goal Rotation", m_goal.poseMeters.getRotation().getDegrees());
+
       m_isFinished = true;
   }
     

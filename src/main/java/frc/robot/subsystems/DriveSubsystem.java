@@ -156,7 +156,7 @@ public class DriveSubsystem extends SubsystemBase
     public void periodic()
     {
       // This method will be called once per scheduler run
-      var gyroAngle = Rotation2d.fromDegrees(-m_imu.getAngle());
+      var gyroAngle = Rotation2d.fromDegrees(m_imu.getAngle());
 
      // m_pose = m_odometry.update(gyroAngle, modules[0].getState(), modules[1].getState(), modules[2].getState(), modules[3].getState());
      m_odometry.update(gyroAngle, modules[0].getState(), modules[1].getState(), modules[2].getState(), modules[3].getState());
@@ -216,9 +216,11 @@ public class DriveSubsystem extends SubsystemBase
         m_odometry.resetPosition(pose, m_imu.getRotation2d());
     }
 
-//    public Pose2d updateOdometry(){
-//        return m_odometry.update(m_imu.getAngle(), /*get module states here*/);
-//     }
+   public Pose2d updateOdometry()
+   {
+    var gyroAngle = Rotation2d.fromDegrees(m_imu.getAngle());
+    return m_odometry.update(gyroAngle, modules[0].getState(), modules[1].getState(), modules[2].getState(), modules[3].getState());
+   }
 
 
 //     /** 
