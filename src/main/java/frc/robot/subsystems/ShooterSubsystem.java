@@ -5,6 +5,8 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.revrobotics.CANEncoder;
@@ -23,6 +25,10 @@ import frc.robot.Constants.SwerveDriveModuleConstants.CANBusIDs;
 import frc.robot.Constants.SwerveDriveModuleConstants.HoodConstants;
 import frc.robot.Constants.SwerveDriveModuleConstants.ShooterConstants;
 import frc.robot.Constants.SwerveDriveModuleConstants.ShooterPIDValues;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DigitalSource;
+import edu.wpi.first.wpilibj.DutyCycle;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 
 public class ShooterSubsystem extends SubsystemBase {
   /** Creates a new ShooterSubsystem. */
@@ -46,9 +52,10 @@ public class ShooterSubsystem extends SubsystemBase {
   private PIDController m_aimPID;
   private CANPIDController m_ShooterMotorOnePID = ShooterMotorOne.getPIDController();
 
-
   private double m_txRad;
   private double m_ty;
+
+  private DutyCycleEncoder m_hexEncoder = new DutyCycleEncoder(DigitalSource source); //Source should be what the encoder is attached to but TalonSRX and hood motor do not work
 
   public ShooterSubsystem()
   {
@@ -57,6 +64,14 @@ public class ShooterSubsystem extends SubsystemBase {
     m_aimPID = new PIDController(ShooterPIDValues.k_aimingP, ShooterPIDValues.k_aimingI, ShooterPIDValues.k_aimingD);
     configShooterMotors();
     m_shooterEncoder = ShooterMotorOne.getEncoder();
+
+    m_hexEncoder = hoodMotor.configSelectedFeedbackSensor(m_hexEncoder);
+    hoodMotor.configSelectedFeedbackSensor(m_hexEncoder); 
+    hoodMotor.configClosedloopRamp(ShooterConstants.k_rampRate); //Needs actual value
+    hoodMotor.configOpenloopRamp(ShooterConstants.k_rampRate); 
+    hoodMotor.setNeutralMode(NeutralMode.Brake); 
+
+    m_hexEncoder.setDistancePerRotation(ShooterConstants.k_distancePerRotation);
   }
 
   public void configShooterMotors()
@@ -65,7 +80,6 @@ public class ShooterSubsystem extends SubsystemBase {
     ShooterMotorTwo.restoreFactoryDefaults();
 
     ShooterMotorTwo.follow(ShooterMotorOne, true);
-
 
     m_ShooterMotorOnePID.setP(ShooterPIDValues.k_shooterP);
     m_ShooterMotorOnePID.setI(ShooterPIDValues.k_shooterI);
@@ -208,4 +222,5 @@ public class ShooterSubsystem extends SubsystemBase {
     public void stopFlyWheel(){
       ShooterMotorOne.set(0);
     }
+
   }
