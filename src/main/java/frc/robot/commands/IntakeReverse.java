@@ -25,6 +25,7 @@ public class IntakeReverse extends CommandBase {
   public void initialize()
   {
     m_intake.reverseIntakeMotors();
+    m_isFinished = false;
   }
 
   // Called every time the scheduler runs while the command is scheduled.

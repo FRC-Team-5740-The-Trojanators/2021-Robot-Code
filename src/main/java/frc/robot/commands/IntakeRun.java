@@ -27,6 +27,7 @@ public class IntakeRun extends CommandBase {
   public void initialize()
   {
     m_intake.startIntakeMotors();
+    m_isFinished = false;
   }
   
 
