@@ -26,7 +26,9 @@ public class IntakeRun extends CommandBase {
   @Override
   public void initialize()
   {
+    m_intake.startIntakeMotors();
   }
+  
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override

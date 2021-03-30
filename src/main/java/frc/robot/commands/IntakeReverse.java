@@ -11,7 +11,8 @@ import frc.robot.subsystems.IntakeSubsystem;
 public class IntakeReverse extends CommandBase {
   /** Creates a new IntakeReverse. */
   private final IntakeSubsystem m_intake;
-    
+  private boolean m_isFinished = false;
+
   public IntakeReverse(IntakeSubsystem intake)
   {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -21,7 +22,10 @@ public class IntakeReverse extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize()
+  {
+    m_intake.reverseIntakeMotors();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -32,11 +36,15 @@ public class IntakeReverse extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted)
+  {
+    m_intake.stopIntakeMotors();
+    m_isFinished = true;
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return m_isFinished;
   }
 }

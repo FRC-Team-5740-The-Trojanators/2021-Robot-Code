@@ -51,8 +51,8 @@ public final class Constants
 
     public static final class IntakeSubsystemConstants
     {
-        public static final double k_intakeMotorSpeed = 1.0;
-        public static final double k_intakeReverseMotorSpeed = -1.0;
+        public static final double k_intakeMotorSpeed = -0.6;
+        public static final double k_intakeReverseMotorSpeed = 0.6;
         public static final double k_intakeStopMotorSpeed = 0.0;
     }
 
@@ -142,7 +142,9 @@ public final class Constants
 
             public static final int k_RightRear_DriveMotor = 7; 
             public static final int backRightCANCoderId = 12; 
-            public static final int k_RightRear_SteeringMotor = 8;   
+            public static final int k_RightRear_SteeringMotor = 8; 
+            
+            public static final int k_IntakeMotors = 16;
           }
         
         /**

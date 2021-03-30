@@ -14,16 +14,17 @@ import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.*;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.IntakeSubsystemConstants;
+import frc.robot.Constants.SwerveDriveModuleConstants.CANBusIDs;
 
 public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new IntakeSubsystem. */
   private final VictorSPX m_intakeMotor;
-  private final DoubleSolenoid m_intakeSolenoid = new DoubleSolenoid(1, 3); //fake address
+  private final DoubleSolenoid m_intakeSolenoid = new DoubleSolenoid(1, 0);
 
   public IntakeSubsystem() {
-     m_intakeMotor = new VictorSPX(99); //fake DeviceID
+     m_intakeMotor = new VictorSPX(CANBusIDs.k_IntakeMotors);
      m_intakeSolenoid.set(kOff);
-     stopIntakeMotors();
+     //stopIntakeMotors();
   }
 
   @Override
