@@ -60,9 +60,9 @@ public class RobotContainer
         // Configure the button bindings
         configureButtonBindings();
         //TODO uncomment line 63
-       // m_robotDrive.setDefaultCommand(new SwerveDriveCommand(m_robotDrive, m_driverController));
+       m_robotDrive.setDefaultCommand(new SwerveDriveCommand(m_robotDrive, m_driverController));
 
-       m_robotDrive.setDefaultCommand(new TargetCommand(m_shooter, m_robotDrive, m_driverController));
+       //m_robotDrive.setDefaultCommand(new TargetCommand(m_shooter, m_robotDrive, m_driverController));
 
         //ShuffleboardTab tab = Shuffleboard.getTab("Swerve Drive Tuning");
 
@@ -90,8 +90,8 @@ public class RobotContainer
         shooterRun = new JoystickButton(m_driverController, HIDConstants.kX);
         targetShooter = new JoystickButton(m_driverController, HIDConstants.kY);
 
-        shooterRun.whenPressed(m_shoot);
-        targetShooter.whenPressed(m_target);
+        shooterRun.whileHeld(m_shoot);
+       // targetShooter.whenPressed(m_target);
     }
 
     /**

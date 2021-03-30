@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
@@ -31,10 +32,12 @@ public class ShooterSubsystem extends SubsystemBase {
 
   private TalonSRX hoodMotor;
 
+  private CANEncoder m_shooterEncoder;
+
   private CANSparkMax ShooterMotorOne = new CANSparkMax(CANBusIDs.k_ShooterMotorOne, MotorType.kBrushless);
   private CANSparkMax ShooterMotorTwo = new CANSparkMax(CANBusIDs.k_ShooterMotorTwo, MotorType.kBrushless);
 
-  private VictorSPX indexerWheel;
+  private VictorSPX indexerWheel = new VictorSPX(CANBusIDs.k_indexerID);
 
   private NetworkTableEntry shuffleDistance;
   private NetworkTableEntry abs, quad, kp, ki, kd, kff, period, pos, setPoint, height;
@@ -52,6 +55,8 @@ public class ShooterSubsystem extends SubsystemBase {
     ledOff();
     m_hoodPID = new PIDController(HoodConstants.k_hoodP, HoodConstants.k_hoodI, HoodConstants.k_hoodD, HoodConstants.k_hoodFF);
     m_aimPID = new PIDController(ShooterPIDValues.k_aimingP, ShooterPIDValues.k_aimingI, ShooterPIDValues.k_aimingD);
+    configShooterMotors();
+    m_shooterEncoder = ShooterMotorOne.getEncoder();
   }
 
   public void configShooterMotors()
@@ -71,8 +76,6 @@ public class ShooterSubsystem extends SubsystemBase {
     ShooterMotorOne.setIdleMode(IdleMode.kCoast);
     ShooterMotorTwo.setIdleMode(IdleMode.kCoast);
 
-    
-   
     m_aimPID.setTolerance(ShooterPIDValues.k_aimTolerance);
   }
 
@@ -154,7 +157,21 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void runIndexerWheel(){
-      indexerWheel.set(ControlMode.PercentOutput, 1);
+      indexerWheel.set(ControlMode.PercentOutput, ShooterConstants.indexerMaxSpeed);
+    }
+
+    public void stopIndexerWheel(){
+      indexerWheel.set(ControlMode.PercentOutput, 0);
+    }
+
+    public double getIndexerVelocity()
+    {
+      return indexerWheel.getMotorOutputPercent();
+    }
+
+    public double getShooterVelocity()
+    {
+      return m_shooterEncoder.getVelocity();
     }
 
     public double turnShooter()
@@ -186,6 +203,9 @@ public class ShooterSubsystem extends SubsystemBase {
       }
     }
     public void runFlyWheel(){
-      m_ShooterMotorOnePID.setReference(ShooterPIDValues.k_speedRPM, ControlType.kVelocity);
+      ShooterMotorOne.set(ShooterConstants.shooterMaxSpeed);
     }
-}
+    public void stopFlyWheel(){
+      ShooterMotorOne.set(0);
+    }
+  }
