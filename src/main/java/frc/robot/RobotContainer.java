@@ -114,7 +114,7 @@ public class RobotContainer
         shooterRun = new JoystickButton(m_driverController, HIDConstants.kX);
         targetShooter = new JoystickButton(m_driverController, HIDConstants.kY);
 
-        shooterRun.whileHeld(m_shoot);
+        shooterRun.whileHeld(new ShootCommand(m_shooter, m_robotDrive, m_driverController));
        // targetShooter.whenPressed(m_target);
     }
 

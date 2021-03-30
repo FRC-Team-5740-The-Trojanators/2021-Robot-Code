@@ -29,7 +29,8 @@ public class ShootCommand extends CommandBase {
   public void initialize()
   {
     m_shooter.runFlyWheel();
-    m_shooter. runIndexerWheel();
+    m_shooter.runIndexerWheel();
+    m_isFinished = false;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -37,7 +38,7 @@ public class ShootCommand extends CommandBase {
   public void execute()
   {
     m_shooter.runFlyWheel();
-    m_shooter. runIndexerWheel();
+    m_shooter.runIndexerWheel();
     SmartDashboard.putNumber("Shooter Velocity", m_shooter.getShooterVelocity());
 
   }
@@ -53,7 +54,8 @@ public class ShootCommand extends CommandBase {
 
   // Returns true when the command should end.
   @Override
-  public boolean isFinished() {
+  public boolean isFinished()
+  {
     return m_isFinished;
   }
 }

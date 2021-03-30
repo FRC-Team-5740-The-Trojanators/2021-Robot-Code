@@ -18,6 +18,7 @@ public class TargetCommand extends CommandBase {
  ShooterSubsystem m_shooter;
  DriveSubsystem m_drivetrain;
  XboxController m_controller;
+ boolean m_isFinished;
 
   public TargetCommand(ShooterSubsystem shooter, DriveSubsystem drivetrain, XboxController controller)
   {
@@ -33,6 +34,7 @@ public class TargetCommand extends CommandBase {
   public void initialize()
   {
     m_shooter.ledOn();
+    m_isFinished = false;
   }
 
 
@@ -48,11 +50,15 @@ public class TargetCommand extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted)
+  {
+
+  }
 
   // Returns true when the command should end.
   @Override
-  public boolean isFinished() {
-    return false;
+  public boolean isFinished()
+  {
+    return m_isFinished = true;
   }
 }
