@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.revrobotics.CANEncoder;
@@ -22,6 +23,7 @@ import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.SwerveDriveModuleConstants;
 import frc.robot.Constants.SwerveDriveModuleConstants.CANBusIDs;
+import frc.robot.Constants.SwerveDriveModuleConstants.HexEncoderInputs;
 import frc.robot.Constants.SwerveDriveModuleConstants.HoodConstants;
 import frc.robot.Constants.SwerveDriveModuleConstants.ShooterConstants;
 import frc.robot.Constants.SwerveDriveModuleConstants.ShooterPIDValues;
@@ -29,6 +31,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DigitalSource;
 import edu.wpi.first.wpilibj.DutyCycle;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.Encoder;
 
 public class ShooterSubsystem extends SubsystemBase {
   /** Creates a new ShooterSubsystem. */
@@ -54,9 +57,11 @@ public class ShooterSubsystem extends SubsystemBase {
 
   private double m_txRad;
   private double m_ty;
+  private int m_hoodTicks;
 
-  private DutyCycleEncoder m_hexEncoder = new DutyCycleEncoder(DigitalSource source); //Source should be what the encoder is attached to but TalonSRX and hood motor do not work
-
+  private DutyCycleEncoder m_hexAbsoluteEncoder = new DutyCycleEncoder(HexEncoderInputs.k_absoluteInput);
+  private Encoder m_hexQuadEncoder = new Encoder(HexEncoderInputs.k_quadratureA, HexEncoderInputs.k_quadratureB, HexEncoderInputs.k_indexInput);
+  
   public ShooterSubsystem()
   {
     ledOff();
@@ -65,13 +70,11 @@ public class ShooterSubsystem extends SubsystemBase {
     configShooterMotors();
     m_shooterEncoder = ShooterMotorOne.getEncoder();
 
-    m_hexEncoder = hoodMotor.configSelectedFeedbackSensor(m_hexEncoder);
-    hoodMotor.configSelectedFeedbackSensor(m_hexEncoder); 
     hoodMotor.configClosedloopRamp(ShooterConstants.k_rampRate); //Needs actual value
     hoodMotor.configOpenloopRamp(ShooterConstants.k_rampRate); 
     hoodMotor.setNeutralMode(NeutralMode.Brake); 
 
-    m_hexEncoder.setDistancePerRotation(ShooterConstants.k_distancePerRotation);
+    m_hexQuadEncoder.reset();
   }
 
   public void configShooterMotors()
@@ -97,10 +100,10 @@ public class ShooterSubsystem extends SubsystemBase {
   public void periodic() 
   {
     // This method will be called once per scheduler run
-    
     m_ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
 
     m_txRad = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0) * (Math.PI/180);
+    m_hoodTicks = m_hexQuadEncoder.get();
   }
 
   public double getAimPID(){
@@ -126,9 +129,30 @@ public class ShooterSubsystem extends SubsystemBase {
     }
   }
 
-  public void hoodSetSetpoint(double setpoint)
+  public double hoodSetSetpoint(double setpoint)
   {
-    m_hoodPID.setSetpoint(setpoint);
+    //m_hoodPID.setSetpoint(setpoint);
+   return m_hoodPID.calculate(m_hoodTicks, setpoint);
+  }
+
+  public void setHoodMotor(double demand)
+  {
+    hoodMotor.set(TalonSRXControlMode.PercentOutput, demand);
+  }
+
+  public void forceRunHoodMotorExtend()
+  {
+    hoodMotor.set(TalonSRXControlMode.PercentOutput, 0.1);
+  }
+
+  public void forceRunHoodMotorRetract()
+  {
+    hoodMotor.set(TalonSRXControlMode.PercentOutput, -0.1);
+  }
+
+  public void forceStopHoodMotor()
+  {
+    hoodMotor.set(TalonSRXControlMode.PercentOutput, 0);
   }
 
   public double getSkew() {
@@ -190,32 +214,37 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public double turnShooter()
     {
-      double rot = SwerveDriveModuleConstants.kMaxAngularSpeed * SwerveDriveModuleConstants.kRotCoefficent *  getAimPID();
+      double rot = SwerveDriveModuleConstants.kMaxAngularSpeed * SwerveDriveModuleConstants.kRotCoefficent * getAimPID();
       return rot;
     }
 
-    public void actuateHood()
+    public double actuateHood()
     {
       double angle = m_ty + HoodConstants.limelightAngle;
       var distance = HoodConstants.heightDifference / Math.tan(angle);
 
       if(distance >= HoodConstants.k_maxDistance)
       {
-       hoodSetSetpoint(HoodConstants.k_retractSetpoint);
+       return hoodSetSetpoint(HoodConstants.k_retractSetpoint);
       }
       else if( distance < HoodConstants.k_maxDistance && distance >= 20)
       {
-        hoodSetSetpoint(HoodConstants.k_retractSetpoint + 50);
+        return hoodSetSetpoint(HoodConstants.k_retractSetpoint + 50);
       } 
       else if(distance < 20 && distance >= 10)
       {
-        hoodSetSetpoint(HoodConstants.k_retractSetpoint + 100);
+        return hoodSetSetpoint(HoodConstants.k_retractSetpoint + 100);
       } 
       else if(distance < 10)
       {
-        hoodSetSetpoint(HoodConstants.k_retractSetpoint + 150);
+        return hoodSetSetpoint(HoodConstants.k_retractSetpoint + 150);
+      }
+      else
+      {
+        return -1; //error indication, it should never get here
       }
     }
+
     public void runFlyWheel(){
       ShooterMotorOne.set(ShooterConstants.shooterMaxSpeed);
     }

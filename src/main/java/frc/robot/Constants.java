@@ -33,6 +33,9 @@ public final class Constants
         public static final double kDeadBand = 0.05;
         public static final int kX = 3;
         public static final int kY = 4;
+        public static final int kRB = 6;
+        public static final int kDL = 270;
+        public static final int kDR = 90;
 
     }
 
@@ -229,9 +232,16 @@ public final class Constants
             public static final double k_aimingI = 0;
             public static final double k_aimingD = 0;
             public static final double k_aimTolerance = 1 * (Math.PI/180);
-
         }
         
+        public static final class HexEncoderInputs
+        {
+            public static final int k_absoluteInput = 0;
+            public static final int k_quadratureA = 1;
+            public static final int k_quadratureB = 2;
+            public static final int k_indexInput = 3;
+        }
+
         public static final class ShooterConstants
         {
             public static final double shooterRotationRight = 0.02;
@@ -239,8 +249,6 @@ public final class Constants
             public static final double shooterMaxSpeed = 1;
             public static final double indexerMaxSpeed = 1;
             public static final double k_rampRate = 0.25;
-            public static final double k_distancePerRotation = 1; //Need actual value
-
         }
 
         public static final class HoodConstants

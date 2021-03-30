@@ -12,8 +12,11 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.Constants.HIDConstants;
+import frc.robot.commands.ActuateHoodCommand;
 import frc.robot.commands.AutonomousDrive;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.ForceExtendHood;
+import frc.robot.commands.ForceRetractHood;
 import frc.robot.commands.ShootCommand;
 import frc.robot.commands.SwerveDriveCommand;
 import frc.robot.commands.TargetCommand;
@@ -22,8 +25,10 @@ import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveModule;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -53,7 +58,17 @@ public class RobotContainer
 
     private final ShootCommand m_shoot = new ShootCommand(m_shooter, m_robotDrive, m_driverController);
 
-    JoystickButton shooterRun, targetShooter;
+    private final ActuateHoodCommand m_hood = new ActuateHoodCommand(m_shooter);
+
+    private final ParallelCommandGroup TargetAndHood = new ParallelCommandGroup(m_target, m_hood);
+
+    private final ForceExtendHood m_forceExtend = new ForceExtendHood(m_shooter);
+    private final ForceRetractHood m_forceRetract = new ForceRetractHood(m_shooter);
+
+
+
+    JoystickButton shooterRun, targetShooter, actuateHood;
+    POVButton  forceExtendHood, forceRetractHood;
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer()
     {
@@ -89,9 +104,15 @@ public class RobotContainer
     {
         shooterRun = new JoystickButton(m_driverController, HIDConstants.kX);
         targetShooter = new JoystickButton(m_driverController, HIDConstants.kY);
+        forceExtendHood = new POVButton(m_driverController, HIDConstants.kDL);
+        forceRetractHood = new POVButton(m_driverController, HIDConstants.kDR);
+
+        forceExtendHood.whileHeld(m_forceExtend);
+        forceRetractHood.whileHeld(m_forceRetract);
+
+        targetShooter.whenPressed(TargetAndHood);
 
         shooterRun.whileHeld(new ShootCommand(m_shooter, m_robotDrive, m_driverController));
-       // targetShooter.whenPressed(m_target);
     }
 
     /**
