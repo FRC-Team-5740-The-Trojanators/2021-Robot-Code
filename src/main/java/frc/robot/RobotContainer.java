@@ -6,16 +6,24 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.Constants.HIDConstants;
-import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.AutonomousDrive;
+import frc.robot.commands.IntakeFlip;
+import frc.robot.commands.IntakeRun;
+import frc.robot.commands.IntakeReverse;
+import frc.robot.commands.IntakeStop;
 import frc.robot.commands.SwerveDriveCommand;
+
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
-import frc.robot.subsystems.SwerveModule;
+import frc.robot.subsystems.IntakeSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.paths.ExamplePath1;
+import frc.robot.paths.ExamplePath2;
+import frc.robot.paths.TrajectoriesExporter;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -28,23 +36,44 @@ public class RobotContainer
     // The robot's subsystems and commands are defined here...
     private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
-    private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+   // private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
     
     private final DriveSubsystem m_robotDrive = new DriveSubsystem(false);
 
-    //private final SwerveModule m_Module = new SwerveModule();
+    private final AutonomousDrive m_autonomousDrive = new AutonomousDrive(m_robotDrive);
+
+    private final IntakeSubsystem m_intake = new IntakeSubsystem();
 
     // The driver's controller
     XboxController m_driverController = new XboxController(HIDConstants.k_DriverControllerPort);
 
+    private final IntakeRun m_intakeRun = new IntakeRun(m_intake);
+    private final IntakeStop m_intakeStop = new IntakeStop(m_intake);
+    private final IntakeReverse m_intakeReverse = new IntakeReverse(m_intake);
+
+    //private final SwerveModule m_Module = new SwerveModule();
+
+    //The Button Binding Names
+    public static JoystickButton intakeFlip, intakeRun, intakeStop, intakeReverse;
+
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer()
     {
+        System.out.println("here!");
+ 
+        var traj = ExamplePath1.getTrajectory();
+        TrajectoriesExporter.exportTrajectoryToCSV(traj, ExamplePath1.getTrajectoryName());
+        TrajectoriesExporter.exportTrajectoryToHumanReadable(traj, ExamplePath1.getTrajectoryName());
+
+        TrajectoriesExporter.exportTrajectoryToHumanReadable(ExamplePath2.getTrajectory(), ExamplePath2.getTrajectoryName());
+        System.out.println("now here!");
+
+
         // Configure the button bindings
         configureButtonBindings();
  
         m_robotDrive.setDefaultCommand(new SwerveDriveCommand(m_robotDrive, m_driverController));
-        ShuffleboardTab tab = Shuffleboard.getTab("Swerve Drive Tuning");
+        //ShuffleboardTab tab = Shuffleboard.getTab("Swerve Drive Tuning");
 
         m_robotDrive.resetIMU();
 
@@ -62,6 +91,13 @@ public class RobotContainer
      */
     private void configureButtonBindings()
     {
+        intakeFlip = new JoystickButton(m_driverController , HIDConstants.kA);
+        intakeRun = new JoystickButton(m_driverController , HIDConstants.kB);
+        intakeReverse = new JoystickButton(m_driverController, HIDConstants.kX);
+        
+        intakeFlip.toggleWhenPressed(new StartEndCommand(m_intake::extendIntake, m_intake::retractIntake, m_intake));
+        intakeRun.whileHeld(m_intakeRun);
+        intakeReverse.whileHeld(m_intakeReverse);
     }
 
     /**
@@ -72,6 +108,6 @@ public class RobotContainer
     public Command getAutonomousCommand()
     {
         // An ExampleCommand will run in autonomous
-        return m_autoCommand;
+        return m_autonomousDrive;
     }
 }
