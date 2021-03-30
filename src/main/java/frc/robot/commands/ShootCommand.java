@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -14,6 +15,7 @@ public class ShootCommand extends CommandBase {
   ShooterSubsystem m_shooter;
   DriveSubsystem m_drivetrain;
   XboxController m_controller;
+  boolean m_isFinished;
   public ShootCommand(ShooterSubsystem shooter, DriveSubsystem drivetrain, XboxController controller) {
     m_shooter = shooter;
     m_drivetrain = drivetrain;
@@ -24,22 +26,34 @@ public class ShootCommand extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize()
+  {
+    m_shooter.runFlyWheel();
+    m_shooter. runIndexerWheel();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute()
   {
-    //TODO start flywheels
+    m_shooter.runFlyWheel();
+    m_shooter. runIndexerWheel();
+    SmartDashboard.putNumber("Shooter Velocity", m_shooter.getShooterVelocity());
+
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted)
+  {
+    m_shooter.stopFlyWheel();
+    m_shooter.stopIndexerWheel();
+    m_isFinished = true;
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return m_isFinished;
   }
 }

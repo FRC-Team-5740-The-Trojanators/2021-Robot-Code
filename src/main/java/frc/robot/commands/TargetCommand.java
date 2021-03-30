@@ -7,6 +7,8 @@ package frc.robot.commands;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.SwerveDriveModuleConstants;
+import frc.robot.Constants.SwerveDriveModuleConstants.HoodConstants;
 import frc.robot.Constants.SwerveDriveModuleConstants.ShooterConstants;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -33,34 +35,15 @@ public class TargetCommand extends CommandBase {
     m_shooter.ledOn();
   }
 
-  public void turnShooter(){
-    var tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
 
-    if(tx > 1)
-    {
-      m_drivetrain.drive(0, 0, ShooterConstants.shooterRotationLeft, false);
-    } else if(tx < -1)
-    {
-      m_drivetrain.drive(0, 0, ShooterConstants.shooterRotationRight, false);
-    }
-  }
-
-  public void actuateHood()
-  {
-    var ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
-    //double angle = ty + HoodConstants.limelightAngle;
-    //var distance = HoodConstants.heightDifference / tan(angle);
-    // TODO turn distance into setpoint (is it proportional or do we need if/then)
-    double temporarySetpoint = 100000;
-    m_shooter.hoodSetSetpoint(temporarySetpoint);
-  }
+ 
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute()
   {
-    turnShooter();
-    actuateHood();
+    m_drivetrain.drive(0, 0, m_shooter.turnShooter(), false);
+
   }
 
   // Called once the command ends or is interrupted.

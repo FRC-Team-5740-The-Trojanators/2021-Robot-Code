@@ -70,8 +70,7 @@ public class SwerveModule
         m_steeringPIDController = new PIDController(SteeringControllerPIDValues.k_steerP, 
                                                     SteeringControllerPIDValues.k_steerI,
                                                     SteeringControllerPIDValues.k_steerD);
-
-        //Sets steering PID Values using Rev Robotics Version                                            
+                                                    
         m_steeringPIDController.setP(SteeringControllerPIDValues.k_steerP);
         m_steeringPIDController.setI(SteeringControllerPIDValues.k_steerI);
         m_steeringPIDController.setD(SteeringControllerPIDValues.k_steerD);

@@ -7,6 +7,8 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.revrobotics.CANEncoder;
+import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
@@ -16,8 +18,10 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.SwerveDriveModuleConstants;
 import frc.robot.Constants.SwerveDriveModuleConstants.CANBusIDs;
 import frc.robot.Constants.SwerveDriveModuleConstants.HoodConstants;
+import frc.robot.Constants.SwerveDriveModuleConstants.ShooterConstants;
 import frc.robot.Constants.SwerveDriveModuleConstants.ShooterPIDValues;
 
 public class ShooterSubsystem extends SubsystemBase {
@@ -28,19 +32,31 @@ public class ShooterSubsystem extends SubsystemBase {
 
   private TalonSRX hoodMotor;
 
+  private CANEncoder m_shooterEncoder;
+
   private CANSparkMax ShooterMotorOne = new CANSparkMax(CANBusIDs.k_ShooterMotorOne, MotorType.kBrushless);
   private CANSparkMax ShooterMotorTwo = new CANSparkMax(CANBusIDs.k_ShooterMotorTwo, MotorType.kBrushless);
 
-  private VictorSPX indexerWheel;
+  private VictorSPX indexerWheel = new VictorSPX(CANBusIDs.k_indexerID);
 
   private NetworkTableEntry shuffleDistance;
   private NetworkTableEntry abs, quad, kp, ki, kd, kff, period, pos, setPoint, height;
   
   private PIDController m_hoodPID;
+  private PIDController m_aimPID;
+  private CANPIDController m_ShooterMotorOnePID = ShooterMotorOne.getPIDController();
 
-  public ShooterSubsystem() {
+
+  private double m_txRad;
+  private double m_ty;
+
+  public ShooterSubsystem()
+  {
     ledOff();
     m_hoodPID = new PIDController(HoodConstants.k_hoodP, HoodConstants.k_hoodI, HoodConstants.k_hoodD, HoodConstants.k_hoodFF);
+    m_aimPID = new PIDController(ShooterPIDValues.k_aimingP, ShooterPIDValues.k_aimingI, ShooterPIDValues.k_aimingD);
+    configShooterMotors();
+    m_shooterEncoder = ShooterMotorOne.getEncoder();
   }
 
   public void configShooterMotors()
@@ -51,19 +67,30 @@ public class ShooterSubsystem extends SubsystemBase {
     ShooterMotorTwo.follow(ShooterMotorOne, true);
 
 
-    ShooterMotorOne.getPIDController().setP(ShooterPIDValues.k_shooterP);
-    ShooterMotorOne.getPIDController().setI(ShooterPIDValues.k_shooterI);
-    ShooterMotorOne.getPIDController().setD(ShooterPIDValues.k_shooterD);
-    ShooterMotorOne.getPIDController().setFF(ShooterPIDValues.k_shooterFF);
-    ShooterMotorOne.getPIDController().setOutputRange(ShooterPIDValues.k_minShooterOutput, ShooterPIDValues.k_maxShooterOutput);
+    m_ShooterMotorOnePID.setP(ShooterPIDValues.k_shooterP);
+    m_ShooterMotorOnePID.setI(ShooterPIDValues.k_shooterI);
+    m_ShooterMotorOnePID.setD(ShooterPIDValues.k_shooterD);
+    m_ShooterMotorOnePID.setFF(ShooterPIDValues.k_shooterFF);
+    m_ShooterMotorOnePID.setOutputRange(ShooterPIDValues.k_minShooterOutput, ShooterPIDValues.k_maxShooterOutput);
 
     ShooterMotorOne.setIdleMode(IdleMode.kCoast);
     ShooterMotorTwo.setIdleMode(IdleMode.kCoast);
+
+    m_aimPID.setTolerance(ShooterPIDValues.k_aimTolerance);
   }
 
   @Override
-  public void periodic() {
+  public void periodic() 
+  {
     // This method will be called once per scheduler run
+    
+    m_ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
+
+    m_txRad = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0) * (Math.PI/180);
+  }
+
+  public double getAimPID(){
+    return m_aimPID.calculate(m_txRad, 0);
   }
 
   public boolean seesTarget() {
@@ -130,6 +157,55 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void runIndexerWheel(){
-      indexerWheel.set(ControlMode.PercentOutput, 1);
+      indexerWheel.set(ControlMode.PercentOutput, ShooterConstants.indexerMaxSpeed);
     }
-}
+
+    public void stopIndexerWheel(){
+      indexerWheel.set(ControlMode.PercentOutput, 0);
+    }
+
+    public double getIndexerVelocity()
+    {
+      return indexerWheel.getMotorOutputPercent();
+    }
+
+    public double getShooterVelocity()
+    {
+      return m_shooterEncoder.getVelocity();
+    }
+
+    public double turnShooter()
+    {
+      double rot = SwerveDriveModuleConstants.kMaxAngularSpeed * SwerveDriveModuleConstants.kRotCoefficent *  getAimPID();
+      return rot;
+    }
+
+    public void actuateHood()
+    {
+      double angle = m_ty + HoodConstants.limelightAngle;
+      var distance = HoodConstants.heightDifference / Math.tan(angle);
+
+      if(distance >= HoodConstants.k_maxDistance)
+      {
+       hoodSetSetpoint(HoodConstants.k_retractSetpoint);
+      }
+      else if( distance < HoodConstants.k_maxDistance && distance >= 20)
+      {
+        hoodSetSetpoint(HoodConstants.k_retractSetpoint + 50);
+      } 
+      else if(distance < 20 && distance >= 10)
+      {
+        hoodSetSetpoint(HoodConstants.k_retractSetpoint + 100);
+      } 
+      else if(distance < 10)
+      {
+        hoodSetSetpoint(HoodConstants.k_retractSetpoint + 150);
+      }
+    }
+    public void runFlyWheel(){
+      ShooterMotorOne.set(ShooterConstants.shooterMaxSpeed);
+    }
+    public void stopFlyWheel(){
+      ShooterMotorOne.set(0);
+    }
+  }

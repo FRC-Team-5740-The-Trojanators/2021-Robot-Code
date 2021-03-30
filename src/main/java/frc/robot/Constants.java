@@ -63,6 +63,7 @@ public final class Constants
         
         public static final double kXYjoystickCoefficient = .75;
         public static final double kMaxAngularSpeed = Units.feetToMeters(15) / k_RobotRadius; //Gives in radians / s (/s is implied);
+        public static final double kRotCoefficent = .5;
         public static double fieldCalibration = 0;
 
         //Angle offsets
@@ -125,6 +126,8 @@ public final class Constants
             //TODO Check CANIDs
             public static final int k_ShooterMotorOne = 13;
             public static final int k_ShooterMotorTwo = 14;
+            public static final int k_hoodID = 15;
+            public static final int k_indexerID = 17; 
         }
         
         /**
@@ -223,12 +226,22 @@ public final class Constants
             public static final double k_shooterFF = 0;
             public static final double k_minShooterOutput = 0;
             public static final double k_maxShooterOutput = 1;
+           // public static final double k_speedRPM = 99999;
+
+            public static final double k_aimingP = .1;
+            public static final double k_aimingI = 0;
+            public static final double k_aimingD = 0;
+            public static final double k_aimTolerance = 1 * (Math.PI/180);
+
         }
         
         public static final class ShooterConstants
         {
             public static final double shooterRotationRight = 0.02;
             public static final double shooterRotationLeft = -0.02;
+            public static final double shooterMaxSpeed = 1;
+            public static final double indexerMaxSpeed = 1;
+
         }
 
         public static final class HoodConstants
@@ -247,6 +260,12 @@ public final class Constants
             public static double limelightHeight = 1000000000; //from ground to limelight
             public static double goalHeight = 1000000; // from ground to goal
             public static double heightDifference = goalHeight - limelightHeight;
+
+            public static double k_maxDistance = 30; //ft
+            public static double k_minDistance = 1; //ft
+            public static double k_retractSetpoint = 0; //ticks
+            public static double k_extendSetpoint = 12; //ticks
+
         }
         
 
