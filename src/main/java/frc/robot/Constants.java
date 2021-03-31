@@ -55,6 +55,12 @@ public final class Constants
         public static final double k_intakeReverseMotorSpeed = 0.6;
         public static final double k_intakeStopMotorSpeed = 0.0;
     }
+    // public static final class IntakeSubsystemConstants
+    // {
+    //     public static final double k_intakeMotorSpeed = 1.0;
+    //     public static final double k_intakeReverseMotorSpeed = -1.0;
+    //     public static final double k_intakeStopMotorSpeed = 0.0;
+    // }
 
 
 
@@ -85,6 +91,7 @@ public final class Constants
         
         public static final double kXYjoystickCoefficient = .75;
         public static final double kMaxAngularSpeed = Units.feetToMeters(15) / k_RobotRadius; //Gives in radians / s (/s is implied);
+        public static final double kRotCoefficient = .5;
         public static double fieldCalibration = 0;
 
         //Angle offsets
@@ -166,7 +173,7 @@ public final class Constants
             public static final MotorType k_SwerveLeftRear_Steering = MotorType.kBrushless;
         }        
      
-        public static SwerveDriveKinematics kinematics =
+        public static final SwerveDriveKinematics kinematics =
             new SwerveDriveKinematics(
                 new Translation2d(k_WheelBase / 2, k_TrackWidth / 2),    // Left Front
                 new Translation2d(k_WheelBase / 2, -k_TrackWidth / 2),   // Right Front
@@ -190,10 +197,10 @@ public final class Constants
             public static final double k_driveIz = 0; 
             public static final double k_driveFF[] = 
             {
-                .215,
-                .22,
-                .224,
-                .228,
+                .220,
+                .233,
+                .237,
+                .233
             };
             
             public static final double k_driveMaxOutput = 1; 
@@ -211,9 +218,23 @@ public final class Constants
 
         public static final class SteeringControllerPIDValues
         {
-            public static final double k_steerP = 0.0008;
+           // public static final double k_steerP = 0.0007;
+           public static final double k_steerP[] = 
+           {
+               0.0006, //LeftFront
+               0.00065, //RightFront
+               0.0005, //LeftRear
+               0.0006, //RightRear
+           };
             public static final double k_steerI= 0;
-            public static final double k_steerD = 0.000008; 
+            //public static final double k_steerD = 0.000009; 
+            public static final double k_steerD[] = 
+            {
+                0.000007,
+                0.000008,
+                0.000008,
+                0.000008,
+            };
 
             public static final double k_steerIz = 0; 
             public static final double k_steerFF = 0; // feedforward
@@ -232,7 +253,20 @@ public final class Constants
             public static final double k_ToleranceInTicks = 1;
         }
 
-        
+        public static final class AutoChooser
+        {
+            public static final double k_RedAMax = 50;
+            public static final double k_RedAMin = -50;
+
+            public static final double k_RedBMax = 200;
+            public static final double k_RedBMin = 100;
+
+            public static final double k_BlueAMax = -999;
+            public static final double k_BlueAMin = -900;
+
+            public static final double k_BlueBMax = -200;
+            public static final double k_BlueBMin = -100;
+        }
 
     }
 }

@@ -20,8 +20,17 @@ import frc.robot.subsystems.IntakeSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.paths.ExamplePath1;
-import frc.robot.paths.ExamplePath2;
+
+import frc.robot.subsystems.SwerveModule;
+import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.paths.BarrelRacePath;
+import frc.robot.paths.BlueAPath;
+import frc.robot.paths.BlueBPath;
+import frc.robot.paths.BouncePath;
+import frc.robot.paths.FiveMeterPath;
+import frc.robot.paths.RedAPath;
+import frc.robot.paths.RedBPath;
+import frc.robot.paths.SlalomPath;
 import frc.robot.paths.TrajectoriesExporter;
 
 
@@ -39,6 +48,8 @@ public class RobotContainer
    // private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
     
     private final DriveSubsystem m_robotDrive = new DriveSubsystem(false);
+
+    //private final SwerveModule m_Module = new SwerveModule();
 
     private final AutonomousDrive m_autonomousDrive = new AutonomousDrive(m_robotDrive);
 
@@ -59,14 +70,14 @@ public class RobotContainer
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer()
     {
-        System.out.println("here!");
+        //System.out.println("here!");
  
-        var traj = ExamplePath1.getTrajectory();
-        TrajectoriesExporter.exportTrajectoryToCSV(traj, ExamplePath1.getTrajectoryName());
-        TrajectoriesExporter.exportTrajectoryToHumanReadable(traj, ExamplePath1.getTrajectoryName());
+        var traj = BlueBPath.getTrajectory();
+        TrajectoriesExporter.exportTrajectoryToCSV(traj, BlueBPath.getTrajectoryName());
+        TrajectoriesExporter.exportTrajectoryToHumanReadable(traj, BlueBPath.getTrajectoryName());
 
-        TrajectoriesExporter.exportTrajectoryToHumanReadable(ExamplePath2.getTrajectory(), ExamplePath2.getTrajectoryName());
-        System.out.println("now here!");
+        // TrajectoriesExporter.exportTrajectoryToHumanReadable(ExamplePath2.getTrajectory(), ExamplePath2.getTrajectoryName());
+        // System.out.println("now here!");
 
 
         // Configure the button bindings

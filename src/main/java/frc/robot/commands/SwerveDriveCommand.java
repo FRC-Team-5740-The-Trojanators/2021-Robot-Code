@@ -71,13 +71,13 @@ public class SwerveDriveCommand extends CommandBase
         // the right by default.
         final var rot =
             -rotLimiter.calculate(getJoystickWithDeadBand(controller.getX(GenericHID.Hand.kRight))
-            * SwerveDriveModuleConstants.kMaxAngularSpeed);
+            * SwerveDriveModuleConstants.kMaxAngularSpeed * SwerveDriveModuleConstants.kRotCoefficient);
             SmartDashboard.putNumber("rot", rot);
 
         boolean calibrate = controller.getBumper(GenericHID.Hand.kLeft);
 
         drivetrain.drive(xSpeed, ySpeed, rot, true);
-       //drivetrain.drive(1, 0, 0, true);
+       //drivetrain.drive(1, 0, 0, false);
 
         SmartDashboard.putNumber("Commanded X Velocity", xSpeed);
         SmartDashboard.putNumber("Commanded Y Velocity", ySpeed);

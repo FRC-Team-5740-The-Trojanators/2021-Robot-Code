@@ -36,11 +36,10 @@ import frc.robot.paths.BarrelRacePath;
 import frc.robot.paths.BouncePath;
 import frc.robot.paths.FiveMeterPath;
 import frc.robot.paths.SlalomPath;
-import frc.robot.paths.TrajectoryMaker;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.SwerveModule;
 
-public class AutonomousDrive extends CommandBase {
+public class BounceAutonomousDrive extends CommandBase {
 
   private Trajectory m_trajectory; 
 
@@ -59,24 +58,11 @@ public class AutonomousDrive extends CommandBase {
   
   public void loadTrajectory()
   {
-    m_trajectory = FiveMeterPath.getTrajectory(); //change path name based on path we want to follow
+    m_trajectory = BouncePath.getTrajectory(); //change path name based on path we want to follow
   }
 
-  // public void trajectoryGenerator()
-  // {
-  //   TrajectoryConfig config = new TrajectoryConfig(Constants.SwerveDriveModuleConstants.k_MaxSpeed, 1).setKinematics(Constants.SwerveDriveModuleConstants.kinematics);
-  
-  //   //m_trajectory = TrajectoryGenerator.generateTrajectory(new Pose2d(0,0, new Rotation2d(0)), List.of(new Translation2d(1, 0), new Translation2d(2, 0)), new Pose2d(3, 0, new Rotation2d(0)), config);
-    
-  //   //m_trajectory = TrajectoryGenerator.generateTrajectory(new Pose2d(0,0, new Rotation2d(0)), List.of(new Translation2d(0, 1), new Translation2d(0, 1.5), new Translation2d(0, 2), new Translation2d(0, 2.5)), new Pose2d(0, 3, new Rotation2d(0)), config);
-   
-  // m_trajectory = TrajectoryGenerator.generateTrajectory(List.of(new Pose2d(0, 0, new Rotation2d(0)), new Pose2d(2.8, 0, new Rotation2d(0)), new Pose2d(3, 0, new Rotation2d(0)), new Pose2d(3, 1, new Rotation2d(0))), config);
-  
-  // }
-   
-
   /** Creates a new AutonomousDrive. */
-  public AutonomousDrive(DriveSubsystem driveSubsystem) {
+  public BounceAutonomousDrive(DriveSubsystem driveSubsystem) {
     m_driveSubsystem = driveSubsystem;
     m_goal = new Trajectory.State();
     //m_trajectory = new Trajectory();

@@ -67,20 +67,13 @@ public class SwerveModule
        // m_steeringPIDController = angleMotor.getPIDController();
 
        //Sets steering PID values using WPI version
-        m_steeringPIDController = new PIDController(SteeringControllerPIDValues.k_steerP, 
-                                                    SteeringControllerPIDValues.k_steerI,
-                                                    SteeringControllerPIDValues.k_steerD);
+        m_steeringPIDController = new PIDController(0, 0, 0);
 
         //Sets steering PID Values using Rev Robotics Version                                            
-        m_steeringPIDController.setP(SteeringControllerPIDValues.k_steerP);
-        m_steeringPIDController.setI(SteeringControllerPIDValues.k_steerI);
-        m_steeringPIDController.setD(SteeringControllerPIDValues.k_steerD);
         m_steeringPIDController.setTolerance(SteeringControllerPIDValues.k_ToleranceInTicks);
 
-        //m_driverPIDController.setP(DriveModulePIDValues.k_driveP);
         m_driverPIDController.setI(DriveModulePIDValues.k_driveI);
         m_driverPIDController.setD(DriveModulePIDValues.k_driveD);
-       // m_driverPIDController.setFF(DriveModulePIDValues.k_driveFF);
 
         m_driverPIDController.setOutputRange(-1, 1);
         
@@ -201,6 +194,16 @@ public class SwerveModule
         return m_driveEncoder.getVelocity();
     }
 
+
+    public void setSteerP(double value)
+    {
+        m_steeringPIDController.setP(value);
+    }
+    
+    public void setSteerD(double value)
+    {
+        m_steeringPIDController.setD(value);
+    }
 
     public double getSetpoint()
     {
