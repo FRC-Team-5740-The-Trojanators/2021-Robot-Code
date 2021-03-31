@@ -38,15 +38,12 @@ public class TargetCommand extends CommandBase {
     m_drivetrain.drive(0, 0, m_shooter.turnShooter(), false);
   }
 
-
- 
-
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute()
   {
     m_drivetrain.drive(0, 0, m_shooter.turnShooter(), false);
-
+    m_isFinished = m_shooter.aimEnd();
   }
 
   // Called once the command ends or is interrupted.

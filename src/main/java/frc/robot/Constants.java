@@ -301,7 +301,6 @@ public final class Constants
             public static final double k_hoodP = .1;
             public static final double k_hoodI = 0;
             public static final double k_hoodD = 0;
-            public static final double k_hoodFF = 0;
             public static final double k_minShooterOutput = 0;
             public static final double k_maxShooterOutput = 1;
 
@@ -332,8 +331,8 @@ public final class Constants
             public static double k_greenEncoder = 0.95;
             public static double k_closestEncoder = 0.85;
 
-            public static double k_retractSetpoint = .05; //Rotations
-            public static double k_extendSetpoint = 2.8; //Rotations
+            public static double k_retractSetpoint = .005; //Rotations
+            public static double k_extendSetpoint = 1.9; //Rotations
         }
     }
 }

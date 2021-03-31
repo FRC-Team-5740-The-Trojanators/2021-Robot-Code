@@ -27,17 +27,18 @@ public class HoodAndFlywheelCommand extends CommandBase {
   public void initialize()
   {
     m_isFinished = false;
-   // m_shooter.setHoodMotor(m_shooter.hoodAngleFinder());
-    m_shooter.runFlyWheel();
+    m_shooter.setHoodMotor(m_shooter.hoodAngleFinder());
+    //m_shooter.runFlyWheel();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute()
   {
-  // m_shooter.setHoodMotor(m_shooter.hoodAngleFinder());
-   m_shooter.runFlyWheel();
+   m_shooter.setHoodMotor(m_shooter.hoodAngleFinder());
+   //m_shooter.runFlyWheel();
    SmartDashboard.putNumber("Flywheel Velocity", m_shooter.getShooterVelocity());
+   SmartDashboard.putNumber("Hood Encoder", m_shooter.getAbsEncoder());
 
   }
 
@@ -47,7 +48,7 @@ public class HoodAndFlywheelCommand extends CommandBase {
   {
     m_isFinished = true;
     m_shooter.forceStopHoodMotor();
-    m_shooter.stopFlyWheel();
+    //m_shooter.stopFlyWheel();
   }
 
   // Returns true when the command should end.

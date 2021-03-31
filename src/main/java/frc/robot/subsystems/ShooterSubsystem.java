@@ -60,7 +60,7 @@ public class ShooterSubsystem extends SubsystemBase
     public ShooterSubsystem()
     {
         ledOff();
-        m_hoodPID = new PIDController(HoodConstants.k_hoodP, HoodConstants.k_hoodI, HoodConstants.k_hoodD, HoodConstants.k_hoodFF);
+        m_hoodPID = new PIDController(HoodConstants.k_hoodP, HoodConstants.k_hoodI, HoodConstants.k_hoodD);
         m_aimPID = new PIDController(ShooterPIDValues.k_aimingP, ShooterPIDValues.k_aimingI, ShooterPIDValues.k_aimingD);
         configShooterMotors();
         m_shooterEncoder = ShooterMotorOne.getEncoder();
@@ -69,6 +69,9 @@ public class ShooterSubsystem extends SubsystemBase
         hoodMotor.setNeutralMode(NeutralMode.Brake); 
 
         m_hexAbsoluteEncoder.reset();
+        m_hoodPID.disableContinuousInput();
+        adjustHood();
+        m_hoodPID.enableContinuousInput(HoodConstants.k_retractSetpoint, HoodConstants.k_extendSetpoint);
     }
 
     public void configShooterMotors()
@@ -81,7 +84,6 @@ public class ShooterSubsystem extends SubsystemBase
         m_ShooterMotorOnePID.setP(ShooterPIDValues.k_shooterP);
         m_ShooterMotorOnePID.setI(ShooterPIDValues.k_shooterI);
         m_ShooterMotorOnePID.setD(ShooterPIDValues.k_shooterD);
-        m_ShooterMotorOnePID.setFF(ShooterPIDValues.k_shooterFF);
         m_ShooterMotorOnePID.setOutputRange(ShooterPIDValues.k_minShooterOutput, ShooterPIDValues.k_maxShooterOutput);
 
         ShooterMotorOne.setIdleMode(IdleMode.kCoast);
@@ -98,6 +100,14 @@ public class ShooterSubsystem extends SubsystemBase
 
         m_txRad = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0) * (Math.PI/180);
         m_hoodTicks = m_hexAbsoluteEncoder.get();
+    }
+
+    public void adjustHood()
+    {
+        if(m_hexAbsoluteEncoder.get() < HoodConstants.k_retractSetpoint)
+        {
+            m_hoodPID.calculate(m_hoodTicks, HoodConstants.k_retractSetpoint);
+        }
     }
 
     public double getAimPID()
@@ -146,26 +156,32 @@ public class ShooterSubsystem extends SubsystemBase
     {
         hoodMotor.setInverted(false);
         hoodMotor.set(TalonSRXControlMode.PercentOutput, HoodConstants.k_hoodExtendSpeed);
-        SmartDashboard.putNumber("Hood Encoder", getQuadEncoder());
+        SmartDashboard.putNumber("Hood Encoder", getAbsEncoder());
     }
 
     public void forceRunHoodMotorRetract()
     {
         hoodMotor.setInverted(true);
         hoodMotor.set(TalonSRXControlMode.PercentOutput, HoodConstants.k_hoodExtendSpeed);
-        SmartDashboard.putNumber("Hood Encoder", getQuadEncoder());
+        SmartDashboard.putNumber("Hood Encoder", getAbsEncoder());
     }
 
     public void forceStopHoodMotor()
     {
         hoodMotor.set(TalonSRXControlMode.PercentOutput, 0);
-        SmartDashboard.putNumber("Hood Encoder", getQuadEncoder());
+        SmartDashboard.putNumber("Hood Encoder", getAbsEncoder());
     }
 
-    public double getQuadEncoder()
+    public double getAbsEncoder()
     {
         return m_hexAbsoluteEncoder.get();
     }
+
+    public boolean aimEnd()
+    {
+        return m_aimPID.atSetpoint();
+    }
+
 
     public double getSkew() 
     {

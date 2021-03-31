@@ -24,6 +24,7 @@ import frc.robot.commands.SwerveDriveCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
@@ -92,7 +93,7 @@ public class RobotContainer
 
     private final HoodAndFlywheelCommand m_hood = new HoodAndFlywheelCommand(m_shooter);
 
-    private final SequentialCommandGroup TargetAndHood = new SequentialCommandGroup(m_target, m_hood);
+    private final ParallelCommandGroup TargetAndHood = new ParallelCommandGroup(m_target, m_hood);
 
     private final ForceExtendHood m_forceExtend = new ForceExtendHood(m_shooter);
     private final ForceRetractHood m_forceRetract = new ForceRetractHood(m_shooter);
