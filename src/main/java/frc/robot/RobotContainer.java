@@ -97,7 +97,7 @@ public class RobotContainer
 
 
 
-    JoystickButton shooterRun, targetShooter, actuateHood;
+    JoystickButton indexerRun, prepareShooter, actuateHood;
     POVButton  forceExtendHood, forceRetractHood;
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer()
@@ -144,19 +144,19 @@ public class RobotContainer
      */
     private void configureButtonBindings()
     {
-        shooterRun = new JoystickButton(m_driverController, HIDConstants.kX);
-        targetShooter = new JoystickButton(m_driverController, HIDConstants.kY);
+        indexerRun = new JoystickButton(m_driverController, HIDConstants.kX);
+        prepareShooter = new JoystickButton(m_driverController, HIDConstants.kY);
         forceExtendHood = new POVButton(m_driverController, HIDConstants.kDL);
         forceRetractHood = new POVButton(m_driverController, HIDConstants.kDR);
 
         forceExtendHood.whileHeld(m_forceExtend);
         forceRetractHood.whileHeld(m_forceRetract);
 
-        //targetShooter.whileHeld(TargetAndHood);
-        targetShooter.whileHeld(m_hood);
+        //prepareShooter.whileHeld(TargetAndHood);
+        prepareShooter.whileHeld(m_target);
 
 
-        shooterRun.whileHeld(m_index);
+        indexerRun.whileHeld(m_index);
     }
 
     /**

@@ -35,6 +35,7 @@ public class TargetCommand extends CommandBase {
   {
     m_shooter.ledOn();
     m_isFinished = false;
+    m_drivetrain.drive(0, 0, m_shooter.turnShooter(), false);
   }
 
 
@@ -52,13 +53,14 @@ public class TargetCommand extends CommandBase {
   @Override
   public void end(boolean interrupted)
   {
-
+    m_drivetrain.drive(0, 0, 0, false);
+    m_isFinished = true;
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished()
   {
-    return m_isFinished = true;
+    return m_isFinished;
   }
 }

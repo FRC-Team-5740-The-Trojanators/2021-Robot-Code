@@ -56,7 +56,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   private double m_txRad;
   private double m_ty;
-  private int m_hoodTicks;
+  private double m_hoodTicks;
 
   private DutyCycleEncoder m_hexAbsoluteEncoder = new DutyCycleEncoder(HexEncoderInputs.k_absoluteInput);
   private Encoder m_hexQuadEncoder = new Encoder(HexEncoderInputs.k_quadratureA, HexEncoderInputs.k_quadratureB, HexEncoderInputs.k_indexInput);
@@ -69,11 +69,12 @@ public class ShooterSubsystem extends SubsystemBase {
     configShooterMotors();
     m_shooterEncoder = ShooterMotorOne.getEncoder();
 
-    hoodMotor.configClosedloopRamp(ShooterConstants.k_rampRate); //Needs actual value
-    //hoodMotor.configOpenloopRamp(ShooterConstants.k_rampRate); 
+    //hoodMotor.configClosedloopRamp(ShooterConstants.k_rampRate); //Needs actual value
+    hoodMotor.configOpenloopRamp(ShooterConstants.k_rampRate); 
     hoodMotor.setNeutralMode(NeutralMode.Brake); 
 
     m_hexQuadEncoder.reset();
+    m_hexAbsoluteEncoder.reset();
   }
 
   public void configShooterMotors()
@@ -102,7 +103,7 @@ public class ShooterSubsystem extends SubsystemBase {
     m_ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
 
     m_txRad = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0) * (Math.PI/180);
-    m_hoodTicks = m_hexQuadEncoder.get();
+    m_hoodTicks = m_hexAbsoluteEncoder.get();
   }
 
   public double getAimPID(){
@@ -130,7 +131,6 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public double hoodSetSetpoint(double setpoint)
   {
-    //m_hoodPID.setSetpoint(setpoint);
    return m_hoodPID.calculate(m_hoodTicks, setpoint);
   }
 
@@ -161,7 +161,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public double getQuadEncoder()
   {
-    return m_hexQuadEncoder.getRaw();
+    return m_hexAbsoluteEncoder.get();
   }
 
   public double getSkew() {
@@ -214,31 +214,34 @@ public class ShooterSubsystem extends SubsystemBase {
       return rot;
     }
 
-    public double actuateHood()
+    public double hoodAngleFinder()
     {
       double angle = m_ty + HoodConstants.limelightAngle;
       var distance = HoodConstants.heightDifference / Math.tan(angle);
 
       if(distance >= HoodConstants.k_maxDistance)
       {
-       return hoodSetSetpoint(HoodConstants.k_retractSetpoint);
+       return hoodSetSetpoint(HoodConstants.k_retractSetpoint + .5);
       }
       else if( distance < HoodConstants.k_maxDistance && distance >= HoodConstants.k_redZoneDistance)
       {
-        return hoodSetSetpoint(HoodConstants.k_retractSetpoint + 50);
-        //return m_ShooterMotorOnePID.setReference(state.speedMetersPerSecond, ControlType.kVelocity);
+        return hoodSetSetpoint(HoodConstants.k_redEncoder);
       } 
       else if(distance < HoodConstants.k_redZoneDistance && distance >= HoodConstants.k_blueZoneDistance)
       {
-        return hoodSetSetpoint(HoodConstants.k_retractSetpoint + 100);
+        return hoodSetSetpoint(HoodConstants.k_blueEncoder);
       } 
       else if(distance < HoodConstants.k_blueZoneDistance && distance >= HoodConstants.k_yellowZoneDistance)
       {
-        return hoodSetSetpoint(HoodConstants.k_retractSetpoint + 100);
+        return hoodSetSetpoint(HoodConstants.k_yellowEncoder);
       } 
       else if(distance < HoodConstants.k_yellowZoneDistance && distance >= HoodConstants.k_greenZoneDistance)
       {
-        return hoodSetSetpoint(HoodConstants.k_retractSetpoint + 100);
+        return hoodSetSetpoint(HoodConstants.k_greenEncoder);
+      } 
+      else if(distance < HoodConstants.k_yellowZoneDistance && distance >= HoodConstants.k_greenZoneDistance)
+      {
+        return hoodSetSetpoint(HoodConstants.k_closestEncoder);
       } 
       else
       {
