@@ -245,7 +245,20 @@ public final class Constants
             public static final double k_ToleranceInTicks = 1;
         }
 
-        
+        public static final class AutoChooser
+        {
+            public static final double k_RedAMax = 50;
+            public static final double k_RedAMin = -50;
+
+            public static final double k_RedBMax = 200;
+            public static final double k_RedBMin = 100;
+
+            public static final double k_BlueAMax = -999;
+            public static final double k_BlueAMin = -900;
+
+            public static final double k_BlueBMax = -100;
+            public static final double k_BlueBMin = -80;
+        }
 
     }
 }

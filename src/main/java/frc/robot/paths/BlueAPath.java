@@ -15,22 +15,20 @@ import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import frc.robot.Constants;
 
-public class RedAPath
+public class BlueAPath
 {
-    private static String trajectoryName = "Red A Path";
+    private static String trajectoryName = "Blue A Path"; 
 
-    private static TrajectoryConfig trajectoryConfiguration = new TrajectoryConfig(Constants.SwerveDriveModuleConstants.k_MaxSpeed, 3)
+    private static TrajectoryConfig trajectoryConfiguration = new TrajectoryConfig(Constants.SwerveDriveModuleConstants.k_MaxSpeed, 1)
                                                             .setKinematics(Constants.SwerveDriveModuleConstants.kinematics);
 
 
                                             // x    y      heading
-    private static Pose2d start = new Pose2d(0.9398, 2.286, new Rotation2d(0));
+    private static Pose2d start = new Pose2d(0.0, 0.0, new Rotation2d(Math.PI/2));
 
-    private static Translation2d point1 = new Translation2d(2.286, 2.286);
-    private static Translation2d point2 = new Translation2d(3.81, 1.524);
-    private static Translation2d point3 = new Translation2d(8.001, 2.286);
+    private static Translation2d point1 = new Translation2d(0, 0);
 
-    private static Pose2d end =   new Pose2d(8.001, 2.286, new Rotation2d(0));
+    private static Pose2d end =    new Pose2d(3.25, 3.00, new Rotation2d(Math.PI));
 
     /**
      * Generates the Trajectory
@@ -39,7 +37,7 @@ public class RedAPath
     public static Trajectory getTrajectory()
     {
         return TrajectoryGenerator.generateTrajectory(
-           start, List.of(point1, point2 ,point3 ), end,
+           start, List.of(point1), end,
             trajectoryConfiguration);
     }
 
