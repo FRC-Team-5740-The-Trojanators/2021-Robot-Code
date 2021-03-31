@@ -13,12 +13,12 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.HIDConstants;
-import frc.robot.commands.ActuateHoodCommand;
 import frc.robot.commands.AutonomousDrive;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.ForceExtendHood;
 import frc.robot.commands.ForceRetractHood;
-import frc.robot.commands.ShootCommand;
+import frc.robot.commands.HoodAndFlywheelCommand;
+import frc.robot.commands.IndexerCommand;
 import frc.robot.commands.SwerveDriveCommand;
 import frc.robot.commands.TargetCommand;
 import frc.robot.subsystems.DriveSubsystem;
@@ -61,9 +61,9 @@ public class RobotContainer
 
     private final TargetCommand m_target = new TargetCommand(m_shooter,m_robotDrive, m_driverController);
 
-    private final ShootCommand m_shoot = new ShootCommand(m_robotDrive, m_driverController, m_indexer);
+    private final IndexerCommand m_index = new IndexerCommand(m_robotDrive, m_driverController, m_indexer);
 
-    private final ActuateHoodCommand m_hood = new ActuateHoodCommand(m_shooter);
+    private final HoodAndFlywheelCommand m_hood = new HoodAndFlywheelCommand(m_shooter);
 
     //private final SequentialCommandGroup TargetAndHood = new SequentialCommandGroup(m_target, m_hood);
 
@@ -124,7 +124,7 @@ public class RobotContainer
         targetShooter.whileHeld(m_hood);
 
 
-        shooterRun.whileHeld(m_shoot);
+        shooterRun.whileHeld(m_index);
     }
 
     /**

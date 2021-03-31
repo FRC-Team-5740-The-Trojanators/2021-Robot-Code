@@ -20,6 +20,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.SwerveDriveModuleConstants;
 import frc.robot.Constants.SwerveDriveModuleConstants.CANBusIDs;
@@ -69,7 +70,7 @@ public class ShooterSubsystem extends SubsystemBase {
     m_shooterEncoder = ShooterMotorOne.getEncoder();
 
     hoodMotor.configClosedloopRamp(ShooterConstants.k_rampRate); //Needs actual value
-    hoodMotor.configOpenloopRamp(ShooterConstants.k_rampRate); 
+    //hoodMotor.configOpenloopRamp(ShooterConstants.k_rampRate); 
     hoodMotor.setNeutralMode(NeutralMode.Brake); 
 
     m_hexQuadEncoder.reset();
@@ -140,22 +141,27 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public void forceRunHoodMotorExtend()
   {
+    hoodMotor.setInverted(false);
     hoodMotor.set(TalonSRXControlMode.PercentOutput, HoodConstants.k_hoodExtendSpeed);
+    SmartDashboard.putNumber("Hood Encoder", getQuadEncoder());
   }
 
   public void forceRunHoodMotorRetract()
   {
-    hoodMotor.set(TalonSRXControlMode.PercentOutput, HoodConstants.k_hoodRetractSpeed);
+    hoodMotor.setInverted(true);
+    hoodMotor.set(TalonSRXControlMode.PercentOutput, HoodConstants.k_hoodExtendSpeed);
+    SmartDashboard.putNumber("Hood Encoder", getQuadEncoder());
   }
 
   public void forceStopHoodMotor()
   {
     hoodMotor.set(TalonSRXControlMode.PercentOutput, 0);
+    SmartDashboard.putNumber("Hood Encoder", getQuadEncoder());
   }
 
   public double getQuadEncoder()
   {
-    return m_hexQuadEncoder.get();
+    return m_hexQuadEncoder.getRaw();
   }
 
   public double getSkew() {
@@ -217,18 +223,23 @@ public class ShooterSubsystem extends SubsystemBase {
       {
        return hoodSetSetpoint(HoodConstants.k_retractSetpoint);
       }
-      else if( distance < HoodConstants.k_maxDistance && distance >= 20)
+      else if( distance < HoodConstants.k_maxDistance && distance >= HoodConstants.k_redZoneDistance)
       {
         return hoodSetSetpoint(HoodConstants.k_retractSetpoint + 50);
+        //return m_ShooterMotorOnePID.setReference(state.speedMetersPerSecond, ControlType.kVelocity);
       } 
-      else if(distance < 20 && distance >= 10)
+      else if(distance < HoodConstants.k_redZoneDistance && distance >= HoodConstants.k_blueZoneDistance)
       {
         return hoodSetSetpoint(HoodConstants.k_retractSetpoint + 100);
       } 
-      else if(distance < 10)
+      else if(distance < HoodConstants.k_blueZoneDistance && distance >= HoodConstants.k_yellowZoneDistance)
       {
-        return hoodSetSetpoint(HoodConstants.k_retractSetpoint + 150);
-      }
+        return hoodSetSetpoint(HoodConstants.k_retractSetpoint + 100);
+      } 
+      else if(distance < HoodConstants.k_yellowZoneDistance && distance >= HoodConstants.k_greenZoneDistance)
+      {
+        return hoodSetSetpoint(HoodConstants.k_retractSetpoint + 100);
+      } 
       else
       {
         return -1; //error indication, it should never get here

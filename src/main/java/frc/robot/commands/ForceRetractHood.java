@@ -31,8 +31,6 @@ public class ForceRetractHood extends CommandBase {
   public void execute()
   {
     m_shooter.forceRunHoodMotorRetract();
-    SmartDashboard.putNumber("Hood Encoder", m_shooter.getQuadEncoder());
-
   }
 
   // Called once the command ends or is interrupted.
