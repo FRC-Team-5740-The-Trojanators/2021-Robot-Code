@@ -7,8 +7,6 @@ package frc.robot;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.AlternateEncoderType;
 
-import org.opencv.core.Mat;
-
 import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveKinematics;
 
@@ -49,7 +47,9 @@ public final class Constants
         public static final int kB = 2;
         public static final int kX = 3;
         public static final int kY = 4;
+        public static final int kLB = 5;
         public static final int kRB = 6;
+        public static final int kStart = 8;
         public static final int kDL = 270;
         public static final int kDR = 90;
 
@@ -80,9 +80,6 @@ public final class Constants
 
         public static final double k_RobotRadius = .4131; //distance from center of robot to the wheel in m
         
-        //public static final double k_MaxModuleAngularSpeedRadiansPerSecond = 2 * Math.PI;
-        //public static final double k_MaxModuleAngularAccelerationRadiansPerSecondSquared = 2 * Math.PI;
-        
         public static final double k_MaxSpeed = Units.feetToMeters(15); // unit is m/s
         public static final double k_MaxAcceleration = 10; // unit is m/s/s (aka, m/s^2)
         
@@ -93,14 +90,12 @@ public final class Constants
         public static double fieldCalibration = 0;
 
         //Angle offsets
-        public static double frontLeftOffset = 20;//27.333984;
+        public static double frontLeftOffset = 20;
         public static double frontRightOffset = 78.574219;
-        public static double backLeftOffset = 160;//155.195313;
-        public static double backRightOffset = 2;//357.880859;
+        public static double backLeftOffset = 160;
+        public static double backRightOffset = 2;
 
         public static final double k_SteeringEncoderCoefficient = (Math.PI * 2) / 4096.0; // this is 2π radians, dividided by the 12-bit encoder precision 
-
-        //TODO Change values to match the robot
 
         public static final double ks_Volts = 1;
         public static final double kv_VoltSecondsPerMeter = 0.8;
@@ -110,7 +105,6 @@ public final class Constants
 
         public static final AlternateEncoderType k_AlternateEncoderType = AlternateEncoderType.kQuadrature;
         public static final double kEncoderTicksPerRotation = 4096;
-
 
         public static final int k_RevNEOEncoderCtsPerRev = 42; // the NEO's hall-effect encoder is 42 counts/rev
 
@@ -149,12 +143,10 @@ public final class Constants
             public static final int backRightCANCoderId = 12; 
             public static final int k_RightRear_SteeringMotor = 8; 
             
-            public static final int k_IntakeMotors = 16;
-          
-            //TODO Check CANIDs
             public static final int k_ShooterMotorOne = 13;
             public static final int k_ShooterMotorTwo = 14;
             public static final int k_hoodID = 15;
+            public static final int k_IntakeMotors = 16;
             public static final int k_indexerID = 17; 
         }
         
@@ -222,10 +214,8 @@ public final class Constants
             public static final int k_driveSmartMotionSlot = 0; // Is the gain schedule slot, the value is a number between 0 and 3. Each slot has its own set of gain values and can be changed in each control frame using SetReference().
         }
 
-
         public static final class SteeringControllerPIDValues
         {
-           // public static final double k_steerP = 0.0007;
            public static final double k_steerP[] = 
            {
                0.0006, //LeftFront
@@ -234,7 +224,6 @@ public final class Constants
                0.0006, //RightRear
            };
             public static final double k_steerI= 0;
-            //public static final double k_steerD = 0.000009; 
             public static final double k_steerD[] = 
             {
                 0.000007,
@@ -244,7 +233,7 @@ public final class Constants
             };
 
             public static final double k_steerIz = 0; 
-            public static final double k_steerFF = 0; // feedforward
+            public static final double k_steerFF = 0; 
 
             public static final double k_steerMaxOutput = 1; 
             public static final double k_steerMinOutput = -1;
@@ -283,7 +272,6 @@ public final class Constants
             public static final double k_shooterFF =  0.000175;
             public static final double k_minShooterOutput = 0.0;
             public static final double k_maxShooterOutput = 1.0;
-           // public static final double k_speedRPM = 99999;
 
             public static final double k_aimingP = 0.7;
             public static final double k_aimingI = 0.0;

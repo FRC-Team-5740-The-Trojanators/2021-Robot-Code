@@ -4,8 +4,6 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -28,9 +26,6 @@ import frc.robot.Constants.SwerveDriveModuleConstants.HexEncoderInputs;
 import frc.robot.Constants.SwerveDriveModuleConstants.HoodConstants;
 import frc.robot.Constants.SwerveDriveModuleConstants.ShooterConstants;
 import frc.robot.Constants.SwerveDriveModuleConstants.ShooterPIDValues;
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.DigitalSource;
-import edu.wpi.first.wpilibj.DutyCycle;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Encoder;
 
@@ -70,11 +65,9 @@ public class ShooterSubsystem extends SubsystemBase
         configShooterMotors();
         m_shooterEncoder = ShooterMotorOne.getEncoder();
 
-        //hoodMotor.configClosedloopRamp(ShooterConstants.k_rampRate); //Needs actual value
         hoodMotor.configOpenloopRamp(ShooterConstants.k_rampRate); 
         hoodMotor.setNeutralMode(NeutralMode.Brake); 
 
-        m_hexQuadEncoder.reset();
         m_hexAbsoluteEncoder.reset();
     }
 

@@ -12,21 +12,16 @@ import com.revrobotics.ControlType;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.CANCoderConfiguration;
 
-import com.ctre.phoenix.sensors.CANCoderFaults;
-import com.ctre.phoenix.sensors.CANCoderStickyFaults;
-
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 import frc.robot.Constants.SwerveDriveModuleConstants;
 
 import frc.robot.Constants.SwerveDriveModuleConstants.DriveModulePIDValues;
 import frc.robot.Constants.SwerveDriveModuleConstants.SteeringControllerPIDValues;
 import com.ctre.phoenix.sensors.SensorInitializationStrategy;
 import edu.wpi.first.wpilibj.util.Units;
-
 
 
 /** 
@@ -36,7 +31,6 @@ import edu.wpi.first.wpilibj.util.Units;
  */
 public class SwerveModule
 {
-   // private CANCoder m_steeringEncoder;
     private CANEncoder m_driveEncoder;
 
     // PID Loops using the Spark API
@@ -45,7 +39,6 @@ public class SwerveModule
 
     private CANSparkMax driveMotor;
     private CANSparkMax angleMotor;
-    //CTRE SRX Magnetic Encoder signal; encoder is external and mounted on the swerve module
     private CANCoder m_moduleSteeringEncoder;
     private Rotation2d offset;
 
@@ -64,14 +57,13 @@ public class SwerveModule
 
         m_driverPIDController = driveMotor.getPIDController();
         m_driveEncoder = driveMotor.getEncoder(); 
-       // m_steeringPIDController = angleMotor.getPIDController();
 
        //Sets steering PID values using WPI version
         m_steeringPIDController = new PIDController(0, 0, 0);
 
-        //Sets steering PID Values using Rev Robotics Version
         m_steeringPIDController.setTolerance(SteeringControllerPIDValues.k_ToleranceInTicks);
 
+        //Steering P and D and Drive P and FF are in Drive Subsystem as []
         m_driverPIDController.setI(DriveModulePIDValues.k_driveI);
         m_driverPIDController.setD(DriveModulePIDValues.k_driveD);
 
@@ -92,12 +84,10 @@ public class SwerveModule
      * @return The current state of the module.
      */
     
-    //TODO Properly scale the velocity
     public SwerveModuleState getState()
     {
         return new SwerveModuleState(m_driveEncoder.getVelocity(), Rotation2d.fromDegrees(m_moduleSteeringEncoder.getPosition()));
     }
-
 
     /**
      * 
@@ -128,7 +118,6 @@ public class SwerveModule
     public void setDesiredState(SwerveModuleState desiredState)
     {      
        //Steering Motor Calc
-       //Using WPI PID Controller
         double setAngle;
         Rotation2d currentRotation = getAngle();
         SwerveModuleState state = SwerveModuleState.optimize(desiredState, currentRotation);
@@ -147,18 +136,7 @@ public class SwerveModule
         {
             angleMotor.set(0);
         } 
-
-        //Using Rev PID Controller
-        // double steeringCurrentPos_degrees = ((m_steeringEncoder.getPosition() / m_steeringEncoder.getCountsPerRevolution())* 360) % 360; //converts the fraction of a rotation to degrees
-        // Rotation2d currentRotation = Rotation2d.fromDegrees(steeringCurrentPos_degrees);
-        // SwerveModuleState state = SwerveModuleState.optimize(desiredState, currentRotation);
-        // setpoint = steeringCurrentPos_degrees - state.angle.getDegrees();
-        // m_steeringPIDController.setReference(setpoint, ControlType.kPosition);
-
-
-       //Drive Motor Calc
-        //double feetPerSecond = Units.metersToFeet(state.speedMetersPerSecond);
-       // m_driverPIDController.setReference(state.speedMetersPerSecond / SwerveDriveModuleConstants.kMaxSpeed, ControlType.kDutyCycle);
+        
        m_driverPIDController.setReference(state.speedMetersPerSecond, ControlType.kVelocity);
     }
 

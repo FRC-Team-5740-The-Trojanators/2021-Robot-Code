@@ -25,9 +25,9 @@ public class SwerveDriveCommand extends CommandBase
     public SwerveDriveCommand(DriveSubsystem drivetrain, XboxController controller) 
     {
         this.drivetrain = drivetrain;
-        addRequirements(drivetrain);
-
         this.controller = controller;
+
+        addRequirements(drivetrain);
     }
 
     private double getJoystickWithDeadBand(double stickValue)
@@ -56,7 +56,6 @@ public class SwerveDriveCommand extends CommandBase
         final var xSpeed =
             -xspeedLimiter.calculate(getJoystickWithDeadBand(controller.getY(GenericHID.Hand.kLeft))
             * SwerveDriveModuleConstants.k_MaxSpeed * SwerveDriveModuleConstants.kXYjoystickCoefficient);
-            //SmartDashboard.putNumber("xspeed", xSpeed);
 
         // Get the y speed or sideways/strafe speed. Xbox controllers
         // return positive values when you pull to the right by default.
@@ -81,15 +80,11 @@ public class SwerveDriveCommand extends CommandBase
 
         SmartDashboard.putNumber("Commanded X Velocity", xSpeed);
         SmartDashboard.putNumber("Commanded Y Velocity", ySpeed);
-       // SmartDashboard.putNumber("Commanded Rot Speed", rot); Already put on above
 
         SmartDashboard.putNumber("Reading X Velocity LeftFront", drivetrain.getModules()[0].getDriveVelocity());
         SmartDashboard.putNumber("Reading X Velocity RightFront", drivetrain.getModules()[1].getDriveVelocity());
         SmartDashboard.putNumber("Reading X Velocity LeftRear", drivetrain.getModules()[2].getDriveVelocity());
         SmartDashboard.putNumber("Reading X Velocity RightRear", drivetrain.getModules()[3].getDriveVelocity());
-
-        // SmartDashboard.putNumber("Reading Y Velocity", ySpeed);
-        // SmartDashboard.putNumber("Reading Rot Speed", rot);
 
         SmartDashboard.putNumber("Current X Position", drivetrain.getPose().getX());
         SmartDashboard.putNumber("Current Y Position", drivetrain.getPose().getY());

@@ -23,14 +23,11 @@ import frc.robot.subsystems.SwerveModule;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-//Below are the imports needed from the MK3 File
 import com.ctre.phoenix.sensors.CANCoder;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
-
 
 //"Swerve Drive Tuning"
 
@@ -70,23 +67,11 @@ public class DriveSubsystem extends SubsystemBase
     // /** Creates a new DriveSubsystem. */
     public DriveSubsystem( boolean calibrateGyro)
     {
-        //modules[0].setSteerToCANCoderAbsolute();
-        //modules[1].setSteerToCANCoderAbsolute();
-        //modules[2].setSteerToCANCoderAbsolute();
-        //modules[3].setSteerToCANCoderAbsolute();
-
-        //if(calibrateGyro)
-        //{
-        //    modules[0].setSteerToCANCoderAbsolute();
-        //    modules[1].setSteerToCANCoderAbsolute();
-        //    modules[2].setSteerToCANCoderAbsolute();
-        //    modules[3].setSteerToCANCoderAbsolute();
-
             if(calibrateGyro)
             {
                 m_imu.reset(); //recalibrates gyro offset
             }
-        //}
+        
         for(int i = 0; i < 4; i++)
         {
             modules[i].resetDriveEncoder();
@@ -109,31 +94,10 @@ public class DriveSubsystem extends SubsystemBase
         {
             SwerveModule module = modules[i];
             SmartDashboard.putNumber(String.valueOf(i) + " Drive Velocity", module.getDriveVelocity());
-            //SmartDashboard.putNumber(String.valueOf(i) + "Steer Encoder", module.getSteeringEncoderValue());
-            //below is a line to comment out from step 5
             module.setDesiredState(m_states[i]);
-            //SmartDashboard.putNumber("gyro Angle", m_imu.getAngle());
         } 
 
     }
-
-    // public void autoDrive(ChassisSpeeds adjustedSpeeds) 
-    // {       
-    //   m_states =
-    //     SwerveDriveModuleConstants.kinematics.toSwerveModuleStates(adjustedSpeeds);
-          
-    //     SwerveDriveKinematics.normalizeWheelSpeeds(m_states, SwerveDriveModuleConstants.kMaxSpeed);
-    //     for (int i = 0; i < m_states.length; i++) 
-    //     {
-    //         SwerveModule module = modules[i];
-    //         SmartDashboard.putNumber(String.valueOf(i) + " Drive Velocity", module.getDriveVelocity());
-    //         //SmartDashboard.putNumber(String.valueOf(i) + "Steer Encoder", module.getSteeringEncoderValue());
-    //         //below is a line to comment out from step 5
-    //         module.setDesiredState(m_states[i]);
-    //         //SmartDashboard.putNumber("gyro Angle", m_imu.getAngle());
-    //     } 
-
-    // }
 
     public void resetEncoders(){
         modules[0].resetDriveEncoder();
@@ -158,10 +122,7 @@ public class DriveSubsystem extends SubsystemBase
       // This method will be called once per scheduler run
       var gyroAngle = Rotation2d.fromDegrees(m_imu.getAngle());
 
-     // m_pose = m_odometry.update(gyroAngle, modules[0].getState(), modules[1].getState(), modules[2].getState(), modules[3].getState());
      m_odometry.update(gyroAngle, modules[0].getState(), modules[1].getState(), modules[2].getState(), modules[3].getState());
-    
-  
 
      var x = tx.getDouble(0.0);
 
@@ -221,14 +182,4 @@ public class DriveSubsystem extends SubsystemBase
     var gyroAngle = Rotation2d.fromDegrees(m_imu.getAngle());
     return m_odometry.update(gyroAngle, modules[0].getState(), modules[1].getState(), modules[2].getState(), modules[3].getState());
    }
-
-
-//     /** 
-//      * Zeroes the heading of the robot. 
-//      */
-//     public void zeroHeading()
-//     {
-//         //m_gyro.reset();
-//         m_imu.reset();
-//     }
 }

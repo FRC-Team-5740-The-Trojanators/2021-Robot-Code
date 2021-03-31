@@ -4,13 +4,8 @@
 
 package frc.robot.commands;
 
-import java.io.IOException;
-import java.nio.file.Path;
-import java.util.List;
-
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
@@ -24,9 +19,6 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.controller.HolonomicDriveController;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
-import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
-import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
-import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Subsystem;
@@ -36,7 +28,6 @@ import frc.robot.paths.BarrelRacePath;
 import frc.robot.paths.BouncePath;
 import frc.robot.paths.FiveMeterPath;
 import frc.robot.paths.SlalomPath;
-import frc.robot.paths.TrajectoryMaker;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.SwerveModule;
 
@@ -62,36 +53,18 @@ public class AutonomousDrive extends CommandBase {
     m_trajectory = FiveMeterPath.getTrajectory(); //change path name based on path we want to follow
   }
 
-  // public void trajectoryGenerator()
-  // {
-  //   TrajectoryConfig config = new TrajectoryConfig(Constants.SwerveDriveModuleConstants.k_MaxSpeed, 1).setKinematics(Constants.SwerveDriveModuleConstants.kinematics);
-  
-  //   //m_trajectory = TrajectoryGenerator.generateTrajectory(new Pose2d(0,0, new Rotation2d(0)), List.of(new Translation2d(1, 0), new Translation2d(2, 0)), new Pose2d(3, 0, new Rotation2d(0)), config);
-    
-  //   //m_trajectory = TrajectoryGenerator.generateTrajectory(new Pose2d(0,0, new Rotation2d(0)), List.of(new Translation2d(0, 1), new Translation2d(0, 1.5), new Translation2d(0, 2), new Translation2d(0, 2.5)), new Pose2d(0, 3, new Rotation2d(0)), config);
-   
-  // m_trajectory = TrajectoryGenerator.generateTrajectory(List.of(new Pose2d(0, 0, new Rotation2d(0)), new Pose2d(2.8, 0, new Rotation2d(0)), new Pose2d(3, 0, new Rotation2d(0)), new Pose2d(3, 1, new Rotation2d(0))), config);
-  
-  // }
-   
-
   /** Creates a new AutonomousDrive. */
   public AutonomousDrive(DriveSubsystem driveSubsystem) {
     m_driveSubsystem = driveSubsystem;
     m_goal = new Trajectory.State();
-    //m_trajectory = new Trajectory();
     m_isFinished = false;
-    // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(driveSubsystem);
   }
-
-
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     loadTrajectory();
-    //m_driveSubsystem.resetIMU();
     m_isFinished = false;
 
     m_xController = new PIDController(.02, 0, 0);
@@ -149,23 +122,13 @@ public class AutonomousDrive extends CommandBase {
       SmartDashboard.putNumber("Odometry Y Position", m_pose2d.getY());
 
       SmartDashboard.putNumber("Goal Rotation", m_goal.poseMeters.getRotation().getDegrees());
-      // There also was Current Rotation  but that was just printing the same thing under the definition m_rotation
 
       SmartDashboard.putNumber("Goal Velocity", m_goal.velocityMetersPerSecond);
       SmartDashboard.putNumber("Error Velocity", m_goal.velocityMetersPerSecond - m_driveSubsystem.getModules()[0].getDriveVelocity());
 
       SmartDashboard.putNumber("timer", m_timer.get());
       SmartDashboard.putNumber("trajectory time", m_trajectory.getTotalTimeSeconds());
-        
-      // SmartDashboard.putNumber("X Velocity", adjustedSpeeds.vxMetersPerSecond);
-      // SmartDashboard.putNumber("Y Velocity", adjustedSpeeds.vyMetersPerSecond);
-      // SmartDashboard.putNumber("Rot Speed", adjustedSpeeds.omegaRadiansPerSecond);
-      
-      //SmartDashboard.putNumber("Reading X Velocity LeftFront", m_driveSubsystem.getModules()[0].getDriveVelocity());
-      // SmartDashboard.putNumber("Reading X Velocity RightFront", m_driveSubsystem.getModules()[1].getDriveVelocity());
-      // SmartDashboard.putNumber("Reading X Velocity LeftRear", m_driveSubsystem.getModules()[2].getDriveVelocity());
-      // SmartDashboard.putNumber("Reading X Velocity RightRear", m_driveSubsystem.getModules()[3].getDriveVelocity());
-  }
+    }
 
   // Called once the command ends or is interrupted.
   @Override

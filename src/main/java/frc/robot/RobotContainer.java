@@ -22,7 +22,6 @@ import frc.robot.commands.IntakeStop;
 import frc.robot.commands.SwerveDriveCommand;
 
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
@@ -41,8 +40,6 @@ import frc.robot.paths.SlalomPath;
 import frc.robot.paths.TrajectoriesExporter;
 
 
-
-import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.ForceExtendHood;
 import frc.robot.commands.ForceRetractHood;
 import frc.robot.commands.HoodAndFlywheelCommand;
@@ -50,12 +47,10 @@ import frc.robot.commands.IndexerCommand;
 import frc.robot.commands.SwerveDriveCommand;
 import frc.robot.commands.TargetCommand;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveModule;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -70,14 +65,8 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
  */
 public class RobotContainer
 {
-    // The robot's subsystems and commands are defined here...
-    private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-
-   // private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
-    
+    // The robot's subsystems and commands are defined here... 
     private final DriveSubsystem m_robotDrive = new DriveSubsystem(false);
-
-    //private final SwerveModule m_Module = new SwerveModule();
 
     private final AutonomousDrive m_autonomousDrive = new AutonomousDrive(m_robotDrive);
 
@@ -86,8 +75,6 @@ public class RobotContainer
 
     private final IndexerSubsystem m_indexer = new IndexerSubsystem();
 
-    //private final SwerveModule m_Module = new SwerveModule();
-
     // The driver's controller
     XboxController m_driverController = new XboxController(HIDConstants.k_DriverControllerPort);
 
@@ -95,7 +82,6 @@ public class RobotContainer
     private final IntakeStop m_intakeStop = new IntakeStop(m_intake);
     private final IntakeReverse m_intakeReverse = new IntakeReverse(m_intake);
 
-    //private final SwerveModule m_Module = new SwerveModule();
 
     //The Button Binding Names
     public static JoystickButton intakeFlip, intakeRun, intakeStop, intakeReverse;
@@ -110,7 +96,6 @@ public class RobotContainer
 
     private final ForceExtendHood m_forceExtend = new ForceExtendHood(m_shooter);
     private final ForceRetractHood m_forceRetract = new ForceRetractHood(m_shooter);
-
 
 
     JoystickButton indexerRun, prepareShooter, actuateHood;
@@ -143,7 +128,7 @@ public class RobotContainer
     {
         intakeFlip = new JoystickButton(m_driverController , HIDConstants.kA);
         intakeRun = new JoystickButton(m_driverController , HIDConstants.kB);
-        //intakeReverse = new JoystickButton(m_driverController, HIDConstants.kStart);
+        intakeReverse = new JoystickButton(m_driverController, HIDConstants.kStart);
         indexerRun = new JoystickButton(m_driverController, HIDConstants.kX);
         prepareShooter = new JoystickButton(m_driverController, HIDConstants.kRB);
         forceExtendHood = new POVButton(m_driverController, HIDConstants.kDL);
