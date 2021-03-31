@@ -221,23 +221,27 @@ public class ShooterSubsystem extends SubsystemBase {
 
       if(distance >= HoodConstants.k_maxDistance)
       {
-       return hoodSetSetpoint(HoodConstants.k_retractSetpoint);
+       return hoodSetSetpoint(HoodConstants.k_retractSetpoint + .5);
       }
       else if( distance < HoodConstants.k_maxDistance && distance >= HoodConstants.k_redZoneDistance)
       {
-        return hoodSetSetpoint(HoodConstants.k_retractSetpoint + 50);
+        return hoodSetSetpoint(HoodConstants.k_redEncoder);
       } 
       else if(distance < HoodConstants.k_redZoneDistance && distance >= HoodConstants.k_blueZoneDistance)
       {
-        return hoodSetSetpoint(HoodConstants.k_retractSetpoint + 100);
+        return hoodSetSetpoint(HoodConstants.k_blueEncoder);
       } 
       else if(distance < HoodConstants.k_blueZoneDistance && distance >= HoodConstants.k_yellowZoneDistance)
       {
-        return hoodSetSetpoint(HoodConstants.k_retractSetpoint + 100);
+        return hoodSetSetpoint(HoodConstants.k_yellowEncoder);
       } 
       else if(distance < HoodConstants.k_yellowZoneDistance && distance >= HoodConstants.k_greenZoneDistance)
       {
-        return hoodSetSetpoint(HoodConstants.k_retractSetpoint + 100);
+        return hoodSetSetpoint(HoodConstants.k_greenEncoder);
+      } 
+      else if(distance < HoodConstants.k_yellowZoneDistance && distance >= HoodConstants.k_greenZoneDistance)
+      {
+        return hoodSetSetpoint(HoodConstants.k_closestEncoder);
       } 
       else
       {

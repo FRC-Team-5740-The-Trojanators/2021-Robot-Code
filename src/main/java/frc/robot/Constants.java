@@ -228,9 +228,9 @@ public final class Constants
             public static final double k_maxShooterOutput = 1.0;
            // public static final double k_speedRPM = 99999;
 
-            public static final double k_aimingP = .1;
-            public static final double k_aimingI = 0;
-            public static final double k_aimingD = 0;
+            public static final double k_aimingP = 0.7;
+            public static final double k_aimingI = 0.0;
+            public static final double k_aimingD = 0.0;
             public static final double k_aimTolerance = 1 * (Math.PI/180);
         }
         
@@ -274,14 +274,21 @@ public final class Constants
             public static double k_maxDistance = 270; //in
             public static double k_minDistance = 12; //in
 
+            //Colors represent zones
             public static double k_redZoneDistance = 210;
             public static double k_blueZoneDistance = 150;
             public static double k_yellowZoneDistance = 90;
             public static double k_greenZoneDistance = 0;
+            public static double k_closestZoneDistance = 0;
 
-            //TODO change these to rotations
-            public static double k_retractSetpoint = -5; //ticks
-            public static double k_extendSetpoint = -867; //ticks
+            public static double k_redEncoder = 1.56; //Measured in rotations
+            public static double k_blueEncoder = 1.45;
+            public static double k_yellowEncoder = 1.24;
+            public static double k_greenEncoder = 0.95;
+            public static double k_closestEncoder = 0.85;
+
+            public static double k_retractSetpoint = .05; //Rotations
+            public static double k_extendSetpoint = 2.8; //Rotations
 
         }
         
