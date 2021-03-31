@@ -246,7 +246,7 @@ public final class Constants
         {
             public static final double shooterRotationRight = 0.02;
             public static final double shooterRotationLeft = -0.02;
-            public static final double shooterMaxSpeed = 1.0;
+            public static final double shooterMaxSpeed = .7;
             public static final double indexerMaxSpeed = 1;
             public static final double k_rampRate = 0.25;
         }

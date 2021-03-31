@@ -69,8 +69,8 @@ public class ShooterSubsystem extends SubsystemBase {
     configShooterMotors();
     m_shooterEncoder = ShooterMotorOne.getEncoder();
 
-    hoodMotor.configClosedloopRamp(ShooterConstants.k_rampRate); //Needs actual value
-    //hoodMotor.configOpenloopRamp(ShooterConstants.k_rampRate); 
+    //hoodMotor.configClosedloopRamp(ShooterConstants.k_rampRate); //Needs actual value
+    hoodMotor.configOpenloopRamp(ShooterConstants.k_rampRate); 
     hoodMotor.setNeutralMode(NeutralMode.Brake); 
 
     m_hexQuadEncoder.reset();
@@ -161,7 +161,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public double getQuadEncoder()
   {
-    return m_hexQuadEncoder.getRaw();
+    return m_hexAbsoluteEncoder.get();
   }
 
   public double getSkew() {
