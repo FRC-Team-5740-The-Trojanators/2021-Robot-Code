@@ -256,8 +256,8 @@ public final class Constants
             public static final double k_BlueAMax = -999;
             public static final double k_BlueAMin = -900;
 
-            public static final double k_BlueBMax = -100;
-            public static final double k_BlueBMin = -80;
+            public static final double k_BlueBMax = -200;
+            public static final double k_BlueBMin = -100;
         }
 
     }

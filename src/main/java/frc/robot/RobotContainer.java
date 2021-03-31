@@ -15,8 +15,12 @@ import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.SwerveModule;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.paths.BarrelRacePath;
+import frc.robot.paths.BlueAPath;
+import frc.robot.paths.BlueBPath;
 import frc.robot.paths.BouncePath;
 import frc.robot.paths.FiveMeterPath;
+import frc.robot.paths.RedAPath;
+import frc.robot.paths.RedBPath;
 import frc.robot.paths.SlalomPath;
 import frc.robot.paths.TrajectoriesExporter;
 
@@ -51,9 +55,9 @@ public class RobotContainer
     {
         //System.out.println("here!");
  
-        var traj = BouncePath.getTrajectory();
-        TrajectoriesExporter.exportTrajectoryToCSV(traj, BouncePath.getTrajectoryName());
-        TrajectoriesExporter.exportTrajectoryToHumanReadable(traj, BouncePath.getTrajectoryName());
+        var traj = BlueBPath.getTrajectory();
+        TrajectoriesExporter.exportTrajectoryToCSV(traj, BlueBPath.getTrajectoryName());
+        TrajectoriesExporter.exportTrajectoryToHumanReadable(traj, BlueBPath.getTrajectoryName());
 
         // TrajectoriesExporter.exportTrajectoryToHumanReadable(ExamplePath2.getTrajectory(), ExamplePath2.getTrajectoryName());
         // System.out.println("now here!");

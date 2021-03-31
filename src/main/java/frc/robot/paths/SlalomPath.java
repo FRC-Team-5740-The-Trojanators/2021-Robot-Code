@@ -19,7 +19,7 @@ public class SlalomPath
 {
     private static String trajectoryName = "Slalom Path";
 
-    private static TrajectoryConfig trajectoryConfiguration = new TrajectoryConfig(Constants.SwerveDriveModuleConstants.k_MaxSpeed, 1)
+    private static TrajectoryConfig trajectoryConfiguration = new TrajectoryConfig(Constants.SwerveDriveModuleConstants.k_MaxSpeed, 3)
                                                             .setKinematics(Constants.SwerveDriveModuleConstants.kinematics);
 
 
