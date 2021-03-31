@@ -56,7 +56,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   private double m_txRad;
   private double m_ty;
-  private int m_hoodTicks;
+  private double m_hoodTicks;
 
   private DutyCycleEncoder m_hexAbsoluteEncoder = new DutyCycleEncoder(HexEncoderInputs.k_absoluteInput);
   private Encoder m_hexQuadEncoder = new Encoder(HexEncoderInputs.k_quadratureA, HexEncoderInputs.k_quadratureB, HexEncoderInputs.k_indexInput);
@@ -74,6 +74,7 @@ public class ShooterSubsystem extends SubsystemBase {
     hoodMotor.setNeutralMode(NeutralMode.Brake); 
 
     m_hexQuadEncoder.reset();
+    m_hexAbsoluteEncoder.reset();
   }
 
   public void configShooterMotors()
@@ -102,7 +103,7 @@ public class ShooterSubsystem extends SubsystemBase {
     m_ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
 
     m_txRad = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0) * (Math.PI/180);
-    m_hoodTicks = m_hexQuadEncoder.get();
+    m_hoodTicks = m_hexAbsoluteEncoder.get();
   }
 
   public double getAimPID(){
@@ -130,7 +131,6 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public double hoodSetSetpoint(double setpoint)
   {
-    //m_hoodPID.setSetpoint(setpoint);
    return m_hoodPID.calculate(m_hoodTicks, setpoint);
   }
 
@@ -214,7 +214,7 @@ public class ShooterSubsystem extends SubsystemBase {
       return rot;
     }
 
-    public double actuateHood()
+    public double hoodAngleFinder()
     {
       double angle = m_ty + HoodConstants.limelightAngle;
       var distance = HoodConstants.heightDifference / Math.tan(angle);
@@ -226,7 +226,6 @@ public class ShooterSubsystem extends SubsystemBase {
       else if( distance < HoodConstants.k_maxDistance && distance >= HoodConstants.k_redZoneDistance)
       {
         return hoodSetSetpoint(HoodConstants.k_retractSetpoint + 50);
-        //return m_ShooterMotorOnePID.setReference(state.speedMetersPerSecond, ControlType.kVelocity);
       } 
       else if(distance < HoodConstants.k_redZoneDistance && distance >= HoodConstants.k_blueZoneDistance)
       {

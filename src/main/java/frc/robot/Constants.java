@@ -279,7 +279,7 @@ public final class Constants
             public static double k_yellowZoneDistance = 90;
             public static double k_greenZoneDistance = 0;
 
-
+            //TODO change these to rotations
             public static double k_retractSetpoint = -5; //ticks
             public static double k_extendSetpoint = -867; //ticks
 
