@@ -39,14 +39,12 @@ public class ShooterSubsystem extends SubsystemBase {
   public double measuredX, tlong, thor, skewOffsetDegrees, actualXx;
   public final double pixelsToDegrees = .1419047619;
 
-  private TalonSRX hoodMotor;
+  private TalonSRX hoodMotor = new TalonSRX(CANBusIDs.k_hoodID);
 
   private CANEncoder m_shooterEncoder;
 
   private CANSparkMax ShooterMotorOne = new CANSparkMax(CANBusIDs.k_ShooterMotorOne, MotorType.kBrushless);
   private CANSparkMax ShooterMotorTwo = new CANSparkMax(CANBusIDs.k_ShooterMotorTwo, MotorType.kBrushless);
-
-  private VictorSPX indexerWheel = new VictorSPX(CANBusIDs.k_indexerID);
 
   private NetworkTableEntry shuffleDistance;
   private NetworkTableEntry abs, quad, kp, ki, kd, kff, period, pos, setPoint, height;
@@ -142,17 +140,22 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public void forceRunHoodMotorExtend()
   {
-    hoodMotor.set(TalonSRXControlMode.PercentOutput, 0.1);
+    hoodMotor.set(TalonSRXControlMode.PercentOutput, HoodConstants.k_hoodExtendSpeed);
   }
 
   public void forceRunHoodMotorRetract()
   {
-    hoodMotor.set(TalonSRXControlMode.PercentOutput, -0.1);
+    hoodMotor.set(TalonSRXControlMode.PercentOutput, HoodConstants.k_hoodRetractSpeed);
   }
 
   public void forceStopHoodMotor()
   {
     hoodMotor.set(TalonSRXControlMode.PercentOutput, 0);
+  }
+
+  public double getQuadEncoder()
+  {
+    return m_hexQuadEncoder.get();
   }
 
   public double getSkew() {
@@ -192,19 +195,6 @@ public class ShooterSubsystem extends SubsystemBase {
     public void setShooterRPM(int rpm)
     {
       ShooterMotorOne.getPIDController().setReference(rpm, ControlType.kVelocity);
-    }
-
-    public void runIndexerWheel(){
-      indexerWheel.set(ControlMode.PercentOutput, ShooterConstants.indexerMaxSpeed);
-    }
-
-    public void stopIndexerWheel(){
-      indexerWheel.set(ControlMode.PercentOutput, 0);
-    }
-
-    public double getIndexerVelocity()
-    {
-      return indexerWheel.getMotorOutputPercent();
     }
 
     public double getShooterVelocity()

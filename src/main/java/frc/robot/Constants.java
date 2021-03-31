@@ -260,6 +260,9 @@ public final class Constants
             public static final double k_minShooterOutput = 0;
             public static final double k_maxShooterOutput = 1;
 
+            public static final double k_hoodExtendSpeed = .1;
+            public static final double k_hoodRetractSpeed = -.1;
+
             public static final double setpointValue = 1;
 
             public static double limelightAngle = 1000000; // angle that the limelight is set at
@@ -270,8 +273,8 @@ public final class Constants
 
             public static double k_maxDistance = 30; //ft
             public static double k_minDistance = 1; //ft
-            public static double k_retractSetpoint = 0; //ticks
-            public static double k_extendSetpoint = 12; //ticks
+            public static double k_retractSetpoint = -5; //ticks
+            public static double k_extendSetpoint = -867; //ticks
 
         }
         

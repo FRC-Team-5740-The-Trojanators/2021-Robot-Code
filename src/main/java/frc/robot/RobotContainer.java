@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.HIDConstants;
 import frc.robot.commands.ActuateHoodCommand;
 import frc.robot.commands.AutonomousDrive;
@@ -22,11 +23,13 @@ import frc.robot.commands.SwerveDriveCommand;
 import frc.robot.commands.TargetCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveModule;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 
@@ -49,6 +52,8 @@ public class RobotContainer
 
     private final ShooterSubsystem m_shooter = new ShooterSubsystem();
 
+    private final IndexerSubsystem m_indexer = new IndexerSubsystem();
+
     //private final SwerveModule m_Module = new SwerveModule();
 
     // The driver's controller
@@ -56,11 +61,14 @@ public class RobotContainer
 
     private final TargetCommand m_target = new TargetCommand(m_shooter,m_robotDrive, m_driverController);
 
-    private final ShootCommand m_shoot = new ShootCommand(m_shooter, m_robotDrive, m_driverController);
+    private final ShootCommand m_shoot = new ShootCommand(m_robotDrive, m_driverController, m_indexer);
 
     private final ActuateHoodCommand m_hood = new ActuateHoodCommand(m_shooter);
 
-    private final ParallelCommandGroup TargetAndHood = new ParallelCommandGroup(m_target, m_hood);
+    //private final SequentialCommandGroup TargetAndHood = new SequentialCommandGroup(m_target, m_hood);
+
+    //private final ParallelCommandGroup IndexerAndShoot = new ParallelCommandGroup(m_shoot, m_hood);
+
 
     private final ForceExtendHood m_forceExtend = new ForceExtendHood(m_shooter);
     private final ForceRetractHood m_forceRetract = new ForceRetractHood(m_shooter);
@@ -86,6 +94,8 @@ public class RobotContainer
         NetworkTableEntry ty = table.getEntry("ty");
         NetworkTableEntry ta = table.getEntry("ta");
 
+        SmartDashboard.putNumber("Hood Encoder", m_shooter.getQuadEncoder());
+
         m_robotDrive.resetIMU();
 
         // m_robotDrive.modules[0].setEncoders();
@@ -110,9 +120,11 @@ public class RobotContainer
         forceExtendHood.whileHeld(m_forceExtend);
         forceRetractHood.whileHeld(m_forceRetract);
 
-        targetShooter.whenPressed(TargetAndHood);
+        //targetShooter.whileHeld(TargetAndHood);
+        targetShooter.whileHeld(m_hood);
 
-        shooterRun.whileHeld(new ShootCommand(m_shooter, m_robotDrive, m_driverController));
+
+        shooterRun.whileHeld(m_shoot);
     }
 
     /**
