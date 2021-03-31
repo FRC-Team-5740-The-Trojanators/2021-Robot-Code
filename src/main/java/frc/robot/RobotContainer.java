@@ -106,10 +106,7 @@ public class RobotContainer
 
     private final HoodAndFlywheelCommand m_hood = new HoodAndFlywheelCommand(m_shooter);
 
-    //private final SequentialCommandGroup TargetAndHood = new SequentialCommandGroup(m_target, m_hood);
-
-    //private final ParallelCommandGroup IndexerAndShoot = new ParallelCommandGroup(m_shoot, m_hood);
-
+    private final SequentialCommandGroup TargetAndHood = new SequentialCommandGroup(m_target, m_hood);
 
     private final ForceExtendHood m_forceExtend = new ForceExtendHood(m_shooter);
     private final ForceRetractHood m_forceRetract = new ForceRetractHood(m_shooter);
@@ -120,39 +117,20 @@ public class RobotContainer
     POVButton  forceExtendHood, forceRetractHood;
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer()
-    {
-        //System.out.println("here!");
- 
-        var traj = BlueBPath.getTrajectory();
-        TrajectoriesExporter.exportTrajectoryToCSV(traj, BlueBPath.getTrajectoryName());
-        TrajectoriesExporter.exportTrajectoryToHumanReadable(traj, BlueBPath.getTrajectoryName());
+    { 
+        // var traj = BlueBPath.getTrajectory();
+        // TrajectoriesExporter.exportTrajectoryToCSV(traj, BlueBPath.getTrajectoryName());
+        // TrajectoriesExporter.exportTrajectoryToHumanReadable(traj, BlueBPath.getTrajectoryName());
 
-        // TrajectoriesExporter.exportTrajectoryToHumanReadable(ExamplePath2.getTrajectory(), ExamplePath2.getTrajectoryName());
-        // System.out.println("now here!");
-
-
-        // Configure the button bindings
         configureButtonBindings();
-        //TODO uncomment line 63
        m_robotDrive.setDefaultCommand(new SwerveDriveCommand(m_robotDrive, m_driverController));
-
-       //m_robotDrive.setDefaultCommand(new TargetCommand(m_shooter, m_robotDrive, m_driverController));
-
-        //ShuffleboardTab tab = Shuffleboard.getTab("Swerve Drive Tuning");
 
         NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
         NetworkTableEntry tx = table.getEntry("tx");
         NetworkTableEntry ty = table.getEntry("ty");
         NetworkTableEntry ta = table.getEntry("ta");
 
-        SmartDashboard.putNumber("Hood Encoder", m_shooter.getQuadEncoder());
-
         m_robotDrive.resetIMU();
-
-        // m_robotDrive.modules[0].setEncoders();
-        // m_robotDrive.modules[1].setEncoders();
-        // m_robotDrive.modules[2].setEncoders();
-        // m_robotDrive.modules[3].setEncoders();
     }
 
     /**
@@ -165,22 +143,20 @@ public class RobotContainer
     {
         intakeFlip = new JoystickButton(m_driverController , HIDConstants.kA);
         intakeRun = new JoystickButton(m_driverController , HIDConstants.kB);
-        intakeReverse = new JoystickButton(m_driverController, HIDConstants.kX);
-        
+        //intakeReverse = new JoystickButton(m_driverController, HIDConstants.kStart);
+        indexerRun = new JoystickButton(m_driverController, HIDConstants.kX);
+        prepareShooter = new JoystickButton(m_driverController, HIDConstants.kRB);
+        forceExtendHood = new POVButton(m_driverController, HIDConstants.kDL);
+        forceRetractHood = new POVButton(m_driverController, HIDConstants.kDR);
+
         intakeFlip.toggleWhenPressed(new StartEndCommand(m_intake::extendIntake, m_intake::retractIntake, m_intake));
         intakeRun.whileHeld(m_intakeRun);
         intakeReverse.whileHeld(m_intakeReverse);
-        indexerRun = new JoystickButton(m_driverController, HIDConstants.kX);
-        prepareShooter = new JoystickButton(m_driverController, HIDConstants.kY);
-        forceExtendHood = new POVButton(m_driverController, HIDConstants.kDL);
-        forceRetractHood = new POVButton(m_driverController, HIDConstants.kDR);
 
         forceExtendHood.whileHeld(m_forceExtend);
         forceRetractHood.whileHeld(m_forceRetract);
 
-        //prepareShooter.whileHeld(TargetAndHood);
-        prepareShooter.whileHeld(m_target);
-
+        prepareShooter.whileHeld(TargetAndHood);
 
         indexerRun.whileHeld(m_index);
     }
