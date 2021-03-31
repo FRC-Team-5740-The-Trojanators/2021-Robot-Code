@@ -105,8 +105,5 @@ public class SwerveDriveCommand extends CommandBase
         SmartDashboard.putNumber(("Get Rotation RightFront"), drivetrain.getModules()[1].getRotationDegrees());
         SmartDashboard.putNumber(("Get Rotation LeftRear"), drivetrain.getModules()[2].getRotationDegrees());
         SmartDashboard.putNumber(("Get Rotation RightRear"), drivetrain.getModules()[3].getRotationDegrees());
-
-
-        
     }
 }

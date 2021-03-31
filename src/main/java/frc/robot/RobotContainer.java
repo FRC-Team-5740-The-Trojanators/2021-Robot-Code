@@ -4,10 +4,17 @@
 
 package frc.robot;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.HIDConstants;
 import frc.robot.commands.AutonomousDrive;
+
 import frc.robot.commands.IntakeFlip;
 import frc.robot.commands.IntakeRun;
 import frc.robot.commands.IntakeReverse;
@@ -34,6 +41,27 @@ import frc.robot.paths.SlalomPath;
 import frc.robot.paths.TrajectoriesExporter;
 
 
+
+import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.ForceExtendHood;
+import frc.robot.commands.ForceRetractHood;
+import frc.robot.commands.HoodAndFlywheelCommand;
+import frc.robot.commands.IndexerCommand;
+import frc.robot.commands.SwerveDriveCommand;
+import frc.robot.commands.TargetCommand;
+import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.IndexerSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.SwerveModule;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+
+import edu.wpi.first.wpilibj2.command.button.POVButton;
+
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -54,6 +82,11 @@ public class RobotContainer
     private final AutonomousDrive m_autonomousDrive = new AutonomousDrive(m_robotDrive);
 
     private final IntakeSubsystem m_intake = new IntakeSubsystem();
+    private final ShooterSubsystem m_shooter = new ShooterSubsystem();
+
+    private final IndexerSubsystem m_indexer = new IndexerSubsystem();
+
+    //private final SwerveModule m_Module = new SwerveModule();
 
     // The driver's controller
     XboxController m_driverController = new XboxController(HIDConstants.k_DriverControllerPort);
@@ -67,6 +100,24 @@ public class RobotContainer
     //The Button Binding Names
     public static JoystickButton intakeFlip, intakeRun, intakeStop, intakeReverse;
 
+    private final TargetCommand m_target = new TargetCommand(m_shooter,m_robotDrive, m_driverController);
+
+    private final IndexerCommand m_index = new IndexerCommand(m_robotDrive, m_driverController, m_indexer);
+
+    private final HoodAndFlywheelCommand m_hood = new HoodAndFlywheelCommand(m_shooter);
+
+    //private final SequentialCommandGroup TargetAndHood = new SequentialCommandGroup(m_target, m_hood);
+
+    //private final ParallelCommandGroup IndexerAndShoot = new ParallelCommandGroup(m_shoot, m_hood);
+
+
+    private final ForceExtendHood m_forceExtend = new ForceExtendHood(m_shooter);
+    private final ForceRetractHood m_forceRetract = new ForceRetractHood(m_shooter);
+
+
+
+    JoystickButton indexerRun, prepareShooter, actuateHood;
+    POVButton  forceExtendHood, forceRetractHood;
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer()
     {
@@ -82,9 +133,19 @@ public class RobotContainer
 
         // Configure the button bindings
         configureButtonBindings();
- 
-        m_robotDrive.setDefaultCommand(new SwerveDriveCommand(m_robotDrive, m_driverController));
+        //TODO uncomment line 63
+       m_robotDrive.setDefaultCommand(new SwerveDriveCommand(m_robotDrive, m_driverController));
+
+       //m_robotDrive.setDefaultCommand(new TargetCommand(m_shooter, m_robotDrive, m_driverController));
+
         //ShuffleboardTab tab = Shuffleboard.getTab("Swerve Drive Tuning");
+
+        NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+        NetworkTableEntry tx = table.getEntry("tx");
+        NetworkTableEntry ty = table.getEntry("ty");
+        NetworkTableEntry ta = table.getEntry("ta");
+
+        SmartDashboard.putNumber("Hood Encoder", m_shooter.getQuadEncoder());
 
         m_robotDrive.resetIMU();
 
@@ -109,6 +170,19 @@ public class RobotContainer
         intakeFlip.toggleWhenPressed(new StartEndCommand(m_intake::extendIntake, m_intake::retractIntake, m_intake));
         intakeRun.whileHeld(m_intakeRun);
         intakeReverse.whileHeld(m_intakeReverse);
+        indexerRun = new JoystickButton(m_driverController, HIDConstants.kX);
+        prepareShooter = new JoystickButton(m_driverController, HIDConstants.kY);
+        forceExtendHood = new POVButton(m_driverController, HIDConstants.kDL);
+        forceRetractHood = new POVButton(m_driverController, HIDConstants.kDR);
+
+        forceExtendHood.whileHeld(m_forceExtend);
+        forceRetractHood.whileHeld(m_forceRetract);
+
+        //prepareShooter.whileHeld(TargetAndHood);
+        prepareShooter.whileHeld(m_target);
+
+
+        indexerRun.whileHeld(m_index);
     }
 
     /**
@@ -120,5 +194,6 @@ public class RobotContainer
     {
         // An ExampleCommand will run in autonomous
         return m_autonomousDrive;
+
     }
 }

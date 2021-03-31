@@ -69,7 +69,7 @@ public class SwerveModule
        //Sets steering PID values using WPI version
         m_steeringPIDController = new PIDController(0, 0, 0);
 
-        //Sets steering PID Values using Rev Robotics Version                                            
+        //Sets steering PID Values using Rev Robotics Version
         m_steeringPIDController.setTolerance(SteeringControllerPIDValues.k_ToleranceInTicks);
 
         m_driverPIDController.setI(DriveModulePIDValues.k_driveI);
@@ -98,7 +98,6 @@ public class SwerveModule
         return new SwerveModuleState(m_driveEncoder.getVelocity(), Rotation2d.fromDegrees(m_moduleSteeringEncoder.getPosition()));
     }
 
-  
 
     /**
      * 

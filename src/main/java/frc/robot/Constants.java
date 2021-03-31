@@ -30,6 +30,7 @@ public final class Constants
     public static final class HIDConstants 
     {
         /**
+         * XBox Controller layout
          * kA = 1;
          * kB = 2;
          * kX = 3; 
@@ -47,6 +48,11 @@ public final class Constants
         public static final int kA = 1;
         public static final int kB = 2;
         public static final int kX = 3;
+        public static final int kY = 4;
+        public static final int kRB = 6;
+        public static final int kDL = 270;
+        public static final int kDR = 90;
+
     }
 
     public static final class IntakeSubsystemConstants
@@ -55,15 +61,6 @@ public final class Constants
         public static final double k_intakeReverseMotorSpeed = 0.6;
         public static final double k_intakeStopMotorSpeed = 0.0;
     }
-    // public static final class IntakeSubsystemConstants
-    // {
-    //     public static final double k_intakeMotorSpeed = 1.0;
-    //     public static final double k_intakeReverseMotorSpeed = -1.0;
-    //     public static final double k_intakeStopMotorSpeed = 0.0;
-    // }
-
-
-
     
     public static final class SwerveDriveModuleConstants
     {
@@ -92,6 +89,7 @@ public final class Constants
         public static final double kXYjoystickCoefficient = .75;
         public static final double kMaxAngularSpeed = Units.feetToMeters(15) / k_RobotRadius; //Gives in radians / s (/s is implied);
         public static final double kRotCoefficient = .5;
+
         public static double fieldCalibration = 0;
 
         //Angle offsets
@@ -152,7 +150,13 @@ public final class Constants
             public static final int k_RightRear_SteeringMotor = 8; 
             
             public static final int k_IntakeMotors = 16;
-          }
+          
+            //TODO Check CANIDs
+            public static final int k_ShooterMotorOne = 13;
+            public static final int k_ShooterMotorTwo = 14;
+            public static final int k_hoodID = 15;
+            public static final int k_indexerID = 17; 
+        }
         
         /**
          * The Motor controller we're using can control both brushed and brushless DC motors. 
@@ -171,6 +175,9 @@ public final class Constants
     
             public static final MotorType k_SwerveLeftRear_Drive = MotorType.kBrushless;
             public static final MotorType k_SwerveLeftRear_Steering = MotorType.kBrushless;
+
+            public static final MotorType k_lowerShooterWheel = MotorType.kBrushless;
+            public static final MotorType k_upperShooterWheel = MotorType.kBrushless;
         }        
      
         public static final SwerveDriveKinematics kinematics =
@@ -268,5 +275,77 @@ public final class Constants
             public static final double k_BlueBMin = -100;
         }
 
+        public static final class ShooterPIDValues
+        {
+            public static final double k_shooterP = 0.00035;
+            public static final double k_shooterI = 0.0;
+            public static final double k_shooterD = 0.0;
+            public static final double k_shooterFF =  0.000175;
+            public static final double k_minShooterOutput = 0.0;
+            public static final double k_maxShooterOutput = 1.0;
+           // public static final double k_speedRPM = 99999;
+
+            public static final double k_aimingP = 0.7;
+            public static final double k_aimingI = 0.0;
+            public static final double k_aimingD = 0.0;
+            public static final double k_aimTolerance = 1 * (Math.PI/180);
+        }
+        
+        public static final class HexEncoderInputs
+        {
+            public static final int k_absoluteInput = 0;
+            public static final int k_quadratureA = 1;
+            public static final int k_quadratureB = 2;
+            public static final int k_indexInput = 3;
+        }
+
+        public static final class ShooterConstants
+        {
+            public static final double shooterRotationRight = 0.02;
+            public static final double shooterRotationLeft = -0.02;
+            public static final double shooterMaxSpeed = .7;
+            public static final double indexerMaxSpeed = 1;
+            public static final double k_rampRate = 0.25;
+        }
+
+        public static final class HoodConstants
+        {
+            public static final double k_hoodP = .1;
+            public static final double k_hoodI = 0;
+            public static final double k_hoodD = 0;
+            public static final double k_hoodFF = 0;
+            public static final double k_minShooterOutput = 0;
+            public static final double k_maxShooterOutput = 1;
+
+            public static final double k_hoodExtendSpeed = .1;
+            public static final double k_hoodRetractSpeed = -.1;
+
+            public static final double setpointValue = 1;
+
+            public static double limelightAngle = 22.3; // angle that the limelight is set at in degrees
+        
+            public static double limelightHeight = 21; //from ground to limelight in inches
+            public static double goalHeight = 98.25; // from ground to inner port in inches
+            public static double heightDifference = goalHeight - limelightHeight;
+
+            public static double k_maxDistance = 270; //in
+            public static double k_minDistance = 12; //in
+
+            //Colors represent zones
+            public static double k_redZoneDistance = 210;
+            public static double k_blueZoneDistance = 150;
+            public static double k_yellowZoneDistance = 90;
+            public static double k_greenZoneDistance = 0;
+            public static double k_closestZoneDistance = 0;
+
+            public static double k_redEncoder = 1.56; //Measured in rotations
+            public static double k_blueEncoder = 1.45;
+            public static double k_yellowEncoder = 1.24;
+            public static double k_greenEncoder = 0.95;
+            public static double k_closestEncoder = 0.85;
+
+            public static double k_retractSetpoint = .05; //Rotations
+            public static double k_extendSetpoint = 2.8; //Rotations
+        }
     }
 }
