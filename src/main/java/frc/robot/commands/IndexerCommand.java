@@ -8,18 +8,19 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
-public class ShootCommand extends CommandBase {
+public class IndexerCommand extends CommandBase {
   /** Creates a new ShootCommand. */
-  ShooterSubsystem m_shooter;
   DriveSubsystem m_drivetrain;
+  IndexerSubsystem m_indexer;
   XboxController m_controller;
   boolean m_isFinished;
-  public ShootCommand(ShooterSubsystem shooter, DriveSubsystem drivetrain, XboxController controller) {
-    m_shooter = shooter;
+  public IndexerCommand( DriveSubsystem drivetrain, XboxController controller, IndexerSubsystem indexer) {
     m_drivetrain = drivetrain;
-    addRequirements(m_shooter, m_drivetrain);
+    m_indexer = indexer;
+    addRequirements( m_drivetrain, m_indexer);
     // Use addRequirements() here to declare subsystem dependencies.
     m_controller = controller;
   }
@@ -28,8 +29,7 @@ public class ShootCommand extends CommandBase {
   @Override
   public void initialize()
   {
-    m_shooter.runFlyWheel();
-    m_shooter.runIndexerWheel();
+    m_indexer.runIndexerWheel();
     m_isFinished = false;
   }
 
@@ -37,18 +37,14 @@ public class ShootCommand extends CommandBase {
   @Override
   public void execute()
   {
-    m_shooter.runFlyWheel();
-    m_shooter.runIndexerWheel();
-    SmartDashboard.putNumber("Shooter Velocity", m_shooter.getShooterVelocity());
-
+    m_indexer.runIndexerWheel();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted)
   {
-    m_shooter.stopFlyWheel();
-    m_shooter.stopIndexerWheel();
+    m_indexer.stopIndexerWheel();
     m_isFinished = true;
   }
 

@@ -33,6 +33,9 @@ public final class Constants
         public static final double kDeadBand = 0.05;
         public static final int kX = 3;
         public static final int kY = 4;
+        public static final int kRB = 6;
+        public static final int kDL = 270;
+        public static final int kDR = 90;
 
     }
 
@@ -220,28 +223,35 @@ public final class Constants
 
         public static final class ShooterPIDValues
         {
-            public static final double k_shooterP = .1;
-            public static final double k_shooterI = 0;
-            public static final double k_shooterD = 0;
-            public static final double k_shooterFF = 0;
-            public static final double k_minShooterOutput = 0;
-            public static final double k_maxShooterOutput = 1;
+            public static final double k_shooterP = 0.00035;
+            public static final double k_shooterI = 0.0;
+            public static final double k_shooterD = 0.0;
+            public static final double k_shooterFF =  0.000175;
+            public static final double k_minShooterOutput = 0.0;
+            public static final double k_maxShooterOutput = 1.0;
            // public static final double k_speedRPM = 99999;
 
             public static final double k_aimingP = .1;
             public static final double k_aimingI = 0;
             public static final double k_aimingD = 0;
             public static final double k_aimTolerance = 1 * (Math.PI/180);
-
         }
         
+        public static final class HexEncoderInputs
+        {
+            public static final int k_absoluteInput = 0;
+            public static final int k_quadratureA = 1;
+            public static final int k_quadratureB = 2;
+            public static final int k_indexInput = 3;
+        }
+
         public static final class ShooterConstants
         {
             public static final double shooterRotationRight = 0.02;
             public static final double shooterRotationLeft = -0.02;
-            public static final double shooterMaxSpeed = 1;
+            public static final double shooterMaxSpeed = 1.0;
             public static final double indexerMaxSpeed = 1;
-
+            public static final double k_rampRate = 0.25;
         }
 
         public static final class HoodConstants
@@ -253,18 +263,28 @@ public final class Constants
             public static final double k_minShooterOutput = 0;
             public static final double k_maxShooterOutput = 1;
 
+            public static final double k_hoodExtendSpeed = .1;
+            public static final double k_hoodRetractSpeed = -.1;
+
             public static final double setpointValue = 1;
 
-            public static double limelightAngle = 1000000; // angle that the limelight is set at
+            public static double limelightAngle = 22.3; // angle that the limelight is set at in degrees
         
-            public static double limelightHeight = 1000000000; //from ground to limelight
-            public static double goalHeight = 1000000; // from ground to goal
+            public static double limelightHeight = 21; //from ground to limelight in inches
+            public static double goalHeight = 98.25; // from ground to inner port in inches
             public static double heightDifference = goalHeight - limelightHeight;
 
-            public static double k_maxDistance = 30; //ft
-            public static double k_minDistance = 1; //ft
-            public static double k_retractSetpoint = 0; //ticks
-            public static double k_extendSetpoint = 12; //ticks
+            public static double k_maxDistance = 270; //in
+            public static double k_minDistance = 12; //in
+
+            public static double k_redZoneDistance = 210;
+            public static double k_blueZoneDistance = 150;
+            public static double k_yellowZoneDistance = 90;
+            public static double k_greenZoneDistance = 0;
+
+
+            public static double k_retractSetpoint = -5; //ticks
+            public static double k_extendSetpoint = -867; //ticks
 
         }
         
