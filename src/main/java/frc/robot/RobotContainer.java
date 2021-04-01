@@ -22,6 +22,7 @@ import frc.robot.commands.IntakeStop;
 import frc.robot.commands.SwerveDriveCommand;
 
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.HoodSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -43,7 +44,7 @@ import frc.robot.paths.TrajectoriesExporter;
 
 import frc.robot.commands.ForceExtendHood;
 import frc.robot.commands.ForceRetractHood;
-import frc.robot.commands.HoodAndFlywheelCommand;
+import frc.robot.commands.HoodCommand;
 import frc.robot.commands.IndexerCommand;
 import frc.robot.commands.SwerveDriveCommand;
 import frc.robot.commands.TargetCommand;
@@ -68,36 +69,28 @@ public class RobotContainer
 {
     // The robot's subsystems and commands are defined here... 
     private final DriveSubsystem m_robotDrive = new DriveSubsystem(false);
-
     private final AutonomousDrive m_autonomousDrive = new AutonomousDrive(m_robotDrive);
-
     private final IntakeSubsystem m_intake = new IntakeSubsystem();
     private final ShooterSubsystem m_shooter = new ShooterSubsystem();
-
+    private final HoodSubsystem m_hood = new HoodSubsystem();
     private final IndexerSubsystem m_indexer = new IndexerSubsystem();
 
     // The driver's controller
     XboxController m_driverController = new XboxController(HIDConstants.k_DriverControllerPort);
 
+    //Intake Commands
     private final IntakeRun m_intakeRun = new IntakeRun(m_intake);
     private final IntakeStop m_intakeStop = new IntakeStop(m_intake);
     private final IntakeReverse m_intakeReverse = new IntakeReverse(m_intake);
 
-
     //The Button Binding Names
     public static JoystickButton intakeFlip, intakeRun, intakeStop, intakeReverse;
-
     private final TargetCommand m_target = new TargetCommand(m_shooter,m_robotDrive, m_driverController);
-
     private final IndexerCommand m_index = new IndexerCommand(m_robotDrive, m_driverController, m_indexer);
-
-    private final HoodAndFlywheelCommand m_hood = new HoodAndFlywheelCommand(m_shooter);
-
-    private final SequentialCommandGroup TargetAndHood = new SequentialCommandGroup(m_target, m_hood);
-
-    private final ForceExtendHood m_forceExtend = new ForceExtendHood(m_shooter);
-    private final ForceRetractHood m_forceRetract = new ForceRetractHood(m_shooter);
-
+    private final HoodCommand m_moveHood = new HoodCommand(m_hood);
+    private final ParallelCommandGroup TargetAndHood = new ParallelCommandGroup(m_target, m_moveHood);
+    private final ForceExtendHood m_forceExtend = new ForceExtendHood(m_hood);
+    private final ForceRetractHood m_forceRetract = new ForceRetractHood(m_hood);
 
     JoystickButton indexerRun, prepareShooter, actuateHood;
     POVButton  forceExtendHood, forceRetractHood;
@@ -138,12 +131,9 @@ public class RobotContainer
         intakeFlip.toggleWhenPressed(new StartEndCommand(m_intake::extendIntake, m_intake::retractIntake, m_intake));
         intakeRun.whileHeld(m_intakeRun);
         intakeReverse.whileHeld(m_intakeReverse);
-
         forceExtendHood.whileHeld(m_forceExtend);
         forceRetractHood.whileHeld(m_forceRetract);
-
         prepareShooter.whileHeld(TargetAndHood);
-
         indexerRun.whileHeld(m_index);
     }
 

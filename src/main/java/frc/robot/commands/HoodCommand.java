@@ -4,22 +4,20 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.HoodSubsystem;
 
-public class HoodAndFlywheelCommand extends CommandBase {
-  /** Creates a new ActuateHoodCommand. */
-  ShooterSubsystem m_shooter;
+public class HoodCommand extends CommandBase {
+  /** Creates a new HoodCommand. */
+  HoodSubsystem m_hood;
   Boolean m_isFinished;
 
-  public HoodAndFlywheelCommand(ShooterSubsystem shooter) 
+  public HoodCommand(HoodSubsystem hood) 
   {
-    m_shooter = shooter;
-    addRequirements(shooter);
     // Use addRequirements() here to declare subsystem dependencies.
+    m_hood = hood;
+    addRequirements(hood);
   }
 
   // Called when the command is initially scheduled.
@@ -27,21 +25,17 @@ public class HoodAndFlywheelCommand extends CommandBase {
   public void initialize()
   {
     m_isFinished = false;
-    m_shooter.setHoodMotor(m_shooter.hoodSetSetpoint(0.2));//m_shooter.hoodAngleFinder());
+    m_hood.setHoodMotor(m_hood.hoodSetSetpoint(0.2));//m_hood.hoodAngleFinder());
 
-    //m_shooter.setHoodMotor(m_shooter.hoodAngleFinder());
-    //m_shooter.runFlyWheel();
+    //m_hood.setHoodMotor(m_hood.hoodAngleFinder());
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute()
   {
-   m_shooter.setHoodMotor(m_shooter.hoodSetSetpoint(0.2));//m_shooter.hoodAngleFinder());
-   //m_shooter.runFlyWheel();
-   SmartDashboard.putNumber("Flywheel Velocity", m_shooter.getShooterVelocity());
-   SmartDashboard.putNumber("Hood Encoder", m_shooter.getAbsEncoder());
-
+   m_hood.setHoodMotor(m_hood.hoodSetSetpoint(0.2));//m_hood.hoodAngleFinder());   
+   SmartDashboard.putNumber("Hood Encoder", m_hood.getAbsEncoder());
   }
 
   // Called once the command ends or is interrupted.
@@ -49,8 +43,7 @@ public class HoodAndFlywheelCommand extends CommandBase {
   public void end(boolean interrupted)
   {
     m_isFinished = true;
-    m_shooter.forceStopHoodMotor();
-    //m_shooter.stopFlyWheel();
+    m_hood.forceStopHoodMotor();
   }
 
   // Returns true when the command should end.

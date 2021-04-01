@@ -6,42 +6,46 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.HoodSubsystem;
+import frc.robot.subsystems.FlyWheelSubsystem;
 
-public class ForceExtendHood extends CommandBase {
-  /** Creates a new ForceExtendHood. */
-  HoodSubsystem m_hood;
+public class FlyWheelCommand extends CommandBase {
+  /** Creates a new FlyWheelCommand. */
+  FlyWheelSubsystem m_flyWheel;
+  Boolean m_isFinished;
 
-  public ForceExtendHood(HoodSubsystem shooter) {
-    m_hood = shooter;
-    addRequirements(shooter);
+  public FlyWheelCommand(FlyWheelSubsystem flyWheel) {
     // Use addRequirements() here to declare subsystem dependencies.
+    m_flyWheel = flyWheel;
+    addRequirements(flyWheel);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize()
+  public void initialize() 
   {
-    m_hood.forceRunHoodMotorExtend();
+    m_isFinished = false;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute()
+  public void execute() 
   {
-    m_hood.forceRunHoodMotorExtend();
+    m_flyWheel.runFlyWheel();
+    SmartDashboard.putNumber("Flywheel Velocity", m_flyWheel.getShooterVelocity());
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted)
+  public void end(boolean interrupted) 
   {
-    m_hood.forceStopHoodMotor();
+    m_isFinished = true;
+    m_flyWheel.stopFlyWheel();
   }
 
   // Returns true when the command should end.
   @Override
-  public boolean isFinished() {
-    return false;
+  public boolean isFinished()
+  {
+    return m_isFinished;
   }
 }
