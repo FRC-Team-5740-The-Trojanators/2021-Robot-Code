@@ -27,7 +27,9 @@ public class HoodAndFlywheelCommand extends CommandBase {
   public void initialize()
   {
     m_isFinished = false;
-    m_shooter.setHoodMotor(m_shooter.hoodAngleFinder());
+    m_shooter.setHoodMotor(m_shooter.hoodSetSetpoint(0.2));//m_shooter.hoodAngleFinder());
+
+    //m_shooter.setHoodMotor(m_shooter.hoodAngleFinder());
     //m_shooter.runFlyWheel();
   }
 
@@ -35,7 +37,7 @@ public class HoodAndFlywheelCommand extends CommandBase {
   @Override
   public void execute()
   {
-   m_shooter.setHoodMotor(m_shooter.hoodAngleFinder());
+   m_shooter.setHoodMotor(m_shooter.hoodSetSetpoint(0.2));//m_shooter.hoodAngleFinder());
    //m_shooter.runFlyWheel();
    SmartDashboard.putNumber("Flywheel Velocity", m_shooter.getShooterVelocity());
    SmartDashboard.putNumber("Hood Encoder", m_shooter.getAbsEncoder());

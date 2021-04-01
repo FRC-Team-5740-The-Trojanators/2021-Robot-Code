@@ -26,6 +26,7 @@ import frc.robot.Constants.SwerveDriveModuleConstants.HexEncoderInputs;
 import frc.robot.Constants.SwerveDriveModuleConstants.HoodConstants;
 import frc.robot.Constants.SwerveDriveModuleConstants.ShooterConstants;
 import frc.robot.Constants.SwerveDriveModuleConstants.ShooterPIDValues;
+import frc.robot.commands.HoodAndFlywheelCommand;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Encoder;
 
@@ -52,7 +53,7 @@ public class ShooterSubsystem extends SubsystemBase
 
     private double m_txRad;
     private double m_ty;
-    private double m_hoodTicks;
+    private double m_hoodRotations;
 
     private DutyCycleEncoder m_hexAbsoluteEncoder = new DutyCycleEncoder(HexEncoderInputs.k_absoluteInput);
     private Encoder m_hexQuadEncoder = new Encoder(HexEncoderInputs.k_quadratureA, HexEncoderInputs.k_quadratureB, HexEncoderInputs.k_indexInput);
@@ -99,15 +100,7 @@ public class ShooterSubsystem extends SubsystemBase
         m_ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
 
         m_txRad = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0) * (Math.PI/180);
-        m_hoodTicks = m_hexAbsoluteEncoder.get();
-    }
-
-    public void adjustHood()
-    {
-        if(m_hexAbsoluteEncoder.get() < HoodConstants.k_retractSetpoint)
-        {
-            m_hoodPID.calculate(m_hoodTicks, HoodConstants.k_retractSetpoint);
-        }
+        m_hoodRotations = m_hexAbsoluteEncoder.get();
     }
 
     public double getAimPID()
@@ -144,12 +137,31 @@ public class ShooterSubsystem extends SubsystemBase
 
     public double hoodSetSetpoint(double setpoint)
     {
-        return m_hoodPID.calculate(m_hoodTicks, setpoint);
+        return m_hoodPID.calculate(m_hoodRotations, setpoint);
     }
 
     public void setHoodMotor(double demand)
     {
-        hoodMotor.set(TalonSRXControlMode.PercentOutput, demand);
+        if(demand > HoodConstants.k_hoodExtendSpeed)
+        {
+            demand = HoodConstants.k_hoodExtendSpeed;
+        } 
+        if(demand < HoodConstants.k_hoodRetractSpeed)
+        {
+            demand = HoodConstants.k_hoodRetractSpeed;
+        }
+            
+        hoodMotor.set(TalonSRXControlMode.PercentOutput, demand);    
+    }
+
+    public void adjustHood()
+    {
+        if(m_hexAbsoluteEncoder.get() < HoodConstants.k_retractSetpoint)
+        {
+            double softLimit = m_hoodPID.calculate(m_hoodRotations, HoodConstants.k_retractSetpoint);
+           // hoodMotor.set(TalonSRXControlMode.PercentOutput, softLimit);
+        }
+        SmartDashboard.putNumber("Hood Encoder", getAbsEncoder());
     }
 
     public void forceRunHoodMotorExtend()
@@ -225,7 +237,7 @@ public class ShooterSubsystem extends SubsystemBase
     
     public void setShooterRPM(int rpm)
     {
-      ShooterMotorOne.getPIDController().setReference(rpm, ControlType.kVelocity);
+      m_ShooterMotorOnePID.setReference(rpm, ControlType.kVelocity);
     }
 
     public double getShooterVelocity()

@@ -93,7 +93,7 @@ public class RobotContainer
 
     private final HoodAndFlywheelCommand m_hood = new HoodAndFlywheelCommand(m_shooter);
 
-    private final ParallelCommandGroup TargetAndHood = new ParallelCommandGroup(m_target, m_hood);
+    private final SequentialCommandGroup TargetAndHood = new SequentialCommandGroup(m_target, m_hood);
 
     private final ForceExtendHood m_forceExtend = new ForceExtendHood(m_shooter);
     private final ForceRetractHood m_forceRetract = new ForceRetractHood(m_shooter);

@@ -298,14 +298,14 @@ public final class Constants
 
         public static final class HoodConstants
         {
-            public static final double k_hoodP = .1;
+            public static final double k_hoodP = 7.5;
             public static final double k_hoodI = 0;
             public static final double k_hoodD = 0;
             public static final double k_minShooterOutput = 0;
             public static final double k_maxShooterOutput = 1;
 
-            public static final double k_hoodExtendSpeed = .1;
-            public static final double k_hoodRetractSpeed = -.1;
+            public static final double k_hoodExtendSpeed = .2;
+            public static final double k_hoodRetractSpeed = -.2;
 
             public static final double setpointValue = 1;
 
