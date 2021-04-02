@@ -31,10 +31,10 @@ public class HoodDefaultCommand extends CommandBase {
   @Override
   public void execute()
   {
-    m_hood.hoodSetSetpoint(HoodConstants.k_retractQuadSetpoint);
+    m_hood.hoodSetSetpoint(HoodConstants.k_closestEncoder);
     if(!m_hood.hoodMoveEnd())
     {
-    m_hood.setHoodMotor(m_hood.hoodSetSetpoint(HoodConstants.k_retractQuadSetpoint)); 
+    m_hood.setHoodMotor(m_hood.hoodSetSetpoint(HoodConstants.k_closestEncoder)); 
     }
     m_isFinished = m_hood.hoodMoveEnd();
   }

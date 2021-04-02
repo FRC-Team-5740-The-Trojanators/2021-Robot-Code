@@ -9,16 +9,12 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.HIDConstants;
 import frc.robot.commands.AutonomousDrive;
 
 import frc.robot.commands.IntakeFlip;
 import frc.robot.commands.IntakeRun;
 import frc.robot.commands.IntakeReverse;
-import frc.robot.commands.IntakeStop;
 import frc.robot.commands.SwerveDriveCommand;
 
 import frc.robot.subsystems.DriveSubsystem;
@@ -82,21 +78,22 @@ public class RobotContainer
     // The driver's controller
     XboxController m_driverController = new XboxController(HIDConstants.k_DriverControllerPort);
 
-    //Intake Commands
+    //Commands
     private final IntakeRun m_intakeRun = new IntakeRun(m_intake);
-    private final IntakeStop m_intakeStop = new IntakeStop(m_intake);
     private final IntakeReverse m_intakeReverse = new IntakeReverse(m_intake);
-
-    //The Button Binding Names
-    public static JoystickButton intakeFlip, intakeRun, intakeStop, intakeReverse;
     private final TargetCommand m_target = new TargetCommand(m_shooter, m_robotDrive);
     private final IndexerCommand m_index = new IndexerCommand(m_indexer);
-    private final HoodMoveCommand m_moveHood = new HoodMoveCommand(m_hood, m_shooter);
-    //private final ParallelCommandGroup TargetAndHood = new ParallelCommandGroup(m_target, m_moveHood);
+    private final HoodMoveCommand m_moveHood = new HoodMoveCommand(m_hood);
     private final ForceExtendHood m_forceExtend = new ForceExtendHood(m_hood);
     private final ForceRetractHood m_forceRetract = new ForceRetractHood(m_hood);
+    private final FlyWheelCommand m_flyWheelCommand = new FlyWheelCommand(m_flywheel);
+    
+    //Command Groups
+    private final ParallelCommandGroup spinupCommandGroup = new ParallelCommandGroup(m_flyWheelCommand, m_moveHood);
 
-    JoystickButton indexerRun, prepareShooter, actuateHood, flywheelTestButton;
+
+    //The Button Binding Names
+    public static JoystickButton intakeFlip, intakeRun, intakeReverse, indexerRun, prepareShooter, TestButton;
     POVButton  forceExtendHood, forceRetractHood;
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer()
@@ -107,7 +104,7 @@ public class RobotContainer
 
         configureButtonBindings();
         m_robotDrive.setDefaultCommand(new SwerveDriveCommand(m_robotDrive, m_driverController));
-        //m_hood.setDefaultCommand(new HoodDefaultCommand(m_hood));
+        m_hood.setDefaultCommand(new HoodDefaultCommand(m_hood));
 
         NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
         NetworkTableEntry tx = table.getEntry("tx");
@@ -132,16 +129,17 @@ public class RobotContainer
         prepareShooter = new JoystickButton(m_driverController, HIDConstants.kRB);
         forceExtendHood = new POVButton(m_driverController, HIDConstants.kDL);
         forceRetractHood = new POVButton(m_driverController, HIDConstants.kDR);
-        flywheelTestButton = new JoystickButton(m_driverController, HIDConstants.kLB);
+        //TestButton = new JoystickButton(m_driverController, HIDConstants.kLB);
 
         intakeFlip.toggleWhenPressed(new StartEndCommand(m_intake::extendIntake, m_intake::retractIntake, m_intake));
         intakeRun.whileHeld(m_intakeRun);
         intakeReverse.whileHeld(m_intakeReverse);
         forceExtendHood.whileHeld(m_forceExtend);
         forceRetractHood.whileHeld(m_forceRetract);
-        prepareShooter.whileHeld(m_target);
+        prepareShooter.whileHeld(spinupCommandGroup);
+        prepareShooter.whenActive(m_target);
         indexerRun.whileHeld(m_index);
-        flywheelTestButton.whileHeld(m_moveHood);
+        //TestButton.whileHeld(m_moveHood);
     }
 
     /**

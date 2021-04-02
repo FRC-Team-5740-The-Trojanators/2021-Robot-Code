@@ -4,6 +4,8 @@
 
 package frc.robot.commands;
 
+import javax.lang.model.util.ElementScanner6;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -13,6 +15,7 @@ public class TargetCommand extends CommandBase {
  ShooterSubsystem m_shooter;
  DriveSubsystem m_drivetrain;
  boolean m_isFinished;
+ int m_count;
 
   public TargetCommand(ShooterSubsystem shooter, DriveSubsystem drivetrain)
   {
@@ -27,6 +30,7 @@ public class TargetCommand extends CommandBase {
   public void initialize()
   {
     m_shooter.ledOn();
+    m_count = 0;
     m_isFinished = false;
   }
 
@@ -35,11 +39,20 @@ public class TargetCommand extends CommandBase {
   public void execute()
   {
     m_shooter.getAimPID();
-    if (!m_shooter.aimEnd())
+    if ((!m_shooter.aimEnd()) && (m_count < 10))
     {
       m_drivetrain.drive(0, 0, m_shooter.turnShooter(), false);
     }
-    m_isFinished = m_shooter.aimEnd();
+    
+    if(m_shooter.aimEnd()) 
+    { 
+      m_count++;
+    }
+    
+    if(m_shooter.aimEnd() && m_count >= 10)
+    {
+      m_isFinished = true;
+    }
   }
 
   // Called once the command ends or is interrupted.

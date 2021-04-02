@@ -65,13 +65,13 @@ public class HoodSubsystem extends SubsystemBase {
 
     public void setHoodMotor(double demand)
     {
-        if(demand > HoodConstants.k_hoodExtendSpeed)
+        if(demand > HoodConstants.k_hoodAutoSpeed)
         {
-            demand = HoodConstants.k_hoodExtendSpeed;
+            demand = HoodConstants.k_hoodAutoSpeed;
         } 
-        if(demand < HoodConstants.k_hoodRetractSpeed)
+        if(demand < -HoodConstants.k_hoodAutoSpeed)
         {
-            demand = HoodConstants.k_hoodRetractSpeed;
+            demand = -HoodConstants.k_hoodAutoSpeed;
         }
             
         hoodMotor.set(TalonSRXControlMode.PercentOutput, demand);    
@@ -122,31 +122,27 @@ public class HoodSubsystem extends SubsystemBase {
 
         if(distance >= HoodConstants.k_maxDistance)
         {
-        return hoodSetSetpoint(0.0);
+        return 0.0;
         }
         else if( distance < HoodConstants.k_maxDistance && distance >= HoodConstants.k_redZoneDistance)
         {
-            return hoodSetSetpoint(HoodConstants.k_redEncoder);
+            return HoodConstants.k_redEncoder;
         } 
         else if(distance < HoodConstants.k_redZoneDistance && distance >= HoodConstants.k_blueZoneDistance)
         {
-            return hoodSetSetpoint(HoodConstants.k_blueEncoder);
+            return HoodConstants.k_blueEncoder;
         } 
         else if(distance < HoodConstants.k_blueZoneDistance && distance >= HoodConstants.k_yellowZoneDistance)
         {
-            return hoodSetSetpoint(HoodConstants.k_yellowEncoder);
+            return HoodConstants.k_yellowEncoder;
         } 
         else if(distance < HoodConstants.k_yellowZoneDistance && distance >= HoodConstants.k_greenZoneDistance)
         {
-            return hoodSetSetpoint(HoodConstants.k_greenEncoder);
-        } 
-        else if(distance < HoodConstants.k_yellowZoneDistance && distance >= HoodConstants.k_greenZoneDistance)
-        {
-            return hoodSetSetpoint(HoodConstants.k_closestEncoder);
+            return HoodConstants.k_greenEncoder;
         } 
         else
         {
-            return -1; //error indication, it should never get here
-        }
+            return HoodConstants.k_closestEncoder;
+        } 
     }
 }

@@ -4,23 +4,22 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.HoodSubsystem;
-import frc.robot.subsystems.ShooterSubsystem;
 
 public class HoodMoveCommand extends CommandBase {
   /** Creates a new HoodMoveCommand. */
   HoodSubsystem m_hood;
-  ShooterSubsystem m_shooter;
   boolean m_isFinished;
   double m_setpoint;
+  double m_ty;
   
-  public HoodMoveCommand(HoodSubsystem hood, ShooterSubsystem shooter) {
+  public HoodMoveCommand(HoodSubsystem hood) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_hood = hood;
-    m_shooter = shooter;
-    addRequirements(hood, shooter);
+    addRequirements(hood);
   }
 
   // Called when the command is initially scheduled.
@@ -28,15 +27,18 @@ public class HoodMoveCommand extends CommandBase {
   public void initialize()
   {
     m_isFinished = false;
-    m_setpoint = m_hood.hoodAngleFinder(m_shooter.getLimelightTY());
+    m_ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
+    m_setpoint = m_hood.hoodAngleFinder(m_ty);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute()
   {
+    m_ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
+    m_setpoint = m_hood.hoodAngleFinder(m_ty);
     SmartDashboard.putNumber("hood setpoint", m_setpoint);
-    SmartDashboard.putNumber("LL ty", m_shooter.getLimelightTY());
+    SmartDashboard.putNumber("LL ty", m_ty);
 
     m_hood.hoodSetSetpoint(m_setpoint);
     if(!m_hood.hoodMoveEnd())

@@ -296,20 +296,19 @@ public final class Constants
 
         public static final class HoodConstants
         {
-            public static final double k_hoodP = .005;
+            public static final double k_hoodP = .0025;
             public static final double k_hoodI = 0;
-            public static final double k_hoodD = 0;
+            public static final double k_hoodD = 0.005;
             public static final double k_hoodTolerance = 5;
+            public static final double k_hoodAutoSpeed = .5;
 
             public static final double k_hoodExtendSpeed = .2;
             public static final double k_hoodRetractSpeed = -.2;
 
-            //public static final double setpointValue = 1;
-
-            public static final double limelightAngle = 32.4;//22.3; // angle that the limelight is set at in degrees
+            public static final double limelightAngle = 32.4;// angle that the limelight is set at in degrees
         
             public static final double limelightHeight = 20.5; //from ground to limelight in inches
-            public static final double goalHeight = 90.5; // LL crosshair height, crosshair is centered in bottom half where tape is located
+            public static final double goalHeight = 91.5; // LL crosshair height, found empirically
             public static final double heightDifference = goalHeight - limelightHeight;
 
             public static final double k_maxDistance = 270; //in
