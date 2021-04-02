@@ -4,23 +4,11 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.controller.PIDController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.SwerveDriveModuleConstants;
-import frc.robot.Constants.SwerveDriveModuleConstants.CANBusIDs;
-import frc.robot.Constants.SwerveDriveModuleConstants.HexEncoderInputs;
-import frc.robot.Constants.SwerveDriveModuleConstants.HoodConstants;
-import frc.robot.Constants.SwerveDriveModuleConstants.ShooterConstants;
 import frc.robot.Constants.SwerveDriveModuleConstants.FlywheelPIDValues;
-import edu.wpi.first.wpilibj.DutyCycleEncoder;
-import edu.wpi.first.wpilibj.Encoder;
 
 public class ShooterSubsystem extends SubsystemBase 
 {
@@ -52,6 +40,11 @@ public class ShooterSubsystem extends SubsystemBase
     public double getAimPID()
     {
         return m_aimPID.calculate(m_txRad, 0);
+    }
+
+    public double getLimelightTY()
+    {
+        return m_ty;
     }
 
   public boolean seesTarget() 

@@ -4,24 +4,17 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IndexerSubsystem;
 
 public class IndexerCommand extends CommandBase {
-  /** Creates a new ShootCommand. */
-  DriveSubsystem m_drivetrain;
+  /** Creates a new IndexerCommand. */
   IndexerSubsystem m_indexer;
-  XboxController m_controller;
   boolean m_isFinished;
-  public IndexerCommand( DriveSubsystem drivetrain, XboxController controller, IndexerSubsystem indexer) {
-    m_drivetrain = drivetrain;
+  public IndexerCommand(IndexerSubsystem indexer) {
     m_indexer = indexer;
-    addRequirements( m_drivetrain, m_indexer);
+    addRequirements(m_indexer);
     // Use addRequirements() here to declare subsystem dependencies.
-    m_controller = controller;
   }
 
   // Called when the command is initially scheduled.

@@ -4,17 +4,16 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.SwerveDriveModuleConstants.HoodConstants;
 import frc.robot.subsystems.HoodSubsystem;
 
-public class HoodCommand extends CommandBase {
+public class HoodDefaultCommand extends CommandBase {
   /** Creates a new HoodCommand. */
   HoodSubsystem m_hood;
   boolean m_isFinished;
 
-  public HoodCommand(HoodSubsystem hood) 
+  public HoodDefaultCommand(HoodSubsystem hood) 
   {
     // Use addRequirements() here to declare subsystem dependencies.
     m_hood = hood;

@@ -304,34 +304,34 @@ public final class Constants
             public static final double k_hoodExtendSpeed = .2;
             public static final double k_hoodRetractSpeed = -.2;
 
-            public static final double setpointValue = 1;
+            //public static final double setpointValue = 1;
 
-            public static double limelightAngle = 32.4;//22.3; // angle that the limelight is set at in degrees
+            public static final double limelightAngle = 32.4;//22.3; // angle that the limelight is set at in degrees
         
-            public static double limelightHeight = 21; //from ground to limelight in inches
-            public static double goalHeight = 98.25; // from ground to inner port in inches
-            public static double heightDifference = goalHeight - limelightHeight;
+            public static final double limelightHeight = 20.5; //from ground to limelight in inches
+            public static final double goalHeight = 90.5; // LL crosshair height, crosshair is centered in bottom half where tape is located
+            public static final double heightDifference = goalHeight - limelightHeight;
 
-            public static double k_maxDistance = 270; //in
-            public static double k_minDistance = 12; //in
+            public static final double k_maxDistance = 270; //in
+            public static final double k_minDistance = 12; //in
 
             //Colors represent zones
-            public static double k_redZoneDistance = 210;
-            public static double k_blueZoneDistance = 150;
-            public static double k_yellowZoneDistance = 90;
-            public static double k_greenZoneDistance = 0;
-            public static double k_closestZoneDistance = 0;
+            public static final double k_redZoneDistance = 210;
+            public static final double k_blueZoneDistance = 150;
+            public static final double k_yellowZoneDistance = 90;
+            public static final double k_greenZoneDistance = 0;
+            public static final double k_closestZoneDistance = 0;
 
-            public static double k_redEncoder = 1.56; //Measured in rotations
-            public static double k_blueEncoder = 1.45;
-            public static double k_yellowEncoder = 1.24;
-            public static double k_greenEncoder = 0.95;
-            public static double k_closestEncoder = 0.85;
+            public static final double k_redEncoder = 1761; //ABS encoder = 1.56;
+            public static final double k_blueEncoder = 1536; //ABS encoder = 1.45;
+            public static final double k_yellowEncoder = 1106; //ABS encoder = 1.24;
+            public static final double k_greenEncoder = 512; //ABS encoder = 0.95;
+            public static final double k_closestEncoder = 307; //ABS encoder = 0.85;
 
-            public static double k_retractAbsSetpoint = .7; //Rotations
-            public static double k_retractQuadSetpoint = 0; //Ticks
-            public static double k_extendQuadSetpoint = 3750; //Ticks
-            public static double k_quadTicksPerRotation = 2048; 
+            public static final double k_retractAbsSetpoint = .7; //Rotations
+            public static final double k_retractQuadSetpoint = 0; //Ticks
+            public static final double k_extendQuadSetpoint = 3750; //Ticks
+            public static final double k_quadTicksPerRotation = 2048; 
         }
     }
 }

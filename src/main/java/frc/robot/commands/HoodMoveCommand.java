@@ -4,56 +4,59 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.HoodSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
-public class TargetCommand extends CommandBase {
-  /** Creates a new TargetCommand. */
- ShooterSubsystem m_shooter;
- DriveSubsystem m_drivetrain;
- boolean m_isFinished;
-
-  public TargetCommand(ShooterSubsystem shooter, DriveSubsystem drivetrain)
-  {
-    m_shooter = shooter;
-    m_drivetrain = drivetrain;
-    addRequirements(m_shooter, m_drivetrain);
+public class HoodMoveCommand extends CommandBase {
+  /** Creates a new HoodMoveCommand. */
+  HoodSubsystem m_hood;
+  ShooterSubsystem m_shooter;
+  boolean m_isFinished;
+  double m_setpoint;
+  
+  public HoodMoveCommand(HoodSubsystem hood, ShooterSubsystem shooter) {
     // Use addRequirements() here to declare subsystem dependencies.
+    m_hood = hood;
+    m_shooter = shooter;
+    addRequirements(hood, shooter);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize()
   {
-    m_shooter.ledOn();
     m_isFinished = false;
+    m_setpoint = m_hood.hoodAngleFinder(m_shooter.getLimelightTY());
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute()
   {
-    m_shooter.getAimPID();
-    if (!m_shooter.aimEnd())
+    SmartDashboard.putNumber("hood setpoint", m_setpoint);
+    SmartDashboard.putNumber("LL ty", m_shooter.getLimelightTY());
+
+    m_hood.hoodSetSetpoint(m_setpoint);
+    if(!m_hood.hoodMoveEnd())
     {
-      m_drivetrain.drive(0, 0, m_shooter.turnShooter(), false);
+    m_hood.setHoodMotor(m_hood.hoodSetSetpoint(m_setpoint)); 
     }
-    m_isFinished = m_shooter.aimEnd();
+    m_isFinished = m_hood.hoodMoveEnd();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted)
   {
-    m_drivetrain.drive(0, 0, 0, false);
     m_isFinished = true;
+    m_hood.forceStopHoodMotor();
   }
 
   // Returns true when the command should end.
   @Override
-  public boolean isFinished()
-  {
+  public boolean isFinished() {
     return m_isFinished;
   }
 }

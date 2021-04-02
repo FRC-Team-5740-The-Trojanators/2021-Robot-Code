@@ -44,7 +44,8 @@ import frc.robot.paths.TrajectoriesExporter;
 
 import frc.robot.commands.ForceExtendHood;
 import frc.robot.commands.ForceRetractHood;
-import frc.robot.commands.HoodCommand;
+import frc.robot.commands.HoodDefaultCommand;
+import frc.robot.commands.HoodMoveCommand;
 import frc.robot.commands.IndexerCommand;
 import frc.robot.commands.SwerveDriveCommand;
 import frc.robot.commands.TargetCommand;
@@ -88,9 +89,9 @@ public class RobotContainer
 
     //The Button Binding Names
     public static JoystickButton intakeFlip, intakeRun, intakeStop, intakeReverse;
-    private final TargetCommand m_target = new TargetCommand(m_shooter,m_robotDrive, m_driverController);
-    private final IndexerCommand m_index = new IndexerCommand(m_robotDrive, m_driverController, m_indexer);
-    private final HoodCommand m_moveHood = new HoodCommand(m_hood);
+    private final TargetCommand m_target = new TargetCommand(m_shooter, m_robotDrive);
+    private final IndexerCommand m_index = new IndexerCommand(m_indexer);
+    private final HoodMoveCommand m_moveHood = new HoodMoveCommand(m_hood, m_shooter);
     //private final ParallelCommandGroup TargetAndHood = new ParallelCommandGroup(m_target, m_moveHood);
     private final ForceExtendHood m_forceExtend = new ForceExtendHood(m_hood);
     private final ForceRetractHood m_forceRetract = new ForceRetractHood(m_hood);
@@ -106,7 +107,7 @@ public class RobotContainer
 
         configureButtonBindings();
         m_robotDrive.setDefaultCommand(new SwerveDriveCommand(m_robotDrive, m_driverController));
-        m_hood.setDefaultCommand(new HoodCommand(m_hood));
+        //m_hood.setDefaultCommand(new HoodDefaultCommand(m_hood));
 
         NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
         NetworkTableEntry tx = table.getEntry("tx");
@@ -140,7 +141,7 @@ public class RobotContainer
         forceRetractHood.whileHeld(m_forceRetract);
         prepareShooter.whileHeld(m_target);
         indexerRun.whileHeld(m_index);
-        //flywheelTestButton.whileHeld(m_moveHood);
+        flywheelTestButton.whileHeld(m_moveHood);
     }
 
     /**

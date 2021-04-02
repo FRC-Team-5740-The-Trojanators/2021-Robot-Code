@@ -37,7 +37,6 @@ public class HoodSubsystem extends SubsystemBase {
     hoodMotor.configOpenloopRamp(ShooterConstants.k_rampRate);
     hoodMotor.setNeutralMode(NeutralMode.Brake); 
 
-    //m_hexAbsoluteEncoder.reset();
     m_hexQuadEncoder.setReverseDirection(true);
     m_hexQuadEncoder.reset();
     m_hoodPID.disableContinuousInput();
@@ -86,14 +85,12 @@ public class HoodSubsystem extends SubsystemBase {
 
     public void forceRunHoodMotorExtend()
     {
-        hoodMotor.setInverted(false);
         hoodMotor.set(TalonSRXControlMode.PercentOutput, HoodConstants.k_hoodExtendSpeed);
     }
 
     public void forceRunHoodMotorRetract()
     {
-        hoodMotor.setInverted(true);
-        hoodMotor.set(TalonSRXControlMode.PercentOutput, HoodConstants.k_hoodExtendSpeed);
+        hoodMotor.set(TalonSRXControlMode.PercentOutput, HoodConstants.k_hoodRetractSpeed);
     }
 
     public void forceStopHoodMotor()
@@ -113,12 +110,19 @@ public class HoodSubsystem extends SubsystemBase {
 
     public double hoodAngleFinder(double limelight_ty)
     {
+        /*    d = (h1-h2) / tan(a1+a2)    */
+        //angle is in degrees
         double angle = limelight_ty + HoodConstants.limelightAngle;
+        angle *= (Math.PI / 180); // convert to radians
+        //distance is in inches, angle radians
         var distance = HoodConstants.heightDifference / Math.tan(angle);
+
+        SmartDashboard.putNumber("hood angle", angle);
+        SmartDashboard.putNumber("distance inches", distance);
 
         if(distance >= HoodConstants.k_maxDistance)
         {
-        return hoodSetSetpoint(HoodConstants.k_retractAbsSetpoint + .5);
+        return hoodSetSetpoint(0.0);
         }
         else if( distance < HoodConstants.k_maxDistance && distance >= HoodConstants.k_redZoneDistance)
         {
