@@ -143,11 +143,11 @@ public final class Constants
             public static final int backRightCANCoderId = 12; 
             public static final int k_RightRear_SteeringMotor = 8; 
             
-            public static final int k_ShooterMotorOne = 13;
-            public static final int k_ShooterMotorTwo = 14;
-            public static final int k_hoodID = 15;
+            public static final int k_FlywheelMotorOne = 13;
+            public static final int k_FlywheelMotorTwo = 14;
+            public static final int k_HoodID = 15;
             public static final int k_IntakeMotors = 16;
-            public static final int k_indexerID = 17; 
+            public static final int k_IndexerID = 17; 
         }
         
         /**
@@ -167,9 +167,6 @@ public final class Constants
     
             public static final MotorType k_SwerveLeftRear_Drive = MotorType.kBrushless;
             public static final MotorType k_SwerveLeftRear_Steering = MotorType.kBrushless;
-
-            public static final MotorType k_lowerShooterWheel = MotorType.kBrushless;
-            public static final MotorType k_upperShooterWheel = MotorType.kBrushless;
         }        
      
         public static final SwerveDriveKinematics kinematics =
@@ -264,19 +261,20 @@ public final class Constants
             public static final double k_BlueBMin = -100;
         }
 
-        public static final class ShooterPIDValues
+        public static final class FlywheelPIDValues
         {
-            public static final double k_shooterP = 0.00035;
-            public static final double k_shooterI = 0.0;
-            public static final double k_shooterD = 0.0;
-            public static final double k_shooterFF =  0.000175;
-            public static final double k_minShooterOutput = 0.0;
-            public static final double k_maxShooterOutput = 1.0;
+            public static final double k_flywheelP = 0.0005;
+            public static final double k_flywheelI = 0.0;
+            public static final double k_flywheelD = 0.00007;
+            public static final double k_flywheelFF =  0.000179;
+            public static final double k_minFlywheelOutput = 0.0;
+            public static final double k_maxFlywheelOutput = 1.0;
+            public static final double k_rampTime = 0.35;
 
-            public static final double k_aimingP = 0.7;
+            public static final double k_aimingP = 1;
             public static final double k_aimingI = 0.0;
-            public static final double k_aimingD = 0.0;
-            public static final double k_aimTolerance = 1 * (Math.PI/180);
+            public static final double k_aimingD = 1;
+            public static final double k_aimTolerance = .5 * (Math.PI/180);
         }
         
         public static final class HexEncoderInputs
@@ -289,27 +287,26 @@ public final class Constants
 
         public static final class ShooterConstants
         {
-            public static final double shooterRotationRight = 0.02;
-            public static final double shooterRotationLeft = -0.02;
-            public static final double shooterMaxSpeed = .7;
+            //public static final double shooterRotationRight = 0.02;
+            //public static final double shooterRotationLeft = -0.02;
+            //public static final double flywheelMaxSpeed = .7;
             public static final double indexerMaxSpeed = 1;
             public static final double k_rampRate = 0.25;
         }
 
         public static final class HoodConstants
         {
-            public static final double k_hoodP = 7.5;
+            public static final double k_hoodP = .005;
             public static final double k_hoodI = 0;
             public static final double k_hoodD = 0;
-            public static final double k_minShooterOutput = 0;
-            public static final double k_maxShooterOutput = 1;
+            public static final double k_hoodTolerance = 5;
 
             public static final double k_hoodExtendSpeed = .2;
             public static final double k_hoodRetractSpeed = -.2;
 
             public static final double setpointValue = 1;
 
-            public static double limelightAngle = 22.3; // angle that the limelight is set at in degrees
+            public static double limelightAngle = 32.4;//22.3; // angle that the limelight is set at in degrees
         
             public static double limelightHeight = 21; //from ground to limelight in inches
             public static double goalHeight = 98.25; // from ground to inner port in inches
@@ -331,8 +328,10 @@ public final class Constants
             public static double k_greenEncoder = 0.95;
             public static double k_closestEncoder = 0.85;
 
-            public static double k_retractSetpoint = .005; //Rotations
-            public static double k_extendSetpoint = 1.9; //Rotations
+            public static double k_retractAbsSetpoint = .7; //Rotations
+            public static double k_retractQuadSetpoint = 0; //Ticks
+            public static double k_extendQuadSetpoint = 3750; //Ticks
+            public static double k_quadTicksPerRotation = 2048; 
         }
     }
 }

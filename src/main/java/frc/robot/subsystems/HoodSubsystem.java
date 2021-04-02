@@ -20,25 +20,28 @@ import frc.robot.Constants.SwerveDriveModuleConstants.ShooterConstants;
 
 public class HoodSubsystem extends SubsystemBase {
 
-  private TalonSRX hoodMotor = new TalonSRX(CANBusIDs.k_hoodID);
+  private TalonSRX hoodMotor = new TalonSRX(CANBusIDs.k_HoodID);
   private PIDController m_hoodPID;
   private DutyCycleEncoder m_hexAbsoluteEncoder = new DutyCycleEncoder(HexEncoderInputs.k_absoluteInput);
-  private Encoder m_hexQuadEncoder = new Encoder(HexEncoderInputs.k_quadratureA, HexEncoderInputs.k_quadratureB, HexEncoderInputs.k_indexInput);
+  private Encoder m_hexQuadEncoder = new Encoder(HexEncoderInputs.k_quadratureA, HexEncoderInputs.k_quadratureB);
 
   private double m_hoodRotations;
+  private static double m_quadOffset;
 
   /** Creates a new HoodSubsystem. */
   public HoodSubsystem() 
   {
     m_hoodPID = new PIDController(HoodConstants.k_hoodP, HoodConstants.k_hoodI, HoodConstants.k_hoodD);
+    m_hoodPID.setTolerance(HoodConstants.k_hoodTolerance);
 
-    hoodMotor.configOpenloopRamp(ShooterConstants.k_rampRate); 
+    hoodMotor.configOpenloopRamp(ShooterConstants.k_rampRate);
     hoodMotor.setNeutralMode(NeutralMode.Brake); 
 
-    m_hexAbsoluteEncoder.reset();
+    //m_hexAbsoluteEncoder.reset();
+    m_hexQuadEncoder.setReverseDirection(true);
+    m_hexQuadEncoder.reset();
     m_hoodPID.disableContinuousInput();
     adjustHood();
-    m_hoodPID.enableContinuousInput(HoodConstants.k_retractSetpoint, HoodConstants.k_extendSetpoint);
 
   }
 
@@ -46,13 +49,20 @@ public class HoodSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     m_hoodRotations = m_hexAbsoluteEncoder.get();
-    SmartDashboard.putNumber("Hood Encoder", getAbsEncoder());
+    SmartDashboard.putNumber("Hood Abs Encoder", getAbsEncoder());
+    SmartDashboard.putNumber("Hood Quad Encoder", (double) getQuadEncoder() + m_quadOffset);
+    SmartDashboard.putNumber("QuadOffset", m_quadOffset);
   }
 
   public double hoodSetSetpoint(double setpoint)
-    {
-        return m_hoodPID.calculate(m_hoodRotations, setpoint);
-    }
+  {
+    return m_hoodPID.calculate((double) getQuadEncoder() + m_quadOffset, setpoint);
+  }
+
+  public boolean hoodMoveEnd()
+  {
+    return m_hoodPID.atSetpoint();
+  }
 
     public void setHoodMotor(double demand)
     {
@@ -70,12 +80,8 @@ public class HoodSubsystem extends SubsystemBase {
 
     public void adjustHood()
     {
-        if(m_hexAbsoluteEncoder.get() < HoodConstants.k_retractSetpoint)
-        {
-            double softLimit = m_hoodPID.calculate(m_hoodRotations, HoodConstants.k_retractSetpoint);
-           // hoodMotor.set(TalonSRXControlMode.PercentOutput, softLimit);
-        }
-        
+        m_hoodRotations = m_hexAbsoluteEncoder.get();
+        m_quadOffset = (m_hoodRotations - HoodConstants.k_retractAbsSetpoint) * HoodConstants.k_quadTicksPerRotation;
     }
 
     public void forceRunHoodMotorExtend()
@@ -100,6 +106,11 @@ public class HoodSubsystem extends SubsystemBase {
         return m_hexAbsoluteEncoder.get();
     }
 
+    public int getQuadEncoder()
+    {
+        return m_hexQuadEncoder.get();
+    }
+
     public double hoodAngleFinder(double limelight_ty)
     {
         double angle = limelight_ty + HoodConstants.limelightAngle;
@@ -107,7 +118,7 @@ public class HoodSubsystem extends SubsystemBase {
 
         if(distance >= HoodConstants.k_maxDistance)
         {
-        return hoodSetSetpoint(HoodConstants.k_retractSetpoint + .5);
+        return hoodSetSetpoint(HoodConstants.k_retractAbsSetpoint + .5);
         }
         else if( distance < HoodConstants.k_maxDistance && distance >= HoodConstants.k_redZoneDistance)
         {

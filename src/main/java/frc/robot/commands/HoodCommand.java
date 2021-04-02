@@ -6,12 +6,13 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.SwerveDriveModuleConstants.HoodConstants;
 import frc.robot.subsystems.HoodSubsystem;
 
 public class HoodCommand extends CommandBase {
   /** Creates a new HoodCommand. */
   HoodSubsystem m_hood;
-  Boolean m_isFinished;
+  boolean m_isFinished;
 
   public HoodCommand(HoodSubsystem hood) 
   {
@@ -25,17 +26,18 @@ public class HoodCommand extends CommandBase {
   public void initialize()
   {
     m_isFinished = false;
-    m_hood.setHoodMotor(m_hood.hoodSetSetpoint(0.2));//m_hood.hoodAngleFinder());
-
-    //m_hood.setHoodMotor(m_hood.hoodAngleFinder());
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute()
   {
-   m_hood.setHoodMotor(m_hood.hoodSetSetpoint(0.2));//m_hood.hoodAngleFinder());   
-   SmartDashboard.putNumber("Hood Encoder", m_hood.getAbsEncoder());
+    m_hood.hoodSetSetpoint(HoodConstants.k_retractQuadSetpoint);
+    if(!m_hood.hoodMoveEnd())
+    {
+    m_hood.setHoodMotor(m_hood.hoodSetSetpoint(HoodConstants.k_retractQuadSetpoint)); 
+    }
+    m_isFinished = m_hood.hoodMoveEnd();
   }
 
   // Called once the command ends or is interrupted.

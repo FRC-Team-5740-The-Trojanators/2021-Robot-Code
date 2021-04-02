@@ -48,9 +48,11 @@ import frc.robot.commands.HoodCommand;
 import frc.robot.commands.IndexerCommand;
 import frc.robot.commands.SwerveDriveCommand;
 import frc.robot.commands.TargetCommand;
+import frc.robot.commands.FlyWheelCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.FlyWheelSubsystem;
 import frc.robot.subsystems.SwerveModule;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -74,6 +76,7 @@ public class RobotContainer
     private final ShooterSubsystem m_shooter = new ShooterSubsystem();
     private final HoodSubsystem m_hood = new HoodSubsystem();
     private final IndexerSubsystem m_indexer = new IndexerSubsystem();
+    private final FlyWheelSubsystem m_flywheel = new FlyWheelSubsystem();
 
     // The driver's controller
     XboxController m_driverController = new XboxController(HIDConstants.k_DriverControllerPort);
@@ -88,11 +91,11 @@ public class RobotContainer
     private final TargetCommand m_target = new TargetCommand(m_shooter,m_robotDrive, m_driverController);
     private final IndexerCommand m_index = new IndexerCommand(m_robotDrive, m_driverController, m_indexer);
     private final HoodCommand m_moveHood = new HoodCommand(m_hood);
-    private final ParallelCommandGroup TargetAndHood = new ParallelCommandGroup(m_target, m_moveHood);
+    //private final ParallelCommandGroup TargetAndHood = new ParallelCommandGroup(m_target, m_moveHood);
     private final ForceExtendHood m_forceExtend = new ForceExtendHood(m_hood);
     private final ForceRetractHood m_forceRetract = new ForceRetractHood(m_hood);
 
-    JoystickButton indexerRun, prepareShooter, actuateHood;
+    JoystickButton indexerRun, prepareShooter, actuateHood, flywheelTestButton;
     POVButton  forceExtendHood, forceRetractHood;
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer()
@@ -102,7 +105,8 @@ public class RobotContainer
         // TrajectoriesExporter.exportTrajectoryToHumanReadable(traj, BlueBPath.getTrajectoryName());
 
         configureButtonBindings();
-       m_robotDrive.setDefaultCommand(new SwerveDriveCommand(m_robotDrive, m_driverController));
+        m_robotDrive.setDefaultCommand(new SwerveDriveCommand(m_robotDrive, m_driverController));
+        m_hood.setDefaultCommand(new HoodCommand(m_hood));
 
         NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
         NetworkTableEntry tx = table.getEntry("tx");
@@ -127,14 +131,16 @@ public class RobotContainer
         prepareShooter = new JoystickButton(m_driverController, HIDConstants.kRB);
         forceExtendHood = new POVButton(m_driverController, HIDConstants.kDL);
         forceRetractHood = new POVButton(m_driverController, HIDConstants.kDR);
+        flywheelTestButton = new JoystickButton(m_driverController, HIDConstants.kLB);
 
         intakeFlip.toggleWhenPressed(new StartEndCommand(m_intake::extendIntake, m_intake::retractIntake, m_intake));
         intakeRun.whileHeld(m_intakeRun);
         intakeReverse.whileHeld(m_intakeReverse);
         forceExtendHood.whileHeld(m_forceExtend);
         forceRetractHood.whileHeld(m_forceRetract);
-        prepareShooter.whileHeld(TargetAndHood);
+        prepareShooter.whileHeld(m_target);
         indexerRun.whileHeld(m_index);
+        //flywheelTestButton.whileHeld(m_moveHood);
     }
 
     /**

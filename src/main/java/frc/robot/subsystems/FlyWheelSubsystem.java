@@ -14,40 +14,44 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.SwerveDriveModuleConstants.CANBusIDs;
 import frc.robot.Constants.SwerveDriveModuleConstants.ShooterConstants;
-import frc.robot.Constants.SwerveDriveModuleConstants.ShooterPIDValues;
+import frc.robot.Constants.SwerveDriveModuleConstants.FlywheelPIDValues;
 
 public class FlyWheelSubsystem extends SubsystemBase {
 
   
-  private CANEncoder m_shooterEncoder;
+  private CANEncoder m_flywheelEncoder;
 
-  private CANSparkMax ShooterMotorOne = new CANSparkMax(CANBusIDs.k_ShooterMotorOne, MotorType.kBrushless);
-  private CANSparkMax ShooterMotorTwo = new CANSparkMax(CANBusIDs.k_ShooterMotorTwo, MotorType.kBrushless);
+  private CANSparkMax FlywheelMotorOne = new CANSparkMax(CANBusIDs.k_FlywheelMotorOne, MotorType.kBrushless);
+  private CANSparkMax FlywheelMotorTwo = new CANSparkMax(CANBusIDs.k_FlywheelMotorTwo, MotorType.kBrushless);
   
-  private CANPIDController m_ShooterMotorOnePID;
+  private CANPIDController m_flywheelMotorOnePID;
 
   /** Creates a new FlyWheelSubsystem. */
   public FlyWheelSubsystem() 
   {
-    m_shooterEncoder = ShooterMotorOne.getEncoder();
-    m_ShooterMotorOnePID = ShooterMotorOne.getPIDController();
+    m_flywheelEncoder = FlywheelMotorOne.getEncoder();
+    m_flywheelMotorOnePID = FlywheelMotorOne.getPIDController();
     configShooterMotors();
   }
 
   public void configShooterMotors()
     {
-        ShooterMotorOne.restoreFactoryDefaults();
-        ShooterMotorTwo.restoreFactoryDefaults();
+        FlywheelMotorOne.restoreFactoryDefaults();
+        FlywheelMotorTwo.restoreFactoryDefaults();
 
-        ShooterMotorTwo.follow(ShooterMotorOne, true);
+        FlywheelMotorOne.setClosedLoopRampRate(FlywheelPIDValues.k_rampTime);
+        FlywheelMotorTwo.setClosedLoopRampRate(FlywheelPIDValues.k_rampTime);
 
-        m_ShooterMotorOnePID.setP(ShooterPIDValues.k_shooterP);
-        m_ShooterMotorOnePID.setI(ShooterPIDValues.k_shooterI);
-        m_ShooterMotorOnePID.setD(ShooterPIDValues.k_shooterD);
-        m_ShooterMotorOnePID.setOutputRange(ShooterPIDValues.k_minShooterOutput, ShooterPIDValues.k_maxShooterOutput);
+        FlywheelMotorTwo.follow(FlywheelMotorOne, true);
 
-        ShooterMotorOne.setIdleMode(IdleMode.kCoast);
-        ShooterMotorTwo.setIdleMode(IdleMode.kCoast);
+        m_flywheelMotorOnePID.setP(FlywheelPIDValues.k_flywheelP);
+        m_flywheelMotorOnePID.setI(FlywheelPIDValues.k_flywheelI);
+        m_flywheelMotorOnePID.setD(FlywheelPIDValues.k_flywheelD);
+        m_flywheelMotorOnePID.setFF(FlywheelPIDValues.k_flywheelFF);
+        m_flywheelMotorOnePID.setOutputRange(FlywheelPIDValues.k_minFlywheelOutput, FlywheelPIDValues.k_maxFlywheelOutput);
+
+        FlywheelMotorOne.setIdleMode(IdleMode.kCoast);
+        FlywheelMotorTwo.setIdleMode(IdleMode.kCoast);
     }
 
   @Override
@@ -56,33 +60,28 @@ public class FlyWheelSubsystem extends SubsystemBase {
   }
 
   
-  public void setShooterSpeed(double speed)
+  public void setFlywheelSpeed(double speed)
   {
-    ShooterMotorOne.set(speed);
+    FlywheelMotorOne.set(speed);
   }
 
-  public void stopShooter()
+  public void stopFlyWheel()
   {
-    ShooterMotorOne.set(0);
+    FlywheelMotorOne.set(0);
   }
   
-  public void setShooterRPM(int rpm)
+  public void setFlywheelRPM(int rpm)
   {
-    m_ShooterMotorOnePID.setReference(rpm, ControlType.kVelocity);
+    m_flywheelMotorOnePID.setReference(rpm, ControlType.kVelocity);
   }
 
-  public double getShooterVelocity()
+  public double getFlywheelVelocity()
     {
-      return m_shooterEncoder.getVelocity();
+      return m_flywheelEncoder.getVelocity();
     }
 
-  public void runFlyWheel()
+  /*public void runFlyWheel()
     {
-      ShooterMotorOne.set(ShooterConstants.shooterMaxSpeed);
-    }
-
-    public void stopFlyWheel()
-    {
-      ShooterMotorOne.set(0);
-    }
+      FlywheelMotorOne.set(ShooterConstants.shooterMaxSpeed);
+    }*/
 }

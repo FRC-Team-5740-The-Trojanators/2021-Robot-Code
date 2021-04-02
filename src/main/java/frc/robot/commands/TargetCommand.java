@@ -7,6 +7,7 @@ package frc.robot.commands;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.SwerveDriveModuleConstants;
 import frc.robot.Constants.SwerveDriveModuleConstants.HoodConstants;
 import frc.robot.Constants.SwerveDriveModuleConstants.ShooterConstants;
@@ -35,14 +36,17 @@ public class TargetCommand extends CommandBase {
   {
     m_shooter.ledOn();
     m_isFinished = false;
-    m_drivetrain.drive(0, 0, m_shooter.turnShooter(), false);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute()
   {
-    m_drivetrain.drive(0, 0, m_shooter.turnShooter(), false);
+    m_shooter.getAimPID();
+    if (!m_shooter.aimEnd())
+    {
+      m_drivetrain.drive(0, 0, m_shooter.turnShooter(), false);
+    }
     m_isFinished = m_shooter.aimEnd();
   }
 
@@ -51,6 +55,7 @@ public class TargetCommand extends CommandBase {
   public void end(boolean interrupted)
   {
     m_drivetrain.drive(0, 0, 0, false);
+    //m_shooter.ledOff();
     m_isFinished = true;
   }
 

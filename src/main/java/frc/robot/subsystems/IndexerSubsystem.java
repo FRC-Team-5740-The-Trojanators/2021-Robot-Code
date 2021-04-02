@@ -17,7 +17,7 @@ public class IndexerSubsystem extends SubsystemBase {
 
   public IndexerSubsystem() 
   {
-    indexerWheel = new VictorSPX(CANBusIDs.k_indexerID);
+    indexerWheel = new VictorSPX(CANBusIDs.k_IndexerID);
   }
   
   @Override

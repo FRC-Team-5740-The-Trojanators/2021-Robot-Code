@@ -18,7 +18,7 @@ import frc.robot.Constants.SwerveDriveModuleConstants.CANBusIDs;
 import frc.robot.Constants.SwerveDriveModuleConstants.HexEncoderInputs;
 import frc.robot.Constants.SwerveDriveModuleConstants.HoodConstants;
 import frc.robot.Constants.SwerveDriveModuleConstants.ShooterConstants;
-import frc.robot.Constants.SwerveDriveModuleConstants.ShooterPIDValues;
+import frc.robot.Constants.SwerveDriveModuleConstants.FlywheelPIDValues;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Encoder;
 
@@ -37,8 +37,8 @@ public class ShooterSubsystem extends SubsystemBase
     public ShooterSubsystem()
     {
         ledOff();
-        m_aimPID = new PIDController(ShooterPIDValues.k_aimingP, ShooterPIDValues.k_aimingI, ShooterPIDValues.k_aimingD);
-        m_aimPID.setTolerance(ShooterPIDValues.k_aimTolerance);
+        m_aimPID = new PIDController(FlywheelPIDValues.k_aimingP, FlywheelPIDValues.k_aimingI, FlywheelPIDValues.k_aimingD);
+        m_aimPID.setTolerance(FlywheelPIDValues.k_aimTolerance);
     }
 
     @Override
@@ -118,7 +118,7 @@ public class ShooterSubsystem extends SubsystemBase
 
     public double turnShooter()
     {
-      double rot = SwerveDriveModuleConstants.kMaxAngularSpeed * SwerveDriveModuleConstants.kRotCoefficient * getAimPID();
+      double rot = SwerveDriveModuleConstants.kMaxAngularSpeed * getAimPID();
       return rot;
     }
 }

@@ -30,8 +30,8 @@ public class FlyWheelCommand extends CommandBase {
   @Override
   public void execute() 
   {
-    m_flyWheel.runFlyWheel();
-    SmartDashboard.putNumber("Flywheel Velocity", m_flyWheel.getShooterVelocity());
+    m_flyWheel.setFlywheelRPM(5300);
+    SmartDashboard.putNumber("Flywheel Velocity", m_flyWheel.getFlywheelVelocity());
   }
 
   // Called once the command ends or is interrupted.
