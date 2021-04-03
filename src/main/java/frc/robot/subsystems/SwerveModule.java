@@ -130,7 +130,7 @@ public class SwerveModule
 
         if(Math.abs(setAngle) > SteeringControllerPIDValues.k_steerDeadband)
         {
-          angleMotor.set(setAngle);
+           angleMotor.set(setAngle);
         } 
         else 
         {

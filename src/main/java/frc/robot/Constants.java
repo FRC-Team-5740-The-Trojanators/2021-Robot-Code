@@ -215,18 +215,18 @@ public final class Constants
         {
            public static final double k_steerP[] = 
            {
-               0.0006, //LeftFront
-               0.00065, //RightFront
-               0.0005, //LeftRear
-               0.0006, //RightRear
+               0.00095, //LeftFront
+               0.001, //RightFront
+               0.00095, //LeftRear
+               0.001, //RightRear
            };
             public static final double k_steerI= 0;
             public static final double k_steerD[] = 
             {
                 0.000007,
-                0.000008,
-                0.000008,
-                0.000008,
+                0.00001,
+                0.000007,
+                0.00001,
             };
 
             public static final double k_steerIz = 0; 
@@ -241,9 +241,7 @@ public final class Constants
             public static final double k_steerMaxAcc = 1500;
 
             public static final double k_steerDeadband = 0.02; // Deadband on the motor controller
-            public static final int k_steerSmartMotionSlot = 0; // Is the gain schedule slot, the value is a number between 0 and 3. Each slot has its own set of gain values and can be changed in each control frame using SetReference().
-
-            public static final double k_ToleranceInTicks = 1;
+            public static final double k_ToleranceInTicks = 5;
         }
 
         public static final class AutoChooser

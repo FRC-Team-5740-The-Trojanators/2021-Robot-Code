@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.SwerveModule;
 import frc.robot.Constants.HIDConstants;
 import frc.robot.Constants.SwerveDriveModuleConstants;
 
@@ -86,8 +85,8 @@ public class SwerveDriveCommand extends CommandBase
         SmartDashboard.putNumber("Reading X Velocity LeftRear", drivetrain.getModules()[2].getDriveVelocity());
         SmartDashboard.putNumber("Reading X Velocity RightRear", drivetrain.getModules()[3].getDriveVelocity());
 
-        SmartDashboard.putNumber("Current X Position", drivetrain.getPose().getX());
-        SmartDashboard.putNumber("Current Y Position", drivetrain.getPose().getY());
+        //SmartDashboard.putNumber("Current X Position", drivetrain.getPose().getX());
+        //SmartDashboard.putNumber("Current Y Position", drivetrain.getPose().getY());
 
         SmartDashboard.putNumber("DRIVE P", drivetrain.modules[0].getDrivePIDF("p"));
 

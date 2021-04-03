@@ -5,7 +5,6 @@
 package frc.robot.subsystems;
 
 import com.analog.adis16470.frc.ADIS16470_IMU;
-
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -16,25 +15,17 @@ import edu.wpi.first.wpilibj.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
 import frc.robot.Constants.SwerveDriveModuleConstants;
 import frc.robot.Constants.SwerveDriveModuleConstants.CANBusIDs;
-import frc.robot.subsystems.SwerveModule;
-
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 import com.ctre.phoenix.sensors.CANCoder;
-import com.revrobotics.CANEncoder;
-import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 //"Swerve Drive Tuning"
-
 @SuppressWarnings("PMD.ExcessiveImports")
 public class DriveSubsystem extends SubsystemBase 
 {
-
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
     NetworkTableEntry tx = table.getEntry("tx");
     NetworkTableEntry ty = table.getEntry("ty");
@@ -42,7 +33,7 @@ public class DriveSubsystem extends SubsystemBase
     
     // The gyro sensor
     public static final ADIS16470_IMU m_imu = new ADIS16470_IMU();
-    private Pose2d m_pose = new Pose2d();
+    private Pose2d m_Robotpose = new Pose2d();
 
     private SwerveModuleState[] m_states = new SwerveModuleState[]
     {
@@ -119,15 +110,11 @@ public class DriveSubsystem extends SubsystemBase
     @Override
     public void periodic()
     {
+      //setSteerPthroughDashboard();
+      //setSteerDthroughDashboard();
       // This method will be called once per scheduler run
       var gyroAngle = Rotation2d.fromDegrees(m_imu.getAngle());
-
-     m_odometry.update(gyroAngle, modules[0].getState(), modules[1].getState(), modules[2].getState(), modules[3].getState());
-
-     var x = tx.getDouble(0.0);
-
-     SmartDashboard.putNumber("Gryo Angle", m_imu.getAngle());
-
+      m_Robotpose = m_odometry.update(gyroAngle, modules[0].getState(), modules[1].getState(), modules[2].getState(), modules[3].getState());
     }
   
     @Override
@@ -143,19 +130,17 @@ public class DriveSubsystem extends SubsystemBase
      */
     public Pose2d getPose()
     {
-    
-    return m_odometry.getPoseMeters();
-
+      return m_Robotpose;
     }
 
-    public double getPoseX(){
-
-        return m_odometry.getPoseMeters().getX();
+    public double getPoseX()
+    {
+      return m_Robotpose.getX();
     }
 
-    public double getPoseY(){
-
-        return m_odometry.getPoseMeters().getY();
+    public double getPoseY()
+    {
+      return m_Robotpose.getY();
     }
 
 
@@ -179,9 +164,34 @@ public class DriveSubsystem extends SubsystemBase
         m_odometry.resetPosition(pose, m_imu.getRotation2d());
     }
 
-   public Pose2d updateOdometry()
-   {
-    var gyroAngle = Rotation2d.fromDegrees(m_imu.getAngle());
-    return m_odometry.update(gyroAngle, modules[0].getState(), modules[1].getState(), modules[2].getState(), modules[3].getState());
-   }
+    public void setSteerPthroughDashboard()
+    {
+        double P0 = SmartDashboard.getNumber("Steer P0 Input", 0);
+        SmartDashboard.putNumber("Steer P0 Input", P0);
+        double P1 = SmartDashboard.getNumber("Steer P1 Input", 0);
+        SmartDashboard.putNumber("Steer P1 Input", P1);
+        double P2 = SmartDashboard.getNumber("Steer P2 Input", 0);
+        SmartDashboard.putNumber("Steer P2 Input", P2);
+        double P3 = SmartDashboard.getNumber("Steer P3 Input", 0);
+        SmartDashboard.putNumber("Steer P3 Input", P3);
+        modules[0].setSteerP(P0);
+        modules[1].setSteerP(P1);
+        modules[2].setSteerP(P2);
+        modules[3].setSteerP(P3);
+    }
+    public void setSteerDthroughDashboard()
+    {
+        double D0 = SmartDashboard.getNumber("Steer D0 Input", 0);
+        SmartDashboard.putNumber("Steer D0 Input", D0);
+        double D1 = SmartDashboard.getNumber("Steer D1 Input", 0);
+        SmartDashboard.putNumber("Steer D1 Input", D1);
+        double D2 = SmartDashboard.getNumber("Steer D2 Input", 0);
+        SmartDashboard.putNumber("Steer D2 Input", D2);
+        double D3 = SmartDashboard.getNumber("Steer D3 Input", 0);
+        SmartDashboard.putNumber("Steer D3 Input", D3);
+        modules[0].setSteerD(D0);
+        modules[1].setSteerD(D1);
+        modules[2].setSteerD(D2);
+        modules[3].setSteerD(D3);
+    }
 }

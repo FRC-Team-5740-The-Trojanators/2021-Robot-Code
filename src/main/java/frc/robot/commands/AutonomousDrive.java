@@ -46,7 +46,11 @@ public class AutonomousDrive extends CommandBase {
   private Trajectory.State m_goal;
   private Timer m_timer;
   private Boolean m_isFinished;
-  private Pose2d m_pose2d;
+  private Pose2d m_robotPose;
+  private double curX;
+  private double goalX;
+  private double curY;
+  private double goalY;
   
   public void loadTrajectory()
   {
@@ -67,10 +71,10 @@ public class AutonomousDrive extends CommandBase {
     loadTrajectory();
     m_isFinished = false;
 
-    m_xController = new PIDController(.02, 0, 0);
-    m_yController = new PIDController(.02, 0, 0);
+    m_xController = new PIDController(.2, 0, 0);
+    m_yController = new PIDController(.2, 0, 0);
     m_trapezoidProfile = new TrapezoidProfile.Constraints(10, 20);
-    m_rotController = new ProfiledPIDController(.015, 0, 0, m_trapezoidProfile);
+    m_rotController = new ProfiledPIDController(.02, 0, 0, m_trapezoidProfile);
    // m_rotController.reset(new TrapezoidProfile.State(0,0)); //(0,0) are position and velocity
    // m_rotController.enableContinuousInput(-Math.PI, Math.PI);
 
@@ -87,39 +91,39 @@ public class AutonomousDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (m_timer.get() < m_trajectory.getTotalTimeSeconds())
+    if (m_timer.get() <= m_trajectory.getTotalTimeSeconds())
     {
       m_goal = m_trajectory.sample(m_timer.get());
       var m_rotation = m_goal.poseMeters.getRotation();
-      m_pose2d = m_driveSubsystem.getPose();
+      m_robotPose = m_driveSubsystem.getPose();
 
-      ChassisSpeeds adjustedSpeeds = m_driveController.calculate(m_pose2d, m_goal, m_rotation);
+      ChassisSpeeds adjustedSpeeds = m_driveController.calculate(m_robotPose, m_goal, m_rotation);
       
-      m_pose2d = m_driveSubsystem.updateOdometry();
       m_driveSubsystem.drive(adjustedSpeeds.vxMetersPerSecond, adjustedSpeeds.vyMetersPerSecond, adjustedSpeeds.omegaRadiansPerSecond /* SwerveDriveModuleConstants.k_RobotRadius*/, false);
     
     } else {
       m_goal = m_trajectory.getStates().get(m_trajectory.getStates().size() - 1); // ensures last state gets executed
       var m_rotation = m_goal.poseMeters.getRotation(); 
-      m_pose2d = m_driveSubsystem.getPose();
+      m_robotPose = m_driveSubsystem.getPose();
       
-      ChassisSpeeds adjustedSpeeds = m_driveController.calculate(m_pose2d, m_goal, m_rotation);
+      ChassisSpeeds adjustedSpeeds = m_driveController.calculate(m_robotPose, m_goal, m_rotation);
       
-      m_driveSubsystem.drive(adjustedSpeeds.vxMetersPerSecond, adjustedSpeeds.vyMetersPerSecond, adjustedSpeeds.omegaRadiansPerSecond /* SwerveDriveModuleConstants.k_RobotRadius*/, false);
-     
-      m_driveSubsystem.getPose();
+      m_driveSubsystem.drive(adjustedSpeeds.vxMetersPerSecond, adjustedSpeeds.vyMetersPerSecond, adjustedSpeeds.omegaRadiansPerSecond, false);
 
       m_isFinished = true;
   }
 
-      SmartDashboard.putNumber("Current X Position", m_driveSubsystem.getPoseX());
-      SmartDashboard.putNumber("Current Y Position", m_driveSubsystem.getPoseY());
-      SmartDashboard.putNumber("Goal X Position", m_goal.poseMeters.getX());
-      SmartDashboard.putNumber("Goal Y Position", m_goal.poseMeters.getY());
-      SmartDashboard.putNumber("Error X Position", m_goal.poseMeters.getX() -  m_driveSubsystem.getPoseX());
-      SmartDashboard.putNumber("Error Y Position", m_goal.poseMeters.getY() -  m_driveSubsystem.getPoseY());
-      SmartDashboard.putNumber("Odometry X Position", m_pose2d.getX());
-      SmartDashboard.putNumber("Odometry Y Position", m_pose2d.getY());
+      curX = m_robotPose.getX();
+      curY = m_robotPose.getY();
+      goalX = m_goal.poseMeters.getX();
+      goalY = m_goal.poseMeters.getY();
+
+      SmartDashboard.putNumber("Current X Position", curX);
+      SmartDashboard.putNumber("Current Y Position", curY);
+      SmartDashboard.putNumber("Goal X Position", goalX);
+      SmartDashboard.putNumber("Goal Y Position", goalY);
+      SmartDashboard.putNumber("Error X Position", goalX -  curX);
+      SmartDashboard.putNumber("Error Y Position", goalY -  curY);
 
       SmartDashboard.putNumber("Goal Rotation", m_goal.poseMeters.getRotation().getDegrees());
 

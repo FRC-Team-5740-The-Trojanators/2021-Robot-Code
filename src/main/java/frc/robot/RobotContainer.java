@@ -84,8 +84,8 @@ public class RobotContainer
     private final TargetCommand m_target = new TargetCommand(m_shooter, m_robotDrive);
     private final IndexerCommand m_index = new IndexerCommand(m_indexer);
     private final HoodMoveCommand m_moveHood = new HoodMoveCommand(m_hood);
-    private final ForceExtendHood m_forceExtend = new ForceExtendHood(m_hood);
-    private final ForceRetractHood m_forceRetract = new ForceRetractHood(m_hood);
+    //private final ForceExtendHood m_forceExtend = new ForceExtendHood(m_hood);
+    //private final ForceRetractHood m_forceRetract = new ForceRetractHood(m_hood);
     private final FlyWheelCommand m_flyWheelCommand = new FlyWheelCommand(m_flywheel);
     
     //Command Groups
@@ -94,7 +94,7 @@ public class RobotContainer
 
     //The Button Binding Names
     public static JoystickButton intakeFlip, intakeRun, intakeReverse, indexerRun, prepareShooter, TestButton;
-    POVButton  forceExtendHood, forceRetractHood;
+    //POVButton  forceExtendHood, forceRetractHood;
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer()
     { 
@@ -123,19 +123,19 @@ public class RobotContainer
     private void configureButtonBindings()
     {
         intakeFlip = new JoystickButton(m_driverController , HIDConstants.kA);
-        intakeRun = new JoystickButton(m_driverController , HIDConstants.kB);
+        intakeRun = new JoystickButton(m_driverController , HIDConstants.kLB);
         intakeReverse = new JoystickButton(m_driverController, HIDConstants.kStart);
         indexerRun = new JoystickButton(m_driverController, HIDConstants.kX);
         prepareShooter = new JoystickButton(m_driverController, HIDConstants.kRB);
-        forceExtendHood = new POVButton(m_driverController, HIDConstants.kDL);
-        forceRetractHood = new POVButton(m_driverController, HIDConstants.kDR);
+        //forceExtendHood = new POVButton(m_driverController, HIDConstants.kDL);
+        //forceRetractHood = new POVButton(m_driverController, HIDConstants.kDR);
         //TestButton = new JoystickButton(m_driverController, HIDConstants.kLB);
 
         intakeFlip.toggleWhenPressed(new StartEndCommand(m_intake::extendIntake, m_intake::retractIntake, m_intake));
         intakeRun.whileHeld(m_intakeRun);
         intakeReverse.whileHeld(m_intakeReverse);
-        forceExtendHood.whileHeld(m_forceExtend);
-        forceRetractHood.whileHeld(m_forceRetract);
+        //forceExtendHood.whileHeld(m_forceExtend);
+        //forceRetractHood.whileHeld(m_forceRetract);
         prepareShooter.whileHeld(spinupCommandGroup);
         //prepareShooter.whileHeld(m_flyWheelCommand);
         prepareShooter.whenActive(m_target);

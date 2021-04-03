@@ -19,7 +19,7 @@ public class FiveMeterPath
 {
     private static String trajectoryName = "Five Meter Path";
 
-    private static TrajectoryConfig trajectoryConfiguration = new TrajectoryConfig(Constants.SwerveDriveModuleConstants.k_MaxSpeed, 3)
+    private static TrajectoryConfig trajectoryConfiguration = new TrajectoryConfig(1, 1)
                                                             .setKinematics(Constants.SwerveDriveModuleConstants.kinematics);
 
 
