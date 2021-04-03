@@ -4,16 +4,20 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.IndexerSubsystem;
 
 public class IndexerCommand extends CommandBase {
   /** Creates a new IndexerCommand. */
   IndexerSubsystem m_indexer;
+  Timer indexerTime;
   boolean m_isFinished;
+
   public IndexerCommand(IndexerSubsystem indexer) {
     m_indexer = indexer;
     addRequirements(m_indexer);
+    indexerTime = new Timer();
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -22,6 +26,8 @@ public class IndexerCommand extends CommandBase {
   public void initialize()
   {
     m_indexer.runIndexerWheel();
+    indexerTime.reset();
+    indexerTime.start();
     m_isFinished = false;
   }
 
@@ -29,13 +35,22 @@ public class IndexerCommand extends CommandBase {
   @Override
   public void execute()
   {
-    m_indexer.runIndexerWheel();
+    if(indexerTime.get()%1 < 0.5)
+    {
+      m_indexer.runIndexerWheel();
+    }
+    else
+    {
+      m_indexer.stopIndexerWheel();
+    }
+    
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted)
   {
+    indexerTime.stop();
     m_indexer.stopIndexerWheel();
     m_isFinished = true;
   }

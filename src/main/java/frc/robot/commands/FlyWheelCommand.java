@@ -4,14 +4,18 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.SwerveDriveModuleConstants.HoodConstants;
 import frc.robot.subsystems.FlyWheelSubsystem;
 
 public class FlyWheelCommand extends CommandBase {
   /** Creates a new FlyWheelCommand. */
   FlyWheelSubsystem m_flyWheel;
   Boolean m_isFinished;
+  int flywheelSetpoint;
+  double m_ty;
 
   public FlyWheelCommand(FlyWheelSubsystem flyWheel) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -30,7 +34,12 @@ public class FlyWheelCommand extends CommandBase {
   @Override
   public void execute() 
   {
-    m_flyWheel.setFlywheelRPM(5300);
+    //flywheelSetpoint = (int) SmartDashboard.getNumber("Flywheel Velocity Input", 0);
+    //SmartDashboard.putNumber("Flywheel Velocity Input", flywheelSetpoint);
+    
+    m_ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
+
+    m_flyWheel.setFlywheelRPM((int) m_flyWheel.flywheelSpeedFinder(m_ty));
     SmartDashboard.putNumber("Flywheel Velocity", m_flyWheel.getFlywheelVelocity());
   }
 

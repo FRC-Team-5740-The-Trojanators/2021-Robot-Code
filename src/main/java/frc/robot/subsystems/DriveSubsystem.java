@@ -126,6 +126,8 @@ public class DriveSubsystem extends SubsystemBase
 
      var x = tx.getDouble(0.0);
 
+     SmartDashboard.putNumber("Gryo Angle", m_imu.getAngle());
+
     }
   
     @Override

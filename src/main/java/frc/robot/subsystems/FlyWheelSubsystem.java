@@ -11,10 +11,12 @@ import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.SwerveDriveModuleConstants.CANBusIDs;
 import frc.robot.Constants.SwerveDriveModuleConstants.ShooterConstants;
 import frc.robot.Constants.SwerveDriveModuleConstants.FlywheelPIDValues;
+import frc.robot.Constants.SwerveDriveModuleConstants.HoodConstants;
 
 public class FlyWheelSubsystem extends SubsystemBase {
 
@@ -76,12 +78,32 @@ public class FlyWheelSubsystem extends SubsystemBase {
   }
 
   public double getFlywheelVelocity()
-    {
-      return m_flywheelEncoder.getVelocity();
-    }
+  {
+    return m_flywheelEncoder.getVelocity();
+  }
 
-  /*public void runFlyWheel()
-    {
-      FlywheelMotorOne.set(ShooterConstants.shooterMaxSpeed);
-    }*/
+  public double flywheelSpeedFinder(double limelight_ty)
+  {
+    /*    d = (h1-h2) / tan(a1+a2)    */
+        //angle is in degrees
+        double angle = limelight_ty + HoodConstants.limelightAngle;
+        angle *= (Math.PI / 180); // convert to radians
+        //distance is in inches, angle radians
+        var distance = HoodConstants.heightDifference / Math.tan(angle);
+
+        double flywheelSpeed;
+
+        if(distance < 98)
+        {
+          flywheelSpeed = 0.0591*(Math.pow(distance, 3)) - 12.751*(Math.pow(distance, 2)) + 922.47*distance - 18226;
+        }
+        else
+        {
+          flywheelSpeed = 5400;
+        }
+
+        SmartDashboard.putNumber("Flywheel Commanded Velocity", flywheelSpeed);
+
+        return flywheelSpeed;
+  }
 }

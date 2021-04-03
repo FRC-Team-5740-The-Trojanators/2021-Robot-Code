@@ -120,29 +120,22 @@ public class HoodSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("hood angle", angle);
         SmartDashboard.putNumber("distance inches", distance);
 
-        if(distance >= HoodConstants.k_maxDistance)
+        if (distance > 250)
         {
-        return 0.0;
+            distance = 250;
         }
-        else if( distance < HoodConstants.k_maxDistance && distance >= HoodConstants.k_redZoneDistance)
+        
+        if (distance < 50)
         {
-            return HoodConstants.k_redEncoder;
-        } 
-        else if(distance < HoodConstants.k_redZoneDistance && distance >= HoodConstants.k_blueZoneDistance)
-        {
-            return HoodConstants.k_blueEncoder;
-        } 
-        else if(distance < HoodConstants.k_blueZoneDistance && distance >= HoodConstants.k_yellowZoneDistance)
-        {
-            return HoodConstants.k_yellowEncoder;
-        } 
-        else if(distance < HoodConstants.k_yellowZoneDistance && distance >= HoodConstants.k_greenZoneDistance)
-        {
-            return HoodConstants.k_greenEncoder;
-        } 
-        else
-        {
-            return HoodConstants.k_closestEncoder;
-        } 
+            distance = 50;
+        }
+
+        double hoodPosition;
+
+        hoodPosition = 0.000002775*(Math.pow(distance, 4)) - 0.0013*(Math.pow(distance, 3)) + 0.081*(Math.pow(distance, 2)) + 28.303*distance - 60.17;
+
+        SmartDashboard.putNumber("Hood Commanded Position", hoodPosition);
+
+        return hoodPosition;
     }
 }

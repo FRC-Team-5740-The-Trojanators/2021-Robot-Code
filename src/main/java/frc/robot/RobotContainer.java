@@ -137,6 +137,7 @@ public class RobotContainer
         forceExtendHood.whileHeld(m_forceExtend);
         forceRetractHood.whileHeld(m_forceRetract);
         prepareShooter.whileHeld(spinupCommandGroup);
+        //prepareShooter.whileHeld(m_flyWheelCommand);
         prepareShooter.whenActive(m_target);
         indexerRun.whileHeld(m_index);
         //TestButton.whileHeld(m_moveHood);
