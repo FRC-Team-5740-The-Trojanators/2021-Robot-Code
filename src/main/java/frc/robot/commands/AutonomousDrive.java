@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants;
 import frc.robot.Constants.SwerveDriveModuleConstants;
+import frc.robot.Constants.SwerveDriveModuleConstants.AutoChooser;
 import frc.robot.paths.BarrelRacePath;
 import frc.robot.paths.BlueAPath;
 import frc.robot.paths.BlueBPath;
@@ -62,19 +63,19 @@ public class AutonomousDrive extends CommandBase {
     //m_trajectory = FiveMeterPath.getTrajectory(); //change path name based on path we want to follow
     double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
 
-    if( tx <= 12 && tx > 5)
+    if( tx <= AutoChooser.k_RedB + AutoChooser.k_autoTolerance && tx > AutoChooser.k_RedB - AutoChooser.k_autoTolerance)
     {
       m_trajectory = RedBPath.getTrajectory();
     }
-    else if(tx <= 3 && tx > -1)
+    else if(tx <= AutoChooser.k_RedA + AutoChooser.k_autoTolerance && tx > AutoChooser.k_RedA - AutoChooser.k_autoTolerance)
     {
       m_trajectory = RedAPath.getTrajectory();
     }
-    else if(tx <= -2 && tx > -6)
+    else if(tx <= AutoChooser.k_BlueA + AutoChooser.k_autoTolerance && tx > AutoChooser.k_BlueA - AutoChooser.k_autoTolerance)
     {
       m_trajectory = BlueAPath.getTrajectory();
     }
-    else if(tx <= -12 && tx > -5)
+    else if(tx <= AutoChooser.k_BlueB + AutoChooser.k_autoTolerance && tx > AutoChooser.k_BlueB - AutoChooser.k_autoTolerance)
     {
       m_trajectory = BlueBPath.getTrajectory();
     }
