@@ -39,7 +39,7 @@ public class TargetCommand extends CommandBase {
   public void execute()
   {
     m_shooter.getAimPID();
-    if ((!m_shooter.aimEnd()) && (m_count < 10))
+    if ((!m_shooter.aimEnd()) && (m_count < 20))
     {
       m_drivetrain.drive(0, 0, m_shooter.turnShooter(), false);
     }
@@ -49,7 +49,7 @@ public class TargetCommand extends CommandBase {
       m_count++;
     }
     
-    if(m_shooter.aimEnd() && m_count >= 10)
+    if(m_shooter.aimEnd() && m_count >= 20)
     {
       m_isFinished = true;
     }

@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.controller.PIDController;
@@ -25,8 +26,12 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants;
 import frc.robot.Constants.SwerveDriveModuleConstants;
 import frc.robot.paths.BarrelRacePath;
+import frc.robot.paths.BlueAPath;
+import frc.robot.paths.BlueBPath;
 import frc.robot.paths.BouncePath;
 import frc.robot.paths.FiveMeterPath;
+import frc.robot.paths.RedAPath;
+import frc.robot.paths.RedBPath;
 import frc.robot.paths.SlalomPath;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.SwerveModule;
@@ -54,7 +59,25 @@ public class AutonomousDrive extends CommandBase {
   
   public void loadTrajectory()
   {
-    m_trajectory = FiveMeterPath.getTrajectory(); //change path name based on path we want to follow
+    //m_trajectory = FiveMeterPath.getTrajectory(); //change path name based on path we want to follow
+    double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
+
+    if( tx <= 12 && tx > 5)
+    {
+      m_trajectory = RedBPath.getTrajectory();
+    }
+    else if(tx <= 3 && tx > -1)
+    {
+      m_trajectory = RedAPath.getTrajectory();
+    }
+    else if(tx <= -2 && tx > -6)
+    {
+      m_trajectory = BlueAPath.getTrajectory();
+    }
+    else if(tx <= -12 && tx > -5)
+    {
+      m_trajectory = BlueBPath.getTrajectory();
+    }
   }
 
   /** Creates a new AutonomousDrive. */
