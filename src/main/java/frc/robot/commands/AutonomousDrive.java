@@ -36,6 +36,8 @@ import frc.robot.paths.RedBPath;
 import frc.robot.paths.SlalomPath;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.SwerveModule;
+import frc.robot.subsystems.IntakeSubsystem;
+
 
 public class AutonomousDrive extends CommandBase {
 
@@ -57,28 +59,12 @@ public class AutonomousDrive extends CommandBase {
   private double goalX;
   private double curY;
   private double goalY;
+
   
   public void loadTrajectory()
   {
-    //m_trajectory = FiveMeterPath.getTrajectory(); //change path name based on path we want to follow
-    double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
+    m_trajectory = m_driveSubsystem.getTrajectory(); //change path name based on path we want to folloW
 
-    if( tx <= AutoChooser.k_RedB + AutoChooser.k_autoTolerance && tx > AutoChooser.k_RedB - AutoChooser.k_autoTolerance)
-    {
-      m_trajectory = RedBPath.getTrajectory();
-    }
-    else if(tx <= AutoChooser.k_RedA + AutoChooser.k_autoTolerance && tx > AutoChooser.k_RedA - AutoChooser.k_autoTolerance)
-    {
-      m_trajectory = RedAPath.getTrajectory();
-    }
-    else if(tx <= AutoChooser.k_BlueA + AutoChooser.k_autoTolerance && tx > AutoChooser.k_BlueA - AutoChooser.k_autoTolerance)
-    {
-      m_trajectory = BlueAPath.getTrajectory();
-    }
-    else if(tx <= AutoChooser.k_BlueB + AutoChooser.k_autoTolerance && tx > AutoChooser.k_BlueB - AutoChooser.k_autoTolerance)
-    {
-      m_trajectory = BlueBPath.getTrajectory();
-    }
   }
 
   /** Creates a new AutonomousDrive. */
@@ -132,7 +118,7 @@ public class AutonomousDrive extends CommandBase {
       
       ChassisSpeeds adjustedSpeeds = m_driveController.calculate(m_robotPose, m_goal, m_rotation);
       
-      m_driveSubsystem.drive(adjustedSpeeds.vxMetersPerSecond, adjustedSpeeds.vyMetersPerSecond, adjustedSpeeds.omegaRadiansPerSecond, false);
+      m_driveSubsystem.drive(adjustedSpeeds.vxMetersPerSecond, adjustedSpeeds.vyMetersPerSecond, adjustedSpeeds.omegaRadiansPerSecond, true);
 
       m_isFinished = true;
   }

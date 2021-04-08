@@ -18,6 +18,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.SwerveDriveModuleConstants;
 import frc.robot.Constants.SwerveDriveModuleConstants.CANBusIDs;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.trajectory.Trajectory;
+
 import com.ctre.phoenix.sensors.CANCoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -31,6 +33,8 @@ public class DriveSubsystem extends SubsystemBase
     NetworkTableEntry ty = table.getEntry("ty");
     NetworkTableEntry ta = table.getEntry("ta");
     
+    Trajectory m_trajectory; 
+
     // The gyro sensor
     public static final ADIS16470_IMU m_imu = new ADIS16470_IMU();
     private Pose2d m_Robotpose = new Pose2d();
@@ -90,6 +94,8 @@ public class DriveSubsystem extends SubsystemBase
 
     }
 
+
+    
     public void resetEncoders(){
         modules[0].resetDriveEncoder();
         modules[1].resetDriveEncoder();
@@ -193,5 +199,14 @@ public class DriveSubsystem extends SubsystemBase
         modules[1].setSteerD(D1);
         modules[2].setSteerD(D2);
         modules[3].setSteerD(D3);
+    }
+    public Trajectory getTrajectory()
+    {
+        return m_trajectory;
+    }
+
+    public void setTrajectory(Trajectory trajectory)
+    {
+        m_trajectory = trajectory;
     }
 }

@@ -19,7 +19,7 @@ public class RedBPath
 {
     private static String trajectoryName = "Red B Path"; 
 
-    private static TrajectoryConfig trajectoryConfiguration = new TrajectoryConfig(Constants.SwerveDriveModuleConstants.k_MaxSpeed, 3)
+    private static TrajectoryConfig trajectoryConfiguration = new TrajectoryConfig(1, 1)
                                                             .setKinematics(Constants.SwerveDriveModuleConstants.kinematics);
 
 
@@ -30,7 +30,7 @@ public class RedBPath
     private static Translation2d point2 = new Translation2d(3.81, 1.524);
     private static Translation2d point3 = new Translation2d(5.334, 3.048);
 
-    private static Pose2d end =    new Pose2d(8.996, 3.048, new Rotation2d(0));
+    private static Pose2d end =    new Pose2d(8.382, 3.048, new Rotation2d(0));
 
     /**
      * Generates the Trajectory

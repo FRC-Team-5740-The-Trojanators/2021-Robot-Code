@@ -83,7 +83,7 @@ public final class Constants
         public static final double k_MaxSpeed = Units.feetToMeters(15); // unit is m/s
         public static final double k_MaxAcceleration = 10; // unit is m/s/s (aka, m/s^2)
         
-        public static final double kXYjoystickCoefficient = .75;
+        public static final double kXYjoystickCoefficient = .9;
         public static final double kMaxAngularSpeed = Units.feetToMeters(15) / k_RobotRadius; //Gives in radians / s (/s is implied);
         public static final double kRotCoefficient = .5;
 
@@ -337,6 +337,14 @@ public final class Constants
             public static final double k_retractQuadSetpoint = 0; //Ticks
             public static final double k_extendQuadSetpoint = 3750; //Ticks
             public static final double k_quadTicksPerRotation = 2048; 
+        }
+
+        public static final class rotationPID{
+            public static final double k_rotationP = .01;
+            public static final double k_rotationI = 0;
+            public static final double k_rotationD = 0;
+            public static final double k_rotationTolerance = 2 * (Math.PI/180);
+
         }
     }
 }

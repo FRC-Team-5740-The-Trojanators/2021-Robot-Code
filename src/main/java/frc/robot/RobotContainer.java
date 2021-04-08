@@ -14,6 +14,7 @@ import frc.robot.commands.AutonomousDrive;
 
 import frc.robot.commands.IntakeFlip;
 import frc.robot.commands.IntakeRun;
+import frc.robot.commands.RotateRobot;
 import frc.robot.commands.IntakeReverse;
 import frc.robot.commands.SwerveDriveCommand;
 
@@ -68,8 +69,8 @@ public class RobotContainer
 {
     // The robot's subsystems and commands are defined here... 
     private final DriveSubsystem m_robotDrive = new DriveSubsystem(false);
-    private final AutonomousDrive m_autonomousDrive = new AutonomousDrive(m_robotDrive);
     private final IntakeSubsystem m_intake = new IntakeSubsystem();
+    private final AutonomousDrive m_autonomousDrive = new AutonomousDrive(m_robotDrive);
     private final ShooterSubsystem m_shooter = new ShooterSubsystem();
     private final HoodSubsystem m_hood = new HoodSubsystem();
     private final IndexerSubsystem m_indexer = new IndexerSubsystem();
@@ -87,10 +88,11 @@ public class RobotContainer
     //private final ForceExtendHood m_forceExtend = new ForceExtendHood(m_hood);
     //private final ForceRetractHood m_forceRetract = new ForceRetractHood(m_hood);
     private final FlyWheelCommand m_flyWheelCommand = new FlyWheelCommand(m_flywheel);
+    private final RotateRobot m_rotateRobot = new RotateRobot(m_robotDrive, m_intake, m_shooter);
     
     //Command Groups
     private final ParallelCommandGroup spinupCommandGroup = new ParallelCommandGroup(m_flyWheelCommand, m_moveHood);
-
+    private final SequentialCommandGroup galacticSearchCommandGroup = new SequentialCommandGroup(m_rotateRobot, m_autonomousDrive);
 
     //The Button Binding Names
     public static JoystickButton intakeFlip, intakeRun, intakeReverse, indexerRun, prepareShooter, TestButton;
@@ -98,9 +100,9 @@ public class RobotContainer
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer()
     { 
-        // var traj = BlueBPath.getTrajectory();
-        // TrajectoriesExporter.exportTrajectoryToCSV(traj, BlueBPath.getTrajectoryName());
-        // TrajectoriesExporter.exportTrajectoryToHumanReadable(traj, BlueBPath.getTrajectoryName());
+        // var traj = RedAPath.getTrajectory();
+        // TrajectoriesExporter.exportTrajectoryToCSV(traj, RedAPath.getTrajectoryName());
+        // TrajectoriesExporter.exportTrajectoryToHumanReadable(traj, RedAPath.getTrajectoryName());
 
         configureButtonBindings();
         m_robotDrive.setDefaultCommand(new SwerveDriveCommand(m_robotDrive, m_driverController));
@@ -151,7 +153,8 @@ public class RobotContainer
     public Command getAutonomousCommand()
     {
         // An ExampleCommand will run in autonomous
-        return m_autonomousDrive;
+        return galacticSearchCommandGroup;
+        //return m_autonomousDrive;
 
     }
 }

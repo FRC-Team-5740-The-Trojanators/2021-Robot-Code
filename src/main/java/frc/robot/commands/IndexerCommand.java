@@ -35,7 +35,7 @@ public class IndexerCommand extends CommandBase {
   @Override
   public void execute()
   {
-    if(indexerTime.get()%1 < 0.5)
+    if(indexerTime.get()%1 < 0.7)
     {
       m_indexer.runIndexerWheel();
     }
