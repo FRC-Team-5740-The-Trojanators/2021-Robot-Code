@@ -46,6 +46,7 @@ public class HoodMoveCommand extends CommandBase {
     m_hood.setHoodMotor(m_hood.hoodSetSetpoint(m_setpoint)); 
     }
     m_isFinished = m_hood.hoodMoveEnd();
+
   }
 
   // Called once the command ends or is interrupted.
