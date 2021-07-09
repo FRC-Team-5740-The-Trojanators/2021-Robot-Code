@@ -1,6 +1,11 @@
 plugins {
     id "java"
-    id "edu.wpi.first.GradleRIO" version "2021.2.2"
+    id "edu.wpi.first.GradleRIO" version "2021.3.1"
+}
+
+repositories  // JUnit might need this
+{
+    mavenCentral()
 }
 
 sourceCompatibility = JavaVersion.VERSION_11
@@ -41,8 +46,9 @@ deploy {
 def includeDesktopSupport = true
 
 // Defining my dependencies. In this case, WPILib (+ friends), and vendor libraries.
-// Also defines JUnit 4.
-dependencies {
+// Also defines JUnit 5.
+dependencies
+{
     implementation wpi.deps.wpilib()
     nativeZip wpi.deps.wpilibJni(wpi.platforms.roborio)
     nativeDesktopZip wpi.deps.wpilibJni(wpi.platforms.desktop)
@@ -52,7 +58,12 @@ dependencies {
     nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)
     nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop)
 
-    testImplementation 'junit:junit:4.12'
+
+    // Test dependancies
+    testImplementation(platform('org.junit:junit-bom:5.7.2'))
+    testImplementation('org.junit.jupiter:junit-jupiter')
+    testImplementation('org.mockito:mockito-core:3.+')
+
 
     // Enable simulation gui support. Must check the box in vscode to enable support
     // upon debugging
@@ -64,8 +75,20 @@ dependencies {
     // simulation wpi.deps.sim.ws_client(wpi.platforms.desktop, false)
 }
 
+test 
+{
+    useJUnitPlatform()
+    
+    // This outputs pass/fail information to the standard output.
+    testLogging 
+    {
+        events "passed", "skipped", "failed"
+    }
+}
+
 // Simulation configuration (e.g. environment variables).
-sim {
+sim 
+{
     // Sets the websocket client remote host.
     // envVar "HALSIMWS_HOST", "10.0.0.2"
 }
