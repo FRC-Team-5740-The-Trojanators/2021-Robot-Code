@@ -15,19 +15,18 @@ import com.ctre.phoenix.sensors.CANCoderConfiguration;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.SwerveDriveModuleConstants;
 
 import frc.robot.Constants.SwerveDriveModuleConstants.DriveModulePIDValues;
 import frc.robot.Constants.SwerveDriveModuleConstants.SteeringControllerPIDValues;
 import com.ctre.phoenix.sensors.SensorInitializationStrategy;
-import edu.wpi.first.wpilibj.util.Units;
 
 
-/** 
- * A Swerve Module consists of a drive motor, a steering motor, and encoders to provide feedback on the state of those motors.
- * This code provides accessors to those motors' controllers and encoders, as well as defining the feedback loops used to 
- *  enhance their control.
+/**
+ * A Swerve Module consists of a drive motor, a steering motor, and encoders to
+ * provide feedback on the state of those motors. This code provides accessors
+ * to those motors' controllers and encoders, as well as defining the feedback
+ * loops used to enhance their control.
  */
 public class SwerveModule
 {
@@ -37,10 +36,10 @@ public class SwerveModule
     private CANPIDController m_driverPIDController;
     private PIDController m_steeringPIDController;
 
-    private CANSparkMax driveMotor;
-    private CANSparkMax angleMotor;
+    private CANSparkMax m_driveMotor;
+    private CANSparkMax m_angleMotor;
     private CANCoder m_moduleSteeringEncoder;
-    private Rotation2d offset;
+    private Rotation2d m_offset;
 
     /**
      * Constructs a SwerveModule.
@@ -50,10 +49,10 @@ public class SwerveModule
      */
     public SwerveModule(CANSparkMax driveMotor, CANSparkMax angleMotor, CANCoder canCoder, Rotation2d offset)
     {
-        this.driveMotor = driveMotor;
-        this.angleMotor = angleMotor;
-        this.m_moduleSteeringEncoder = canCoder;
-        this.offset = offset;
+        m_driveMotor = driveMotor;
+        m_angleMotor = angleMotor;
+        m_moduleSteeringEncoder = canCoder;
+        m_offset = offset;
 
         m_driverPIDController = driveMotor.getPIDController();
         m_driveEncoder = driveMotor.getEncoder(); 
@@ -70,7 +69,7 @@ public class SwerveModule
         m_driverPIDController.setOutputRange(-1, 1);
         
         CANCoderConfiguration canCoderConfiguration = new CANCoderConfiguration();
-        canCoderConfiguration.magnetOffsetDegrees = offset.getDegrees();
+        canCoderConfiguration.magnetOffsetDegrees = m_offset.getDegrees();
         canCoderConfiguration.initializationStrategy = SensorInitializationStrategy.BootToAbsolutePosition;
         canCoder.configAllSettings(canCoderConfiguration);
 
@@ -83,7 +82,6 @@ public class SwerveModule
      *
      * @return The current state of the module.
      */
-    
     public SwerveModuleState getState()
     {
         return new SwerveModuleState(m_driveEncoder.getVelocity(), Rotation2d.fromDegrees(m_moduleSteeringEncoder.getPosition()));
@@ -91,8 +89,8 @@ public class SwerveModule
 
     /**
      * 
-    * @return Relative value of CANEncoder in radians
-    */
+     * @return Relative value of CANEncoder in radians
+     */
     public Rotation2d getAngle()
     {
         return Rotation2d.fromDegrees(m_moduleSteeringEncoder.getAbsolutePosition());
@@ -118,28 +116,35 @@ public class SwerveModule
     public void setDesiredState(SwerveModuleState desiredState)
     {      
        //Steering Motor Calc
-        double setAngle;
         Rotation2d currentRotation = getAngle();
         SwerveModuleState state = SwerveModuleState.optimize(desiredState, currentRotation);
         Rotation2d rotationDelta = state.angle.minus(currentRotation); //takes our current rotatation and subtracts the last state rotation
 
-        double deltaTicks = (rotationDelta.getDegrees() / 360) * SwerveDriveModuleConstants.kEncoderTicksPerRotation;
+        double deltaTicks = calculateDeltaTicks(rotationDelta);
         double currentTicks = m_moduleSteeringEncoder.getPosition() / m_moduleSteeringEncoder.configGetFeedbackCoefficient();
         double desiredTicks = currentTicks + deltaTicks;
-        setAngle = m_steeringPIDController.calculate(currentTicks, desiredTicks);
+        double setAngle = m_steeringPIDController.calculate(currentTicks, desiredTicks);
 
-        if(Math.abs(setAngle) > SteeringControllerPIDValues.k_steerDeadband)
-        {
-           angleMotor.set(setAngle);
-        } 
-        else 
-        {
-            angleMotor.set(0);
-        } 
+        m_angleMotor.set(filterAngleMotorDeadband(setAngle));
         
-       m_driverPIDController.setReference(state.speedMetersPerSecond, ControlType.kVelocity);
+        m_driverPIDController.setReference(state.speedMetersPerSecond, ControlType.kVelocity);
     }
 
+
+
+    public double calculateDeltaTicks(Rotation2d rotationDelta) 
+    {
+        return (rotationDelta.getDegrees() / 360) * SwerveDriveModuleConstants.kEncoderTicksPerRotation;
+    }
+
+    public double filterAngleMotorDeadband(double setAngle)
+    {
+        if(Math.abs(setAngle) > SteeringControllerPIDValues.k_steerDeadband)
+        {
+           return setAngle;
+        } 
+        return 0.0;
+    }
 
     public void setDriveP(double value)
     {
@@ -163,7 +168,7 @@ public class SwerveModule
 
     public double getDriveMotor()
     {
-        return driveMotor.get();
+        return m_driveMotor.get();
     }
 
     public double getDriveVelocity()
