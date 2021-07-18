@@ -62,7 +62,9 @@ dependencies
     // Test dependancies
     testImplementation(platform('org.junit:junit-bom:5.7.2'))
     testImplementation('org.junit.jupiter:junit-jupiter')
-    testImplementation('org.mockito:mockito-core:3.+')
+    // Mockito provides mocking of external dependancies
+   // testImplementation('org.mockito:mockito-core:3.+')
+    testImplementation('org.mockito:mockito-inline:3.+')
 
 
     // Enable simulation gui support. Must check the box in vscode to enable support
