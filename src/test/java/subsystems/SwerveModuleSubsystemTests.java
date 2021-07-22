@@ -211,5 +211,36 @@ public class SwerveModuleSubsystemTests
         assertEquals(expected, result);
     }
 
+    @Test
+    public void calculateCurrentTicks_ValidInput_ValidOutput()
+    {
+        //Arrange
+        setup();
+        when(m_canCoder.getPosition()).thenReturn(10.0);
+        when(m_canCoder.configGetFeedbackCoefficient()).thenReturn(10.0);
+//        when(m_driveMotor.getPIDController()).thenReturn(mock(CANPIDController.class));
+
+        //Act
+        var result = m_sm.calculateCurrentTicks();
+        var expected = 1.0;
+
+        //Assert
+        assertEquals(expected, result);
+
+    }
+
+    @Test
+    public void validateDesiredTicks()
+    {
+        //Arrange
+        setup();
+        when(m_canCoder.getPosition()).thenReturn(10.0);
+        when(m_canCoder.configGetFeedbackCoefficient()).thenReturn(10.0);
+        //Act
+        var result = m_sm.calculateCurrentTicks() + m_sm.calculateDeltaTicks(Rotation2d.fromDegrees(180));
+        var expected = 2049.0;
+        //Assert
+        assertEquals(expected, result);
+    }
 
 }

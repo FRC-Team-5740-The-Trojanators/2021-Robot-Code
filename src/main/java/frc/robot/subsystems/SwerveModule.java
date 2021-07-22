@@ -121,13 +121,18 @@ public class SwerveModule
         Rotation2d rotationDelta = state.angle.minus(currentRotation); //takes our current rotatation and subtracts the last state rotation
 
         double deltaTicks = calculateDeltaTicks(rotationDelta);
-        double currentTicks = m_moduleSteeringEncoder.getPosition() / m_moduleSteeringEncoder.configGetFeedbackCoefficient();
+        double currentTicks = calculateCurrentTicks();
         double desiredTicks = currentTicks + deltaTicks;
         double setAngle = m_steeringPIDController.calculate(currentTicks, desiredTicks);
 
         m_angleMotor.set(filterAngleMotorDeadband(setAngle));
         
         m_driverPIDController.setReference(state.speedMetersPerSecond, ControlType.kVelocity);
+    }
+
+    public double calculateCurrentTicks() {
+        double currentTicks = m_moduleSteeringEncoder.getPosition() / m_moduleSteeringEncoder.configGetFeedbackCoefficient();
+        return currentTicks;
     }
 
 
