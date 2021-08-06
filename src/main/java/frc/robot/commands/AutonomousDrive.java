@@ -144,14 +144,38 @@ public class AutonomousDrive extends CommandBase {
       m_driveSubsystem.drive(adjustedSpeeds.vxMetersPerSecond, adjustedSpeeds.vyMetersPerSecond, adjustedSpeeds.omegaRadiansPerSecond, true);
 
       m_timer.reset();
+      m_trajectory = BouncePath2.getTrajectory();
 
-      m_isFinished = true;
+     // m_isFinished = true;
     }
 //TODO test the path chunk combination methods
 //THIS COMBINES THE PATH CHUNKS USING VARIOUS IF/ELSE STATEMENTS
     if(m_timer.get() <= m_trajectory.getTotalTimeSeconds())
     {
-      m_trajectory = BouncePath2.getTrajectory();
+      m_goal = m_trajectory.sample(m_timer.get());
+      var m_rotation = m_goal.poseMeters.getRotation();
+      m_robotPose = m_driveSubsystem.getPose();
+
+      ChassisSpeeds adjustedSpeeds = m_driveController.calculate(m_robotPose, m_goal, m_rotation);
+      
+      m_driveSubsystem.drive(adjustedSpeeds.vxMetersPerSecond, adjustedSpeeds.vyMetersPerSecond, adjustedSpeeds.omegaRadiansPerSecond /* SwerveDriveModuleConstants.k_RobotRadius*/, false);  
+    } else {
+        m_goal = m_trajectory.getStates().get(m_trajectory.getStates().size() - 1); // ensures last state gets executed
+        var m_rotation = m_goal.poseMeters.getRotation(); 
+        m_robotPose = m_driveSubsystem.getPose();
+        
+        ChassisSpeeds adjustedSpeeds = m_driveController.calculate(m_robotPose, m_goal, m_rotation);
+        
+        m_driveSubsystem.drive(adjustedSpeeds.vxMetersPerSecond, adjustedSpeeds.vyMetersPerSecond, adjustedSpeeds.omegaRadiansPerSecond, true);
+  
+        m_timer.reset();
+        m_trajectory = BouncePath3.getTrajectory();
+
+      //  m_isFinished = true;
+    }
+
+    if(m_timer.get() <= m_trajectory.getTotalTimeSeconds())
+    {
       m_goal = m_trajectory.sample(m_timer.get());
       var m_rotation = m_goal.poseMeters.getRotation();
       m_robotPose = m_driveSubsystem.getPose();
@@ -170,36 +194,13 @@ public class AutonomousDrive extends CommandBase {
   
         m_timer.reset();
 
-        m_isFinished = true;
+        m_trajectory = BouncePath4.getTrajectory();
+
+       // m_isFinished = true;
     }
 
     if(m_timer.get() <= m_trajectory.getTotalTimeSeconds())
     {
-      m_trajectory = BouncePath3.getTrajectory();
-      m_goal = m_trajectory.sample(m_timer.get());
-      var m_rotation = m_goal.poseMeters.getRotation();
-      m_robotPose = m_driveSubsystem.getPose();
-
-      ChassisSpeeds adjustedSpeeds = m_driveController.calculate(m_robotPose, m_goal, m_rotation);
-      
-      m_driveSubsystem.drive(adjustedSpeeds.vxMetersPerSecond, adjustedSpeeds.vyMetersPerSecond, adjustedSpeeds.omegaRadiansPerSecond /* SwerveDriveModuleConstants.k_RobotRadius*/, false);  
-    } else {
-        m_goal = m_trajectory.getStates().get(m_trajectory.getStates().size() - 1); // ensures last state gets executed
-        var m_rotation = m_goal.poseMeters.getRotation(); 
-        m_robotPose = m_driveSubsystem.getPose();
-        
-        ChassisSpeeds adjustedSpeeds = m_driveController.calculate(m_robotPose, m_goal, m_rotation);
-        
-        m_driveSubsystem.drive(adjustedSpeeds.vxMetersPerSecond, adjustedSpeeds.vyMetersPerSecond, adjustedSpeeds.omegaRadiansPerSecond, true);
-  
-        m_timer.reset();
-
-        m_isFinished = true;
-    }
-
-    if(m_timer.get() <= m_trajectory.getTotalTimeSeconds())
-    {
-      m_trajectory = BouncePath4.getTrajectory();
       m_goal = m_trajectory.sample(m_timer.get());
       var m_rotation = m_goal.poseMeters.getRotation();
       m_robotPose = m_driveSubsystem.getPose();
