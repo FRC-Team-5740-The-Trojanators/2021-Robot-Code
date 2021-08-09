@@ -32,6 +32,7 @@ import frc.robot.paths.BarrelRacePath;
 import frc.robot.paths.BlueAPath;
 import frc.robot.paths.BlueBPath;
 import frc.robot.paths.BouncePath;
+import frc.robot.paths.BouncePath1;
 import frc.robot.paths.FiveMeterPath;
 import frc.robot.paths.RedAPath;
 import frc.robot.paths.RedBPath;
@@ -92,7 +93,7 @@ public class RobotContainer
     
     //Command Groups
     private final ParallelCommandGroup spinupCommandGroup = new ParallelCommandGroup(m_flyWheelCommand, m_moveHood);
-    private final SequentialCommandGroup galacticSearchCommandGroup = new SequentialCommandGroup(m_rotateRobot, m_autonomousDrive);
+    //private final SequentialCommandGroup galacticSearchCommandGroup = new SequentialCommandGroup(m_rotateRobot, m_autonomousDrive);
 
     //The Button Binding Names
     public static JoystickButton intakeFlip, intakeRun, intakeReverse, indexerRun, prepareShooter, TestButton;
@@ -100,9 +101,9 @@ public class RobotContainer
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer()
     { 
-        // var traj = RedAPath.getTrajectory();
-        // TrajectoriesExporter.exportTrajectoryToCSV(traj, RedAPath.getTrajectoryName());
-        // TrajectoriesExporter.exportTrajectoryToHumanReadable(traj, RedAPath.getTrajectoryName());
+        //  var traj = BouncePath1.getTrajectory();
+        //  TrajectoriesExporter.exportTrajectoryToCSV(traj, BouncePath1.getTrajectoryName());
+        //  TrajectoriesExporter.exportTrajectoryToHumanReadable(traj, BouncePath1.getTrajectoryName());
 
         configureButtonBindings();
         m_robotDrive.setDefaultCommand(new SwerveDriveCommand(m_robotDrive, m_driverController));
@@ -153,8 +154,8 @@ public class RobotContainer
     public Command getAutonomousCommand()
     {
         // An ExampleCommand will run in autonomous
-        return galacticSearchCommandGroup;
-        //return m_autonomousDrive;
+        //return galacticSearchCommandGroup;
+        return m_autonomousDrive;
 
     }
 }
