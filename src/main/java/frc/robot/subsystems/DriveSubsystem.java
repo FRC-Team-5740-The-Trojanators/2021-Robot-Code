@@ -49,7 +49,7 @@ public class DriveSubsystem extends SubsystemBase
 
     // Odometry class for tracking robot pose
     SwerveDriveOdometry m_odometry =
-        new SwerveDriveOdometry(SwerveDriveModuleConstants.kinematics, Rotation2d.fromDegrees(m_imu.getAngle()));
+        new SwerveDriveOdometry(SwerveDriveModuleConstants.kinematics, Rotation2d.fromDegrees(optimizeAngle()));
 
     public SwerveModule[] modules = new SwerveModule[]
      {
@@ -82,7 +82,7 @@ public class DriveSubsystem extends SubsystemBase
       m_states =
         SwerveDriveModuleConstants.kinematics.toSwerveModuleStates(
             fieldRelative
-                ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, Rotation2d.fromDegrees(m_imu.getAngle()))
+                ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, Rotation2d.fromDegrees(optimizeAngle()))
                 : new ChassisSpeeds(xSpeed, ySpeed, rot));
         SwerveDriveKinematics.normalizeWheelSpeeds(m_states, SwerveDriveModuleConstants.k_MaxSpeed);
         for (int i = 0; i < m_states.length; i++) 
@@ -108,6 +108,17 @@ public class DriveSubsystem extends SubsystemBase
         return m_states;
     }
 
+    public double optimizeAngle()
+    {
+        double angle = m_imu.getAngle() % 360;
+        if(angle > 180){
+            angle = 360 - angle; 
+        } else if(angle < -180){
+            angle = 360 + angle;
+        }
+        return -angle;
+    }
+
     public void resetIMU()
     {
         m_imu.reset();
@@ -119,7 +130,7 @@ public class DriveSubsystem extends SubsystemBase
       //setSteerPthroughDashboard();
       //setSteerDthroughDashboard();
       // This method will be called once per scheduler run
-      var gyroAngle = Rotation2d.fromDegrees(m_imu.getAngle());
+      var gyroAngle = Rotation2d.fromDegrees(optimizeAngle());
       m_Robotpose = m_odometry.update(gyroAngle, modules[0].getState(), modules[1].getState(), modules[2].getState(), modules[3].getState());
     }
   

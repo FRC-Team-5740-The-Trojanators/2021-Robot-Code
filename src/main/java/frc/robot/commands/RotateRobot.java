@@ -78,17 +78,18 @@ ShooterSubsystem m_shooter;
   public void execute() 
   {
     
-    double rot = m_rotatePID.calculate(m_driveSubsystem.m_imu.getAngle() * Math.PI/180);
+    double rot = m_rotatePID.calculate(m_driveSubsystem.optimizeAngle() * Math.PI/180);
     // if(rot >= .2)
     // {
     //   rot = .2;
     // }
     m_driveSubsystem.drive(0, 0, rot, false);
-    SmartDashboard.putNumber("IMU", m_driveSubsystem.m_imu.getAngle());
+    SmartDashboard.putNumber("IMU", m_driveSubsystem.optimizeAngle());
 
      m_intakeSubsystem.extendIntake();
     ///m_intakeSubsystem.startIntakeMotors();
 
+    //TODO Is this right?
     if(m_driveSubsystem.m_imu.getAngle() >= 180)
     {
       m_isFinished = true;
