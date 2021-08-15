@@ -49,7 +49,7 @@ public class DriveSubsystem extends SubsystemBase
 
     // Odometry class for tracking robot pose
     SwerveDriveOdometry m_odometry =
-        new SwerveDriveOdometry(SwerveDriveModuleConstants.kinematics, Rotation2d.fromDegrees(optimizeAngle()));
+        new SwerveDriveOdometry(SwerveDriveModuleConstants.kinematics, Rotation2d.fromDegrees(m_imu.getAngle()));
 
     public SwerveModule[] modules = new SwerveModule[]
      {

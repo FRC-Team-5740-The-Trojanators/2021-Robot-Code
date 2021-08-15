@@ -68,7 +68,7 @@ public class AutonomousDrive extends CommandBase {
   public void loadTrajectory()
   {
    // m_trajectory = BouncePath1.getTrajectory(); //change path name based on path we want to follow
-    m_trajectory = SlalomPath.getTrajectory(); //change path name based on path we want to follow
+    m_trajectory = FiveMeterPath.getTrajectory(); //change path name based on path we want to follow
 
    /*Galactic Search
   double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
@@ -112,6 +112,14 @@ public class AutonomousDrive extends CommandBase {
    // m_rotController.reset(new TrapezoidProfile.State(0,0)); //(0,0) are position and velocity
    // m_rotController.enableContinuousInput(-Math.PI, Math.PI);
 
+
+//   m_xController = new PIDController(12, 0, .05);
+//   m_yController = new PIDController(12, 0, .05);
+//   m_trapezoidProfile = new TrapezoidProfile.Constraints(600, 6000);
+//   m_rotController = new ProfiledPIDController(10, 0, 0, m_trapezoidProfile);
+//  // m_rotController.reset(new TrapezoidProfile.State(0,0)); //(0,0) are position and velocity
+//  // m_rotController.enableContinuousInput(-Math.PI, Math.PI);
+
     m_driveController = new HolonomicDriveController(m_xController, m_yController, m_rotController);
     m_timer = new Timer();
     m_timer.reset();
@@ -149,7 +157,7 @@ public class AutonomousDrive extends CommandBase {
 
 //      // m_isFinished = true;
 //     }
-// //TODO test the path chunk combination methods
+
 // //THIS COMBINES THE PATH CHUNKS USING VARIOUS IF/ELSE STATEMENTS
 //     if(m_timer.get() <= m_trajectory.getTotalTimeSeconds())
 //     {
@@ -223,7 +231,7 @@ public class AutonomousDrive extends CommandBase {
         m_isFinished = true;
     }
   //   }
- // curX = m_robotPose.getX();
+      // curX = m_robotPose.getX();
       // curY = m_robotPose.getY();
       // goalX = m_goal.poseMeters.getX();
       // goalY = m_goal.poseMeters.getY();
