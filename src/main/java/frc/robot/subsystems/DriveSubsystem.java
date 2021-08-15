@@ -28,10 +28,10 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 @SuppressWarnings("PMD.ExcessiveImports")
 public class DriveSubsystem extends SubsystemBase 
 {
-    NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-    NetworkTableEntry tx = table.getEntry("tx");
-    NetworkTableEntry ty = table.getEntry("ty");
-    NetworkTableEntry ta = table.getEntry("ta");
+    // NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+    // NetworkTableEntry tx = table.getEntry("tx");
+    // NetworkTableEntry ty = table.getEntry("ty");
+    // NetworkTableEntry ta = table.getEntry("ta");
     
     Trajectory m_trajectory; 
 
@@ -88,7 +88,7 @@ public class DriveSubsystem extends SubsystemBase
         for (int i = 0; i < m_states.length; i++) 
         {
             SwerveModule module = modules[i];
-            SmartDashboard.putNumber(String.valueOf(i) + " Drive Velocity", module.getDriveVelocity());
+        //    SmartDashboard.putNumber(String.valueOf(i) + " Drive Velocity", module.getDriveVelocity());
             module.setDesiredState(m_states[i]);
         } 
 

@@ -70,34 +70,34 @@ public class SwerveDriveCommand extends CommandBase
         final var rot =
             -rotLimiter.calculate(getJoystickWithDeadBand(controller.getX(GenericHID.Hand.kRight))
             * SwerveDriveModuleConstants.kMaxAngularSpeed * SwerveDriveModuleConstants.kRotCoefficient);
-            SmartDashboard.putNumber("rot", rot);
+           // SmartDashboard.putNumber("rot", rot);
 
         boolean calibrate = controller.getBumper(GenericHID.Hand.kLeft);
 
         drivetrain.drive(xSpeed, ySpeed, rot, true);
-       //drivetrain.drive(1, 0, 0, false);
+    //    //drivetrain.drive(1, 0, 0, false);
 
-        SmartDashboard.putNumber("Commanded X Velocity", xSpeed);
-        SmartDashboard.putNumber("Commanded Y Velocity", ySpeed);
+    //     SmartDashboard.putNumber("Commanded X Velocity", xSpeed);
+    //     SmartDashboard.putNumber("Commanded Y Velocity", ySpeed);
 
-        SmartDashboard.putNumber("Reading X Velocity LeftFront", drivetrain.getModules()[0].getDriveVelocity());
-        SmartDashboard.putNumber("Reading X Velocity RightFront", drivetrain.getModules()[1].getDriveVelocity());
-        SmartDashboard.putNumber("Reading X Velocity LeftRear", drivetrain.getModules()[2].getDriveVelocity());
-        SmartDashboard.putNumber("Reading X Velocity RightRear", drivetrain.getModules()[3].getDriveVelocity());
+    //     SmartDashboard.putNumber("Reading X Velocity LeftFront", drivetrain.getModules()[0].getDriveVelocity());
+    //     SmartDashboard.putNumber("Reading X Velocity RightFront", drivetrain.getModules()[1].getDriveVelocity());
+    //     SmartDashboard.putNumber("Reading X Velocity LeftRear", drivetrain.getModules()[2].getDriveVelocity());
+    //     SmartDashboard.putNumber("Reading X Velocity RightRear", drivetrain.getModules()[3].getDriveVelocity());
 
-        //SmartDashboard.putNumber("Current X Position", drivetrain.getPose().getX());
-        //SmartDashboard.putNumber("Current Y Position", drivetrain.getPose().getY());
+    //     //SmartDashboard.putNumber("Current X Position", drivetrain.getPose().getX());
+    //     //SmartDashboard.putNumber("Current Y Position", drivetrain.getPose().getY());
 
-        SmartDashboard.putNumber("DRIVE P", drivetrain.modules[0].getDrivePIDF("p"));
+    //     SmartDashboard.putNumber("DRIVE P", drivetrain.modules[0].getDrivePIDF("p"));
 
-        SmartDashboard.putNumber(("Get Position LeftFront"), drivetrain.getModules()[0].getSparkMaxPosition());
-        SmartDashboard.putNumber(("Get Position RightFront"), drivetrain.getModules()[1].getSparkMaxPosition());
-        SmartDashboard.putNumber(("Get Position LeftRear"), drivetrain.getModules()[2].getSparkMaxPosition());
-        SmartDashboard.putNumber(("Get Position RightRear"), drivetrain.getModules()[3].getSparkMaxPosition());
+    //     SmartDashboard.putNumber(("Get Position LeftFront"), drivetrain.getModules()[0].getSparkMaxPosition());
+    //     SmartDashboard.putNumber(("Get Position RightFront"), drivetrain.getModules()[1].getSparkMaxPosition());
+    //     SmartDashboard.putNumber(("Get Position LeftRear"), drivetrain.getModules()[2].getSparkMaxPosition());
+    //     SmartDashboard.putNumber(("Get Position RightRear"), drivetrain.getModules()[3].getSparkMaxPosition());
 
-        SmartDashboard.putNumber(("Get Rotation LeftFront"), drivetrain.getModules()[0].getRotationDegrees());
-        SmartDashboard.putNumber(("Get Rotation RightFront"), drivetrain.getModules()[1].getRotationDegrees());
-        SmartDashboard.putNumber(("Get Rotation LeftRear"), drivetrain.getModules()[2].getRotationDegrees());
-        SmartDashboard.putNumber(("Get Rotation RightRear"), drivetrain.getModules()[3].getRotationDegrees());
+    //     SmartDashboard.putNumber(("Get Rotation LeftFront"), drivetrain.getModules()[0].getRotationDegrees());
+    //     SmartDashboard.putNumber(("Get Rotation RightFront"), drivetrain.getModules()[1].getRotationDegrees());
+    //     SmartDashboard.putNumber(("Get Rotation LeftRear"), drivetrain.getModules()[2].getRotationDegrees());
+    //     SmartDashboard.putNumber(("Get Rotation RightRear"), drivetrain.getModules()[3].getRotationDegrees());
     }
 }
