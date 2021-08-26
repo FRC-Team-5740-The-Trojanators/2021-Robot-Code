@@ -344,7 +344,23 @@ public final class Constants
             public static final double k_rotationI = 0;
             public static final double k_rotationD = 0;
             public static final double k_rotationTolerance = 2 * (Math.PI/180);
-
         }
+
+        // Path Following
+    public static final double DRIVE_POS_ERROR_CONTROLLER_P = 12; // 10
+    public static final double DRIVE_POS_ERROR_CONTROLLER_I = 0;
+    public static final double DRIVE_POS_ERROR_CONTROLLER_D = 0.05;
+    public static final double DRIVE_HEADING_ERROR_CONTROLLER_P = 0; // 1.05
+    public static final double DRIVE_HEADING_ERROR_CONTROLLER_I = 0;
+    public static final double DRIVE_HEADING_ERROR_CONTROLLER_D = 0; // 0.02
+    public static final double DRIVE_ROTATION_CONTROLLER_P = 10;// 9
+    public static final double DRIVE_ROTATION_CONTROLLER_I = 0;
+    public static final double DRIVE_ROTATION_CONTROLLER_D = 0;
+    public static final double DRIVE_TARGETING_CONTROLLER_P = 13;// 9
+    public static final double DRIVE_TARGETING_CONTROLLER_I = 0;
+    public static final double DRIVE_TARGETING_CONTROLLER_D = 0.5;
+    public static final double DRIVE_ROTATION_MIN_VELOCITY = 25;
+    public static final double DRIVE_TARGETING_I_ZONE = 2;
+
     }
 }

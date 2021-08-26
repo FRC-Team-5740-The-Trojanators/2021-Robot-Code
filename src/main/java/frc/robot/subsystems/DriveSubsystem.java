@@ -93,8 +93,6 @@ public class DriveSubsystem extends SubsystemBase
         } 
 
     }
-
-
     
     public void resetEncoders(){
         modules[0].resetDriveEncoder();
@@ -209,4 +207,9 @@ public class DriveSubsystem extends SubsystemBase
     {
         m_trajectory = trajectory;
     }
+
+    public Pose2d getPoseMeters() {
+        return m_odometry.getPoseMeters();
+    }
+
 }
