@@ -69,7 +69,7 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
 public class RobotContainer
 {
     // The robot's subsystems and commands are defined here... 
-    private final DriveSubsystem m_robotDrive = new DriveSubsystem(false);
+    public final DriveSubsystem m_robotDrive = new DriveSubsystem(false);
     private final IntakeSubsystem m_intake = new IntakeSubsystem();
     private final AutonomousDrive m_autonomousDrive = new AutonomousDrive(m_robotDrive);
     private final ShooterSubsystem m_shooter = new ShooterSubsystem();

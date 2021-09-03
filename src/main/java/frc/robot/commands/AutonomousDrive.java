@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 import frc.robot.Constants.SwerveDriveModuleConstants;
 import frc.robot.Constants.SwerveDriveModuleConstants.AutoChooser;
 import frc.robot.paths.BarrelRacePath;
@@ -103,25 +104,37 @@ public class AutonomousDrive extends CommandBase {
   }
 
   /** Creates a new AutonomousDrive. */
-  public AutonomousDrive(DriveSubsystem driveSubsystem, String pathname) {
-     addRequirements(driveSubsystem);
-    m_driveSubsystem = driveSubsystem;
-    m_goal = new Trajectory.State();
-    m_isFinished = false;
+  // public AutonomousDrive(DriveSubsystem driveSubsystem, String pathname) {
+  //    addRequirements(driveSubsystem);
+  //   m_driveSubsystem = driveSubsystem;
+  //   m_goal = new Trajectory.State();
+  //   m_isFinished = false;
 
+  //   this.timer = new Timer();
+  //   this.path = SwervePath.fromCSV(pathname);
+
+  //   PIDController posController = new PIDController(SwerveDriveModuleConstants.DRIVE_POS_ERROR_CONTROLLER_P, SwerveDriveModuleConstants.DRIVE_POS_ERROR_CONTROLLER_I, SwerveDriveModuleConstants.DRIVE_POS_ERROR_CONTROLLER_D);
+  //   PIDController headingController = new PIDController(SwerveDriveModuleConstants.DRIVE_HEADING_ERROR_CONTROLLER_P, SwerveDriveModuleConstants.DRIVE_HEADING_ERROR_CONTROLLER_I, SwerveDriveModuleConstants.DRIVE_HEADING_ERROR_CONTROLLER_D);
+  //   ProfiledPIDController rotationController = new ProfiledPIDController(SwerveDriveModuleConstants.DRIVE_ROTATION_CONTROLLER_P, SwerveDriveModuleConstants.DRIVE_ROTATION_CONTROLLER_I, SwerveDriveModuleConstants.DRIVE_ROTATION_CONTROLLER_D,
+  //           new TrapezoidProfile.Constraints(SwerveDriveModuleConstants.kMaxAngularSpeed, SwerveDriveModuleConstants.k_MaxAcceleration));
+  //   this.pathController = new SwervePathController(posController, headingController, rotationController);
+  //   this.ignoreHeading = false;
+
+  // }
+
+
+  public AutonomousDrive(String pathname) {
+    addRequirements(RobotContainer.m_robotDrive);
     this.timer = new Timer();
     this.path = SwervePath.fromCSV(pathname);
-
     PIDController posController = new PIDController(SwerveDriveModuleConstants.DRIVE_POS_ERROR_CONTROLLER_P, SwerveDriveModuleConstants.DRIVE_POS_ERROR_CONTROLLER_I, SwerveDriveModuleConstants.DRIVE_POS_ERROR_CONTROLLER_D);
-    PIDController headingController = new PIDController(SwerveDriveModuleConstants.DRIVE_HEADING_ERROR_CONTROLLER_P, SwerveDriveModuleConstants.DRIVE_HEADING_ERROR_CONTROLLER_I, SwerveDriveModuleConstants.DRIVE_HEADING_ERROR_CONTROLLER_D);
-    ProfiledPIDController rotationController = new ProfiledPIDController(SwerveDriveModuleConstants.DRIVE_ROTATION_CONTROLLER_P, SwerveDriveModuleConstants.DRIVE_ROTATION_CONTROLLER_I, SwerveDriveModuleConstants.DRIVE_ROTATION_CONTROLLER_D,
-            new TrapezoidProfile.Constraints(SwerveDriveModuleConstants.kMaxAngularSpeed, SwerveDriveModuleConstants.k_MaxAcceleration));
-    this.pathController = new SwervePathController(posController, headingController, rotationController);
-    this.ignoreHeading = false;
+      PIDController headingController = new PIDController(SwerveDriveModuleConstants.DRIVE_HEADING_ERROR_CONTROLLER_P, SwerveDriveModuleConstants.DRIVE_HEADING_ERROR_CONTROLLER_I, SwerveDriveModuleConstants.DRIVE_HEADING_ERROR_CONTROLLER_D);
+      ProfiledPIDController rotationController = new ProfiledPIDController(SwerveDriveModuleConstants.DRIVE_ROTATION_CONTROLLER_P, SwerveDriveModuleConstants.DRIVE_ROTATION_CONTROLLER_I, SwerveDriveModuleConstants.DRIVE_ROTATION_CONTROLLER_D,
+              new TrapezoidProfile.Constraints(SwerveDriveModuleConstants.kMaxAngularSpeed, SwerveDriveModuleConstants.k_MaxAcceleration));
+      this.pathController = new SwervePathController(posController, headingController, rotationController);
+      this.ignoreHeading = false;
 
   }
-
-  
 
   // Called when the command is initially scheduled.
   @Override
