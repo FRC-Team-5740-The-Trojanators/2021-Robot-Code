@@ -70,47 +70,18 @@ public class AutonomousDrive extends CommandBase {
   double lastTime;
   boolean ignoreHeading;
 
-  private boolean bounce1done;
-  private boolean bounce2done;
-  private boolean bounce3done;
-  private boolean bounce4done;
-
-  private String pathname;
-
   public void loadTrajectory()
-  {
-    //m_trajectory = BouncePath.getTrajectory(); //change path name based on path we want to follow
-    
-   /*Galactic Search
-  double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
-    
-  if( tx <= AutoChooser.k_RedB + AutoChooser.k_autoTolerance && tx > AutoChooser.k_RedB - AutoChooser.k_autoTolerance)
-    {
-      m_trajectory = RedBPath.getTrajectory();
-    }
-  else if(tx <= AutoChooser.k_RedA + AutoChooser.k_autoTolerance && tx > AutoChooser.k_RedA - AutoChooser.k_autoTolerance)
-    {
-      m_trajectory = RedAPath.getTrajectory();
-    }
-  else if(tx <= AutoChooser.k_BlueA + AutoChooser.k_autoTolerance && tx > AutoChooser.k_BlueA - AutoChooser.k_autoTolerance)
-    {
-      m_trajectory = BlueAPath.getTrajectory();
-    }
-  else if(tx <= AutoChooser.k_BlueB + AutoChooser.k_autoTolerance && tx > AutoChooser.k_BlueB - AutoChooser.k_autoTolerance)
-    {
-      m_trajectory = BlueBPath.getTrajectory();
-    }*/
-  }
+  {}
 
   /** Creates a new AutonomousDrive. */
   public AutonomousDrive(DriveSubsystem driveSubsystem) {
-     addRequirements(driveSubsystem);
+    addRequirements(driveSubsystem);
     m_driveSubsystem = driveSubsystem;
-    m_goal = new Trajectory.State();
+    //m_goal = new Trajectory.State();
     m_isFinished = false;
 
     this.timer = new Timer();
-    this.path = SwervePath.fromCSV(pathname);
+    this.path = SwervePath.fromCSV("Bounce_Path");
 
     PIDController posController = new PIDController(SwerveDriveModuleConstants.DRIVE_POS_ERROR_CONTROLLER_P, SwerveDriveModuleConstants.DRIVE_POS_ERROR_CONTROLLER_I, SwerveDriveModuleConstants.DRIVE_POS_ERROR_CONTROLLER_D);
     PIDController headingController = new PIDController(SwerveDriveModuleConstants.DRIVE_HEADING_ERROR_CONTROLLER_P, SwerveDriveModuleConstants.DRIVE_HEADING_ERROR_CONTROLLER_I, SwerveDriveModuleConstants.DRIVE_HEADING_ERROR_CONTROLLER_D);
@@ -128,14 +99,9 @@ public class AutonomousDrive extends CommandBase {
     timer = new Timer();
     timer.reset();
     timer.start(); 
-  SwervePath.State initialState = path.getInitialState();
-    //loadTrajectory();
+    SwervePath.State initialState = path.getInitialState();
     //m_isFinished = false;
 
-    m_xController = new PIDController(.2, 0, 0);
-    m_yController = new PIDController(.2, 0, 0);
-    m_trapezoidProfile = new TrapezoidProfile.Constraints(SwerveDriveModuleConstants.k_MaxSpeed, SwerveDriveModuleConstants.k_MaxAcceleration);
-    m_rotController = new ProfiledPIDController(.02, 0, 0, m_trapezoidProfile);
    // m_rotController.reset(new TrapezoidProfile.State(0,0)); //(0,0) are position and velocity
    // m_rotController.enableContinuousInput(-Math.PI, Math.PI);
 
@@ -152,160 +118,8 @@ public class AutonomousDrive extends CommandBase {
 
   }
   
-//   public void BouncePath()
-//   {
-//       if (timer.get() <= m_trajectory.getTotalTimeSeconds())
-//       {
-//         bounce1done = false;
-
-//         m_goal = m_trajectory.sample(timer.get());
-//         var m_rotation = m_goal.poseMeters.getRotation();
-//         m_robotPose = m_driveSubsystem.getPose();
-  
-//         ChassisSpeeds adjustedSpeeds = m_driveController.calculate(m_robotPose, m_goal, m_rotation);
-        
-//         m_driveSubsystem.drive(adjustedSpeeds.vxMetersPerSecond, adjustedSpeeds.vyMetersPerSecond, adjustedSpeeds.omegaRadiansPerSecond /* SwerveDriveModuleConstants.k_RobotRadius*/, false);
-      
-//       } else {
-//         m_goal = m_trajectory.getStates().get(m_trajectory.getStates().size() - 1); // ensures last state gets executed
-//         var m_rotation = m_goal.poseMeters.getRotation(); 
-//         m_robotPose = m_driveSubsystem.getPose();
-        
-//         ChassisSpeeds adjustedSpeeds = m_driveController.calculate(m_robotPose, m_goal, m_rotation);
-        
-//         m_driveSubsystem.drive(adjustedSpeeds.vxMetersPerSecond, adjustedSpeeds.vyMetersPerSecond, adjustedSpeeds.omegaRadiansPerSecond, true);
-  
-//         System.out.println("Done First Path!");
-//         bounce1done = true;
-
-//         timer.reset();
-//         m_trajectory = BouncePath2.getTrajectory();
-  
-//        // m_isFinished = true;
-//   }
-// }
-
-// public void BouncePath2(){
-//   if(timer.get() <= m_trajectory.getTotalTimeSeconds())
-//   {
-//     bounce2done = false;
-//     m_goal = m_trajectory.sample(timer.get());
-//     var m_rotation = m_goal.poseMeters.getRotation();
-//     m_robotPose = m_driveSubsystem.getPose();
-
-//     ChassisSpeeds adjustedSpeeds = m_driveController.calculate(m_robotPose, m_goal, m_rotation);
-    
-//     m_driveSubsystem.drive(adjustedSpeeds.vxMetersPerSecond, adjustedSpeeds.vyMetersPerSecond, adjustedSpeeds.omegaRadiansPerSecond /* SwerveDriveModuleConstants.k_RobotRadius*/, false);  
-//   } else {
-//       m_goal = m_trajectory.getStates().get(m_trajectory.getStates().size() - 1); // ensures last state gets executed
-//       var m_rotation = m_goal.poseMeters.getRotation(); 
-//       m_robotPose = m_driveSubsystem.getPose();
-      
-//       ChassisSpeeds adjustedSpeeds = m_driveController.calculate(m_robotPose, m_goal, m_rotation);
-      
-//       m_driveSubsystem.drive(adjustedSpeeds.vxMetersPerSecond, adjustedSpeeds.vyMetersPerSecond, adjustedSpeeds.omegaRadiansPerSecond, true);
-//       System.out.println("Done Second Path!");
-//       bounce2done = true;
-//       timer.reset();
-//       m_trajectory = BouncePath3.getTrajectory();
-
-//     //  m_isFinished = true;
-//   }
-// }
-
-//   public void BouncePath3(){
-//     if(timer.get() <= m_trajectory.getTotalTimeSeconds())
-//     {
-//       bounce3done = false;
-//       m_goal = m_trajectory.sample(timer.get());
-//       var m_rotation = m_goal.poseMeters.getRotation();
-//       m_robotPose = m_driveSubsystem.getPose();
-
-//       ChassisSpeeds adjustedSpeeds = m_driveController.calculate(m_robotPose, m_goal, m_rotation);
-      
-//       m_driveSubsystem.drive(adjustedSpeeds.vxMetersPerSecond, adjustedSpeeds.vyMetersPerSecond, adjustedSpeeds.omegaRadiansPerSecond /* SwerveDriveModuleConstants.k_RobotRadius*/, false);  
-//     } else {
-//         m_goal = m_trajectory.getStates().get(m_trajectory.getStates().size() - 1); // ensures last state gets executed
-//         var m_rotation = m_goal.poseMeters.getRotation(); 
-//         m_robotPose = m_driveSubsystem.getPose();
-        
-//         ChassisSpeeds adjustedSpeeds = m_driveController.calculate(m_robotPose, m_goal, m_rotation);
-        
-//         m_driveSubsystem.drive(adjustedSpeeds.vxMetersPerSecond, adjustedSpeeds.vyMetersPerSecond, adjustedSpeeds.omegaRadiansPerSecond, true);
-//         System.out.println("Done Third Path!");
-         
-//         bounce3done = true;
-//         timer.reset();
-
-//         m_trajectory = BouncePath4.getTrajectory();
-
-//        // m_isFinished = true;
-//     }
-
-//   }
-
-//   public void BouncePath4(){
-
-//     if(timer.get() <= m_trajectory.getTotalTimeSeconds())
-//     {
-//       bounce4done = false;
-//       m_goal = m_trajectory.sample(timer.get());
-//       var m_rotation = m_goal.poseMeters.getRotation();
-//       m_robotPose = m_driveSubsystem.getPose();
-
-//       ChassisSpeeds adjustedSpeeds = m_driveController.calculate(m_robotPose, m_goal, m_rotation);
-      
-//       m_driveSubsystem.drive(adjustedSpeeds.vxMetersPerSecond, adjustedSpeeds.vyMetersPerSecond, adjustedSpeeds.omegaRadiansPerSecond /* SwerveDriveModuleConstants.k_RobotRadius*/, false);  
-//     } else {
-//         m_goal = m_trajectory.getStates().get(m_trajectory.getStates().size() - 1); // ensures last state gets executed
-//         var m_rotation = m_goal.poseMeters.getRotation(); 
-//         m_robotPose = m_driveSubsystem.getPose();
-        
-//         ChassisSpeeds adjustedSpeeds = m_driveController.calculate(m_robotPose, m_goal, m_rotation);
-//         System.out.println("Done Fourth Path!");
-
-//         bounce4done = true;
-//         m_driveSubsystem.drive(adjustedSpeeds.vxMetersPerSecond, adjustedSpeeds.vyMetersPerSecond, adjustedSpeeds.omegaRadiansPerSecond, true);
-//         m_isFinished = true;
-//       }
-//   }
-
-  // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-   
-    // if(bounce1done == false){
-    //   m_isFinished = false;
-    //   BouncePath();
-    // }else if(bounce1done == true && bounce2done == false){
-    //   BouncePath2();
-    // }else if(bounce2done == true && bounce3done == false){
-    //   BouncePath3();
-    // }else if(bounce3done == true && bounce4done == false){
-    //   BouncePath4();
-    // }else{
-    //   m_isFinished = true;
-    // }
-    
-    // if(m_timer.get() <= m_trajectory.getTotalTimeSeconds())
-    // {
-    //   m_goal = m_trajectory.sample(m_timer.get());
-    //   var m_rotation = m_goal.poseMeters.getRotation();
-    //   m_robotPose = m_driveSubsystem.getPose();
-  
-    //   ChassisSpeeds adjustedSpeeds = m_driveController.calculate(m_robotPose, m_goal, m_rotation);
-      
-    //   m_driveSubsystem.drive(adjustedSpeeds.vxMetersPerSecond, adjustedSpeeds.vyMetersPerSecond, adjustedSpeeds.omegaRadiansPerSecond /* SwerveDriveModuleConstants.k_RobotRadius*/, false);  
-    // } else {
-    //     m_goal = m_trajectory.getStates().get(m_trajectory.getStates().size() - 1); // ensures last state gets executed
-    //     var m_rotation = m_goal.poseMeters.getRotation(); 
-    //     m_robotPose = m_driveSubsystem.getPose();
-        
-    //     ChassisSpeeds adjustedSpeeds = m_driveController.calculate(m_robotPose, m_goal, m_rotation);
-        
-    //     m_driveSubsystem.drive(adjustedSpeeds.vxMetersPerSecond, adjustedSpeeds.vyMetersPerSecond, adjustedSpeeds.omegaRadiansPerSecond, true);
-    //      m_isFinished = true;
-    // }
 
     double time = timer.get();
     SwervePath.State desiredState = path.sample(time);
