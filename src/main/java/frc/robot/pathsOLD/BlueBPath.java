@@ -3,7 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 // Written by Team 5470
 
-package frc.robot.paths;
+package frc.robot.pathsOLD;
 
 import java.util.List;
 
@@ -15,23 +15,22 @@ import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import frc.robot.Constants;
 
-/**
- * Blank Path to Copy when making our paths
- */
-public class BlankPath
+public class BlueBPath
 {
-    private static String trajectoryName = "Blank Path"; //!!!! Change this for each new trajectory!
+    private static String trajectoryName = "Blue B Path";
 
     private static TrajectoryConfig trajectoryConfiguration = new TrajectoryConfig(Constants.SwerveDriveModuleConstants.k_MaxSpeed, 3)
                                                             .setKinematics(Constants.SwerveDriveModuleConstants.kinematics);
 
 
                                             // x    y      heading
-    private static Pose2d start = new Pose2d(0.0, 0.0, new Rotation2d(Math.PI/2));
+    private static Pose2d start = new Pose2d(0.381, 1.526, new Rotation2d(0));
 
-    private static Translation2d point1 = new Translation2d(0, 0);
+    private static Translation2d point1 = new Translation2d(4.572, 1.524);
+    private static Translation2d point2 = new Translation2d(5.334, 3.048);
+    private static Translation2d point3 = new Translation2d(7.62, 1.524);
 
-    private static Pose2d end =    new Pose2d(3.25, 3.00, new Rotation2d(Math.PI));
+    private static Pose2d end =    new Pose2d(8.996, 1.524, new Rotation2d(0));
 
     /**
      * Generates the Trajectory
@@ -40,7 +39,7 @@ public class BlankPath
     public static Trajectory getTrajectory()
     {
         return TrajectoryGenerator.generateTrajectory(
-           start, List.of(point1), end,
+           start, List.of(point1, point2, point3), end,
             trajectoryConfiguration);
     }
 

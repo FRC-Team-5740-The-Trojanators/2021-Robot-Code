@@ -3,7 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 // Written by Team 5470
 
-package frc.robot.paths;
+package frc.robot.pathsOLD;
 
 import java.util.List;
 
@@ -15,22 +15,20 @@ import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import frc.robot.Constants;
 
-public class BlueAPath
+public class BouncePath4
 {
-    private static String trajectoryName = "Blue A Path"; 
+    private static String trajectoryName = "Bounce Path 4";
 
     private static TrajectoryConfig trajectoryConfiguration = new TrajectoryConfig(Constants.SwerveDriveModuleConstants.k_MaxSpeed, 3)
                                                             .setKinematics(Constants.SwerveDriveModuleConstants.kinematics);
 
 
                                             // x    y      heading
-    private static Pose2d start = new Pose2d(0.381, 0.762, new Rotation2d(0));
+    private static Pose2d start = new Pose2d(6.85, 3.3, new Rotation2d(0));
 
-    private static Translation2d point1 = new Translation2d(4.572, 0.762);
-    private static Translation2d point2 = new Translation2d(5.334, 3.048);
-    private static Translation2d point3 = new Translation2d(6.858, 2.286);
+    private static  Translation2d point13 = new  Translation2d(7.11, 1.91);
 
-    private static Pose2d end =    new Pose2d(8.996, 2.286, new Rotation2d(0));
+    private static Pose2d end = new Pose2d(8.4, 1.8, new Rotation2d(0));
 
     /**
      * Generates the Trajectory
@@ -39,7 +37,7 @@ public class BlueAPath
     public static Trajectory getTrajectory()
     {
         return TrajectoryGenerator.generateTrajectory(
-           start, List.of(point1, point2, point3), end,
+           start, List.of(point13), end,
             trajectoryConfiguration);
     }
 

@@ -26,18 +26,18 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants;
 import frc.robot.Constants.SwerveDriveModuleConstants;
 import frc.robot.Constants.SwerveDriveModuleConstants.AutoChooser;
-import frc.robot.paths.BarrelRacePath;
-import frc.robot.paths.BlueAPath;
-import frc.robot.paths.BlueBPath;
-import frc.robot.paths.BouncePath;
-import frc.robot.paths.BouncePath1;
-import frc.robot.paths.BouncePath2;
-import frc.robot.paths.BouncePath3;
-import frc.robot.paths.BouncePath4;
-import frc.robot.paths.FiveMeterPath;
-import frc.robot.paths.RedAPath;
-import frc.robot.paths.RedBPath;
-import frc.robot.paths.SlalomPath;
+import frc.robot.pathsOLD.BarrelRacePath;
+import frc.robot.pathsOLD.BlueAPath;
+import frc.robot.pathsOLD.BlueBPath;
+import frc.robot.pathsOLD.BouncePath;
+import frc.robot.pathsOLD.BouncePath1;
+import frc.robot.pathsOLD.BouncePath2;
+import frc.robot.pathsOLD.BouncePath3;
+import frc.robot.pathsOLD.BouncePath4;
+import frc.robot.pathsOLD.FiveMeterPath;
+import frc.robot.pathsOLD.RedAPath;
+import frc.robot.pathsOLD.RedBPath;
+import frc.robot.pathsOLD.SlalomPath;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.SwerveModule;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -81,7 +81,7 @@ public class AutonomousDrive extends CommandBase {
     m_isFinished = false;
 
     this.timer = new Timer();
-    this.path = SwervePath.fromCSV("Bounce_Path");
+    this.path = SwervePath.fromCSV("barrelPath");
 
     PIDController posController = new PIDController(SwerveDriveModuleConstants.DRIVE_POS_ERROR_CONTROLLER_P, SwerveDriveModuleConstants.DRIVE_POS_ERROR_CONTROLLER_I, SwerveDriveModuleConstants.DRIVE_POS_ERROR_CONTROLLER_D);
     PIDController headingController = new PIDController(SwerveDriveModuleConstants.DRIVE_HEADING_ERROR_CONTROLLER_P, SwerveDriveModuleConstants.DRIVE_HEADING_ERROR_CONTROLLER_I, SwerveDriveModuleConstants.DRIVE_HEADING_ERROR_CONTROLLER_D);
@@ -131,25 +131,25 @@ public class AutonomousDrive extends CommandBase {
 
     lastTime = time;
 
-      curX = m_robotPose.getX();
-      curY = m_robotPose.getY();
-      goalX = m_goal.poseMeters.getX();
-      goalY = m_goal.poseMeters.getY();
+      // curX = m_robotPose.getX();
+      // curY = m_robotPose.getY();
+      // goalX = m_goal.poseMeters.getX();
+      // goalY = m_goal.poseMeters.getY();
 
-      SmartDashboard.putNumber("Current X Position", curX);
-      SmartDashboard.putNumber("Current Y Position", curY);
-      SmartDashboard.putNumber("Goal X Position", goalX);
-      SmartDashboard.putNumber("Goal Y Position", goalY);
-      SmartDashboard.putNumber("Error X Position", goalX -  curX);
-      SmartDashboard.putNumber("Error Y Position", goalY -  curY);
+      // SmartDashboard.putNumber("Current X Position", curX);
+      // SmartDashboard.putNumber("Current Y Position", curY);
+      // SmartDashboard.putNumber("Goal X Position", goalX);
+      // SmartDashboard.putNumber("Goal Y Position", goalY);
+      // SmartDashboard.putNumber("Error X Position", goalX -  curX);
+      // SmartDashboard.putNumber("Error Y Position", goalY -  curY);
 
-      SmartDashboard.putNumber("Goal Rotation", m_goal.poseMeters.getRotation().getDegrees());
+      // SmartDashboard.putNumber("Goal Rotation", m_goal.poseMeters.getRotation().getDegrees());
 
-      SmartDashboard.putNumber("Goal Velocity", m_goal.velocityMetersPerSecond);
-      SmartDashboard.putNumber("Error Velocity", m_goal.velocityMetersPerSecond - m_driveSubsystem.getModules()[0].getDriveVelocity());
+      // SmartDashboard.putNumber("Goal Velocity", m_goal.velocityMetersPerSecond);
+      // SmartDashboard.putNumber("Error Velocity", m_goal.velocityMetersPerSecond - m_driveSubsystem.getModules()[0].getDriveVelocity());
 
-      SmartDashboard.putNumber("timer", timer.get());
-      SmartDashboard.putNumber("trajectory time", m_trajectory.getTotalTimeSeconds());
+      // SmartDashboard.putNumber("timer", timer.get());
+      // SmartDashboard.putNumber("trajectory time", m_trajectory.getTotalTimeSeconds());
     }
 
   // Called once the command ends or is interrupted.

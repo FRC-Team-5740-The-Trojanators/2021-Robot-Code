@@ -3,7 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 // Written by Team 5470
 
-package frc.robot.paths;
+package frc.robot.pathsOLD;
 
 import java.util.List;
 
@@ -15,26 +15,24 @@ import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import frc.robot.Constants;
 
-public class RedAPath
+public class BouncePath3
 {
-    private static String trajectoryName = "Red A Path";
+    private static String trajectoryName = "Bounce Path 3";
 
-    private static TrajectoryConfig trajectoryConfiguration = new TrajectoryConfig(1, 1)
+    private static TrajectoryConfig trajectoryConfiguration = new TrajectoryConfig(Constants.SwerveDriveModuleConstants.k_MaxSpeed, 3)
                                                             .setKinematics(Constants.SwerveDriveModuleConstants.kinematics);
 
 
                                             // x    y      heading
-    private static Pose2d start = new Pose2d(-0.381, -2.54, new Rotation2d(0));
+    private static Pose2d start = new Pose2d(4.7, 3.5, new Rotation2d(0));
 
-    private static Translation2d point1 = new Translation2d(-2.286, -2.286);
-    private static Translation2d point2 = new Translation2d(-3.81, -1.524);
-    private static Translation2d point3 = new Translation2d(-4.2, -2.8);
-    private static Translation2d point4 = new Translation2d(-4.35, -3.35);
-    private static Translation2d point5 = new Translation2d(-4.572, -3.81);
-    private static Translation2d point6 = new Translation2d(-5.4, -3.81);
-    private static Translation2d point7 = new Translation2d(-6.7, -3.81);
+    private static  Translation2d point8 = new  Translation2d(4.95, .4);
+    private static  Translation2d point9 = new  Translation2d(6.59, .51);
+    private static  Translation2d point10 = new  Translation2d(6.79, 1.5);
+    private static  Translation2d point11 = new  Translation2d(6.81, 2.7);
+    private static  Translation2d point12 = new  Translation2d(6.85, 3.3);
 
-    private static Pose2d end =   new Pose2d(8.382, -3.81, new Rotation2d(0));
+    private static Pose2d end = new Pose2d(6.85, 3.3, new Rotation2d(0));
 
     /**
      * Generates the Trajectory
@@ -43,7 +41,7 @@ public class RedAPath
     public static Trajectory getTrajectory()
     {
         return TrajectoryGenerator.generateTrajectory(
-            start, List.of(point1, point2 ,point3, point4, point5, point6, point7), end,
+           start, List.of(point8, point9, point10, point11, point12), end,
             trajectoryConfiguration);
     }
 

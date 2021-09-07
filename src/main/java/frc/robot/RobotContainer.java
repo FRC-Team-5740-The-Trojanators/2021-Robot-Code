@@ -28,18 +28,6 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import frc.robot.subsystems.SwerveModule;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.paths.BarrelRacePath;
-import frc.robot.paths.BlueAPath;
-import frc.robot.paths.BlueBPath;
-import frc.robot.paths.BouncePath;
-import frc.robot.paths.BouncePath1;
-import frc.robot.paths.FiveMeterPath;
-import frc.robot.paths.RedAPath;
-import frc.robot.paths.RedBPath;
-import frc.robot.paths.SlalomPath;
-import frc.robot.paths.TrajectoriesExporter;
-
-
 import frc.robot.commands.ForceExtendHood;
 import frc.robot.commands.ForceRetractHood;
 import frc.robot.commands.HoodDefaultCommand;
@@ -47,6 +35,16 @@ import frc.robot.commands.HoodMoveCommand;
 import frc.robot.commands.IndexerCommand;
 import frc.robot.commands.SwerveDriveCommand;
 import frc.robot.commands.TargetCommand;
+import frc.robot.pathsOLD.BarrelRacePath;
+import frc.robot.pathsOLD.BlueAPath;
+import frc.robot.pathsOLD.BlueBPath;
+import frc.robot.pathsOLD.BouncePath;
+import frc.robot.pathsOLD.BouncePath1;
+import frc.robot.pathsOLD.FiveMeterPath;
+import frc.robot.pathsOLD.RedAPath;
+import frc.robot.pathsOLD.RedBPath;
+import frc.robot.pathsOLD.SlalomPath;
+import frc.robot.pathsOLD.TrajectoriesExporter;
 import frc.robot.commands.FlyWheelCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IndexerSubsystem;
