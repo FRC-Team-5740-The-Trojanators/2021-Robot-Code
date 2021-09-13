@@ -347,9 +347,9 @@ public final class Constants
         }
 
         // Path Following
-    public static final double DRIVE_POS_ERROR_CONTROLLER_P = 12; // 10
+    public static final double DRIVE_POS_ERROR_CONTROLLER_P = 15.28; // 10
     public static final double DRIVE_POS_ERROR_CONTROLLER_I = 0;
-    public static final double DRIVE_POS_ERROR_CONTROLLER_D = 0.05;
+    public static final double DRIVE_POS_ERROR_CONTROLLER_D = .05;
     public static final double DRIVE_HEADING_ERROR_CONTROLLER_P = 0; // 1.05
     public static final double DRIVE_HEADING_ERROR_CONTROLLER_I = 0;
     public static final double DRIVE_HEADING_ERROR_CONTROLLER_D = 0; // 0.02
