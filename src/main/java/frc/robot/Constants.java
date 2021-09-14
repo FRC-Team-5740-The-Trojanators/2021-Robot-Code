@@ -81,7 +81,7 @@ public final class Constants
         public static final double k_RobotRadius = .4131; //distance from center of robot to the wheel in m
         
         public static final double k_MaxSpeed = Units.feetToMeters(8); // unit is m/s
-        public static final double k_MaxAcceleration = 5; // unit is m/s/s (aka, m/s^2)
+        public static final double k_MaxAcceleration = 16.4; // unit is m/s/s (aka, m/s^2)
         
         public static final double kXYjoystickCoefficient = .5;
         public static final double kMaxAngularSpeed = Units.feetToMeters(8) / k_RobotRadius; //Gives in radians / s (/s is implied);
