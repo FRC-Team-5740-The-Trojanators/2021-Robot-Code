@@ -39,6 +39,8 @@ public class FlyWheelCommand extends CommandBase {
     m_ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
 
     m_flyWheel.setFlywheelRPM((int) m_flyWheel.flywheelSpeedFinder(m_ty));
+    //m_flyWheel.setFlywheelRPM(4900);
+
     SmartDashboard.putNumber("Flywheel Velocity", m_flyWheel.getFlywheelVelocity());
   }
 

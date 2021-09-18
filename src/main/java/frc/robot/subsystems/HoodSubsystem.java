@@ -120,9 +120,9 @@ public class HoodSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("hood angle", angle);
         SmartDashboard.putNumber("distance inches", distance);
 
-        if (distance > 250)
+        if (distance > 283)
         {
-            distance = 250;
+            distance = 283;
         }
         
         if (distance < 50)
@@ -132,8 +132,10 @@ public class HoodSubsystem extends SubsystemBase {
 
         double hoodPosition;
 
-        hoodPosition = 0.000002775*(Math.pow(distance, 4)) - 0.0013*(Math.pow(distance, 3)) + 0.081*(Math.pow(distance, 2)) + 28.303*distance - 60.17;
+        //hoodPosition = 0.000002775*(Math.pow(distance, 4)) - 0.0013*(Math.pow(distance, 3)) + 0.081*(Math.pow(distance, 2)) + 28.303*distance - 60.17;
+        hoodPosition = 0.0006*(Math.pow(distance, 3)) - 0.3463*(Math.pow(distance, 2)) + 64.618*distance - 1144.3;
 
+      // hoodPosition = 2760;
         SmartDashboard.putNumber("Hood Commanded Position", hoodPosition);
 
         return hoodPosition;

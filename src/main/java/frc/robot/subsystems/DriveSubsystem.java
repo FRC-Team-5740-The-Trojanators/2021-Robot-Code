@@ -93,6 +93,23 @@ public class DriveSubsystem extends SubsystemBase
         } 
 
     }
+
+    public void teleDrive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) 
+    {       
+      m_states =
+        SwerveDriveModuleConstants.kinematics.toSwerveModuleStates(
+            fieldRelative
+                ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, Rotation2d.fromDegrees(m_imu.getAngle()))
+                : new ChassisSpeeds(xSpeed, ySpeed, rot));
+        SwerveDriveKinematics.normalizeWheelSpeeds(m_states, SwerveDriveModuleConstants.k_MaxTeleSpeed);
+        for (int i = 0; i < m_states.length; i++) 
+        {
+            SwerveModule module = modules[i];
+            SmartDashboard.putNumber(String.valueOf(i) + " Drive Velocity", module.getDriveVelocity());
+            module.setDesiredState(m_states[i]);
+        } 
+
+    }
     
     public void resetEncoders(){
         modules[0].resetDriveEncoder();

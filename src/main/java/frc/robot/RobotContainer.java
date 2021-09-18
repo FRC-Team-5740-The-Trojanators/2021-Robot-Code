@@ -132,7 +132,7 @@ public class RobotContainer
         //forceRetractHood = new POVButton(m_driverController, HIDConstants.kDR);
         //TestButton = new JoystickButton(m_driverController, HIDConstants.kLB);
 
-        intakeFlip.toggleWhenPressed(new StartEndCommand(m_intake::extendIntake, m_intake::retractIntake, m_intake));
+        intakeFlip.toggleWhenPressed(new StartEndCommand(m_intake::retractIntake, m_intake::extendIntake, m_intake));
         intakeRun.whileHeld(m_intakeRun);
         intakeReverse.whileHeld(m_intakeReverse);
         //forceExtendHood.whileHeld(m_forceExtend);

@@ -54,13 +54,13 @@ public class SwerveDriveCommand extends CommandBase
         // Get the x speed.
         final var xSpeed =
             -xspeedLimiter.calculate(getJoystickWithDeadBand(controller.getY(GenericHID.Hand.kLeft))
-            * SwerveDriveModuleConstants.k_MaxSpeed * SwerveDriveModuleConstants.kXYjoystickCoefficient);
+            * SwerveDriveModuleConstants.k_MaxTeleSpeed * SwerveDriveModuleConstants.kXYjoystickCoefficient);
 
         // Get the y speed or sideways/strafe speed. Xbox controllers
         // return positive values when you pull to the right by default.
         final var ySpeed =
             -yspeedLimiter.calculate(getJoystickWithDeadBand(controller.getX(GenericHID.Hand.kLeft))
-            * SwerveDriveModuleConstants.k_MaxSpeed * SwerveDriveModuleConstants.kXYjoystickCoefficient);
+            * SwerveDriveModuleConstants.k_MaxTeleSpeed * SwerveDriveModuleConstants.kXYjoystickCoefficient);
             //SmartDashboard.putNumber("yspeed", ySpeed);
 
         // Get the rate of angular rotation. We are inverting this because we want a
@@ -74,7 +74,7 @@ public class SwerveDriveCommand extends CommandBase
 
         boolean calibrate = controller.getBumper(GenericHID.Hand.kLeft);
 
-        drivetrain.drive(xSpeed, ySpeed, rot, true);
+        drivetrain.teleDrive(xSpeed, ySpeed, rot, true);
        //drivetrain.drive(1, 0, 0, false);
 
         SmartDashboard.putNumber("Commanded X Velocity", xSpeed);

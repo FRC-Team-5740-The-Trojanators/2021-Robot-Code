@@ -93,9 +93,18 @@ public class FlyWheelSubsystem extends SubsystemBase {
 
         double flywheelSpeed;
 
-        if(distance < 98)
+        // if(distance < 98)
+        // {
+        //   flywheelSpeed = 0.0591*(Math.pow(distance, 3)) - 12.751*(Math.pow(distance, 2)) + 922.47*distance - 18226;
+        // }
+        // else
+        // {
+        //   flywheelSpeed = 5400;
+        // }
+
+        if(distance < 78)
         {
-          flywheelSpeed = 0.0591*(Math.pow(distance, 3)) - 12.751*(Math.pow(distance, 2)) + 922.47*distance - 18226;
+          flywheelSpeed = 47.449*distance + 1746.4;
         }
         else
         {
@@ -103,6 +112,8 @@ public class FlyWheelSubsystem extends SubsystemBase {
         }
 
         SmartDashboard.putNumber("Flywheel Commanded Velocity", flywheelSpeed);
+        SmartDashboard.putNumber("distanceNew", distance);
+
 
         return flywheelSpeed;
   }

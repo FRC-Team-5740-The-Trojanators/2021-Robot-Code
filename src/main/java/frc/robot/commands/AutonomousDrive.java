@@ -77,11 +77,11 @@ public class AutonomousDrive extends CommandBase {
   public AutonomousDrive(DriveSubsystem driveSubsystem) {
     addRequirements(driveSubsystem);
     m_driveSubsystem = driveSubsystem;
-    //m_goal = new Trajectory.State();
+    //m_goal = new Trajectory.State(); :}
     m_isFinished = false;
 
     this.timer = new Timer();
-    this.path = SwervePath.fromCSV("smileTwo");
+    this.path = SwervePath.fromCSV("barrelPath");
 
     PIDController posController = new PIDController(SwerveDriveModuleConstants.DRIVE_POS_ERROR_CONTROLLER_P, SwerveDriveModuleConstants.DRIVE_POS_ERROR_CONTROLLER_I, SwerveDriveModuleConstants.DRIVE_POS_ERROR_CONTROLLER_D);
     PIDController headingController = new PIDController(SwerveDriveModuleConstants.DRIVE_HEADING_ERROR_CONTROLLER_P, SwerveDriveModuleConstants.DRIVE_HEADING_ERROR_CONTROLLER_I, SwerveDriveModuleConstants.DRIVE_HEADING_ERROR_CONTROLLER_D);

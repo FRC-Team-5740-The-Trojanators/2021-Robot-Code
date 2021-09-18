@@ -75,13 +75,14 @@ public final class Constants
         // Distance between centers of right and left wheels on robot; unit is meters
         public static final double k_TrackWidth = 0.5842;
 
-        // Distance between front and back wheels on robot; unit is meters
+        // Distance between front and back wheels on robot; unit is meters 
         public static final double k_WheelBase = 0.5842;
 
         public static final double k_RobotRadius = .4131; //distance from center of robot to the wheel in m
         
-        public static final double k_MaxSpeed = Units.feetToMeters(8); // unit is m/s
-        public static final double k_MaxAcceleration = 16.4; // unit is m/s/s (aka, m/s^2)
+        public static final double k_MaxSpeed = Units.feetToMeters(5); // unit is m/s ; actual max is 12
+        public static final double k_MaxTeleSpeed = Units.feetToMeters(15);
+        public static final double k_MaxAcceleration = Units.feetToMeters(8); // unit is m/s/s (aka, m/s^2)
         
         public static final double kXYjoystickCoefficient = .5;
         public static final double kMaxAngularSpeed = Units.feetToMeters(8) / k_RobotRadius; //Gives in radians / s (/s is implied);
@@ -277,7 +278,7 @@ public final class Constants
             public static final double k_maxFlywheelOutput = 1.0;
             public static final double k_rampTime = 0.35;
 
-            public static final double k_aimingP = 1;
+            public static final double k_aimingP = 1.1;
             public static final double k_aimingI = 0.0;
             public static final double k_aimingD = 1;
             public static final double k_aimTolerance = .5 * (Math.PI/180);
@@ -333,7 +334,7 @@ public final class Constants
             public static final double k_greenEncoder = 512; //ABS encoder = 0.95;
             public static final double k_closestEncoder = 307; //ABS encoder = 0.85;
 
-            public static final double k_retractAbsSetpoint = .7; //Rotations
+            public static final double k_retractAbsSetpoint = .1; //Rotations
             public static final double k_retractQuadSetpoint = 0; //Ticks
             public static final double k_extendQuadSetpoint = 3750; //Ticks
             public static final double k_quadTicksPerRotation = 2048; 
@@ -347,7 +348,7 @@ public final class Constants
         }
 
         // Path Following
-    public static final double DRIVE_POS_ERROR_CONTROLLER_P = 15.28; // 10
+    public static final double DRIVE_POS_ERROR_CONTROLLER_P = 17; // 10
     public static final double DRIVE_POS_ERROR_CONTROLLER_I = 0;
     public static final double DRIVE_POS_ERROR_CONTROLLER_D = .05;
     public static final double DRIVE_HEADING_ERROR_CONTROLLER_P = 0; // 1.05

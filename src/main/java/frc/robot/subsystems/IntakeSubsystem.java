@@ -42,12 +42,12 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public void extendIntake()
   {
-      m_intakeSolenoid.set(kForward);
+      m_intakeSolenoid.set(kReverse);
   }
 
   public void retractIntake()
   {
-    m_intakeSolenoid.set(kReverse);
+    m_intakeSolenoid.set(kForward);
   }
 
   public void startIntakeMotors()
