@@ -4,9 +4,13 @@
 
 package frc.robot.commands;
 
+import java.io.IOException;
+import java.nio.file.Path;
+
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
@@ -20,6 +24,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.controller.HolonomicDriveController;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Subsystem;
@@ -44,9 +49,9 @@ import frc.robot.subsystems.IntakeSubsystem;
 import lib.swerve.SwervePath;
 import lib.swerve.SwervePathController;
 
-public class AutonomousDrive extends CommandBase {
+public class AutonomousDriveWeaver extends CommandBase {
 
-  private Trajectory m_trajectory; 
+  //private Trajectory m_trajectory; 
 
   private final DriveSubsystem m_driveSubsystem;
 
@@ -59,37 +64,32 @@ public class AutonomousDrive extends CommandBase {
   private Trajectory.State m_goal;
   private Boolean m_isFinished;
   private Pose2d m_robotPose;
-  private double curX;
-  private double goalX;
-  private double curY;
-  private double goalY;
 
-  private Timer timer;
-  SwervePath path;
-  SwervePathController pathController;
-  double lastTime;
-  boolean ignoreHeading;
+  //private Timer timer;
+  // SwervePath path;
+  // SwervePathController pathController;
+  // double lastTime;
+  // boolean ignoreHeading;
 
-  public void loadTrajectory()
-  {}
+  
 
   /** Creates a new AutonomousDrive. */
-  public AutonomousDrive(DriveSubsystem driveSubsystem) {
+  public AutonomousDriveWeaver(DriveSubsystem driveSubsystem) {
     addRequirements(driveSubsystem); 
     m_driveSubsystem = driveSubsystem;
-    //m_goal = new Trajectory.State(); :}
+    m_goal = new Trajectory.State();
     m_isFinished = false;
 
-    this.timer = new Timer();
-    this.path = SwervePath.fromCSV("InfAuto");
+    // this.timer = new Timer();
+    // this.path = SwervePath.fromCSV("InfAuto");
 
 
     PIDController posController = new PIDController(SwerveDriveModuleConstants.DRIVE_POS_ERROR_CONTROLLER_P, SwerveDriveModuleConstants.DRIVE_POS_ERROR_CONTROLLER_I, SwerveDriveModuleConstants.DRIVE_POS_ERROR_CONTROLLER_D);
     PIDController headingController = new PIDController(SwerveDriveModuleConstants.DRIVE_HEADING_ERROR_CONTROLLER_P, SwerveDriveModuleConstants.DRIVE_HEADING_ERROR_CONTROLLER_I, SwerveDriveModuleConstants.DRIVE_HEADING_ERROR_CONTROLLER_D);
     ProfiledPIDController rotationController = new ProfiledPIDController(SwerveDriveModuleConstants.DRIVE_ROTATION_CONTROLLER_P, SwerveDriveModuleConstants.DRIVE_ROTATION_CONTROLLER_I, SwerveDriveModuleConstants.DRIVE_ROTATION_CONTROLLER_D,
             new TrapezoidProfile.Constraints(SwerveDriveModuleConstants.kMaxAngularSpeed, SwerveDriveModuleConstants.k_MaxAcceleration));
-    this.pathController = new SwervePathController(posController, headingController, rotationController);
-    this.ignoreHeading = false;
+    // this.pathController = new SwervePathController(posController, headingController, rotationController);
+    // this.ignoreHeading = false;
 
   }
 
@@ -97,24 +97,24 @@ public class AutonomousDrive extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    timer = new Timer();
-    timer.reset();
-    timer.start(); 
-    SwervePath.State initialState = path.getInitialState();
+    // timer = new Timer();
+    // timer.reset();
+    // timer.start(); 
+    // SwervePath.State initialState = path.getInitialState();
     //m_isFinished = false;
 
    // m_rotController.reset(new TrapezoidProfile.State(0,0)); //(0,0) are position and velocity
    // m_rotController.enableContinuousInput(-Math.PI, Math.PI);
 
     //m_driveController = new HolonomicDriveController(m_xController, m_yController, m_rotController);
-    m_driveSubsystem.resetOdometry(new Pose2d(m_driveSubsystem.getPoseMeters().getTranslation(), initialState.getRotation()));
+    //m_driveSubsystem.resetOdometry(new Pose2d(m_driveSubsystem.getPoseMeters().getTranslation(), initialState.getRotation()));
     m_driveSubsystem.resetEncoders();
-    pathController.reset(m_driveSubsystem.getPoseMeters());
+    // pathController.reset(m_driveSubsystem.getPoseMeters());
 
-    lastTime = 0;
+    // lastTime = 0;
 
-   // m_driveSubsystem.resetOdometry(new Pose2d(new Translation2d(0, 0), new Rotation2d(0)));
-    //m_driveSubsystem.resetOdometry(m_trajectory.getInitialPose());
+    //m_driveSubsystem.resetOdometry(new Pose2d(new Translation2d(0, 0), new Rotation2d(0)));
+   // m_driveSubsystem.resetOdometry(m_trajectory.getInitialPose());
     
 
   }
@@ -122,15 +122,15 @@ public class AutonomousDrive extends CommandBase {
   @Override
   public void execute() {
 
-    double time = timer.get();
-    SwervePath.State desiredState = path.sample(time);
+    // double time = timer.get();
+    // SwervePath.State desiredState = path.sample(time);
 
-    if(ignoreHeading) desiredState.rotation = new Rotation2d(0);
+    // if(ignoreHeading) desiredState.rotation = new Rotation2d(0);
 
-    ChassisSpeeds targetSpeeds = pathController.calculate(m_driveSubsystem.getPoseMeters(), desiredState, time - lastTime, timer.hasElapsed(0.1));
-    m_driveSubsystem.drive(targetSpeeds.vxMetersPerSecond, targetSpeeds.vyMetersPerSecond, targetSpeeds.omegaRadiansPerSecond, false);
+    // ChassisSpeeds targetSpeeds = pathController.calculate(m_driveSubsystem.getPoseMeters(), desiredState, time - lastTime, timer.hasElapsed(0.1));
+    // m_driveSubsystem.drive(targetSpeeds.vxMetersPerSecond, targetSpeeds.vyMetersPerSecond, targetSpeeds.omegaRadiansPerSecond, false);
 
-    lastTime = time;
+    // lastTime = time;
 
       // curX = m_robotPose.getX();
       // curY = m_robotPose.getY();
@@ -156,15 +156,15 @@ public class AutonomousDrive extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    timer.stop();
+   // timer.stop();
     m_driveSubsystem.drive(0, 0, 0, false);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    //return m_isFinished;
-    return timer.hasElapsed(path.getRuntime());
+    return m_isFinished;
+   // return timer.hasElapsed(path.getRuntime());
 
   }
 }

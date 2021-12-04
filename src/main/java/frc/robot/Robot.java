@@ -4,7 +4,14 @@
 
 package frc.robot;
 
+import java.io.IOException;
+import java.nio.file.Path;
+
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.trajectory.Trajectory;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -20,6 +27,8 @@ public class Robot extends TimedRobot
 
     private RobotContainer m_robotContainer;
 
+    String trajectoryJSON = "paths/Unnamed.wpilib.json";
+    Trajectory trajectory = new Trajectory();
     /**
      * This function is run when the robot is first started up and should be used for any
      * initialization code.
@@ -29,6 +38,17 @@ public class Robot extends TimedRobot
     {
         // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
         // autonomous chooser on the dashboard.
+        
+        try 
+        {
+            Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
+            trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+            System.out.println("it works");
+        }catch (IOException ex) 
+        {
+            DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
+        }
+
         m_robotContainer = new RobotContainer();
     }
 

@@ -278,10 +278,10 @@ public final class Constants
             public static final double k_maxFlywheelOutput = 1.0;
             public static final double k_rampTime = 0.35;
 
-            public static final double k_aimingP = 1.1;
+            public static final double k_aimingP = 1.3;
             public static final double k_aimingI = 0.0;
             public static final double k_aimingD = 1;
-            public static final double k_aimTolerance = .5 * (Math.PI/180);
+            public static final double k_aimTolerance = 1 * (Math.PI/180);
         }
         
         public static final class HexEncoderInputs
@@ -334,7 +334,7 @@ public final class Constants
             public static final double k_greenEncoder = 512; //ABS encoder = 0.95;
             public static final double k_closestEncoder = 307; //ABS encoder = 0.85;
 
-            public static final double k_retractAbsSetpoint = .1; //Rotations
+            public static final double k_retractAbsSetpoint = .347; //.1; //Rotations
             public static final double k_retractQuadSetpoint = 0; //Ticks
             public static final double k_extendQuadSetpoint = 3750; //Ticks
             public static final double k_quadTicksPerRotation = 2048; 
@@ -363,5 +363,5 @@ public final class Constants
     public static final double DRIVE_ROTATION_MIN_VELOCITY = 25;
     public static final double DRIVE_TARGETING_I_ZONE = 2;
 
-    }
+   }
 }

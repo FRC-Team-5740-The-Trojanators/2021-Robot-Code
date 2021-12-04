@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.HIDConstants;
 import frc.robot.commands.AutonomousDrive;
-
+import frc.robot.commands.AutonomousDriveWeaver;
 import frc.robot.commands.IntakeFlip;
 import frc.robot.commands.IntakeRun;
 import frc.robot.commands.RotateRobot;
@@ -33,6 +33,7 @@ import frc.robot.commands.ForceRetractHood;
 import frc.robot.commands.HoodDefaultCommand;
 import frc.robot.commands.HoodMoveCommand;
 import frc.robot.commands.IndexerCommand;
+import frc.robot.commands.IndexerCommandWait;
 import frc.robot.commands.SwerveDriveCommand;
 import frc.robot.commands.TargetCommand;
 import frc.robot.pathsOLD.BarrelRacePath;
@@ -48,6 +49,7 @@ import frc.robot.pathsOLD.TrajectoriesExporter;
 import frc.robot.commands.FlyWheelCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IndexerSubsystem;
+import frc.robot.subsystems.IndexerSubsystemWait;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.FlyWheelSubsystem;
 import frc.robot.subsystems.SwerveModule;
@@ -69,11 +71,13 @@ public class RobotContainer
     // The robot's subsystems and commands are defined here... 
     public final DriveSubsystem m_robotDrive = new DriveSubsystem(false);
     private final IntakeSubsystem m_intake = new IntakeSubsystem();
-    private final AutonomousDrive m_autonomousDrive = new AutonomousDrive(m_robotDrive);
+    //private final AutonomousDrive m_autonomousDrive = new AutonomousDrive(m_robotDrive);
+    private final AutonomousDriveWeaver m_autoWeave = new AutonomousDriveWeaver(m_robotDrive);
     private final ShooterSubsystem m_shooter = new ShooterSubsystem();
     private final HoodSubsystem m_hood = new HoodSubsystem();
     private final IndexerSubsystem m_indexer = new IndexerSubsystem();
     private final FlyWheelSubsystem m_flywheel = new FlyWheelSubsystem();
+    private final IndexerSubsystemWait m_indexWaiting = new IndexerSubsystemWait();
 
     // The driver's controller
     XboxController m_driverController = new XboxController(HIDConstants.k_DriverControllerPort);
@@ -83,6 +87,7 @@ public class RobotContainer
     private final IntakeReverse m_intakeReverse = new IntakeReverse(m_intake);
     private final TargetCommand m_target = new TargetCommand(m_shooter, m_robotDrive);
     private final IndexerCommand m_index = new IndexerCommand(m_indexer);
+    private final IndexerCommandWait m_indexWait = new IndexerCommandWait(m_indexWaiting);
     private final HoodMoveCommand m_moveHood = new HoodMoveCommand(m_hood);
     //private final ForceExtendHood m_forceExtend = new ForceExtendHood(m_hood);
     //private final ForceRetractHood m_forceRetract = new ForceRetractHood(m_hood);
@@ -91,6 +96,8 @@ public class RobotContainer
     
     //Command Groups
     private final ParallelCommandGroup spinupCommandGroup = new ParallelCommandGroup(m_flyWheelCommand, m_moveHood);
+    //private final ParallelCommandGroup spinupAndIndexCommandGroup = new ParallelCommandGroup(spinupCommandGroup, m_indexWait);
+   // private final ParallelCommandGroup autoShootCommandGroup = new ParallelCommandGroup(m_target, spinupAndIndexCommandGroup);
     //private final SequentialCommandGroup galacticSearchCommandGroup = new SequentialCommandGroup(m_rotateRobot, m_autonomousDrive);
 
     //The Button Binding Names
@@ -153,7 +160,9 @@ public class RobotContainer
     {
         // An ExampleCommand will run in autonomous
         //return galacticSearchCommandGroup;
-        return m_autonomousDrive;
+        //return m_autonomousDrive;
+        return m_autoWeave;
+        //return null;
 
     }
 }
