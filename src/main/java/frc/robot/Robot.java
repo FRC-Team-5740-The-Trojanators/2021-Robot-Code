@@ -28,7 +28,7 @@ public class Robot extends TimedRobot
     private RobotContainer m_robotContainer;
 
     String trajectoryJSON = "paths/Unnamed.wpilib.json";
-    Trajectory trajectory = new Trajectory();
+    static Trajectory trajectory = new Trajectory();
     /**
      * This function is run when the robot is first started up and should be used for any
      * initialization code.
@@ -50,6 +50,7 @@ public class Robot extends TimedRobot
         }
 
         m_robotContainer = new RobotContainer();
+
     }
 
     /**
@@ -120,4 +121,8 @@ public class Robot extends TimedRobot
     /** This function is called periodically during test mode. */
     @Override
     public void testPeriodic() {}
+
+    public static Trajectory getTrajectory(){
+        return trajectory;
+    }
 }
