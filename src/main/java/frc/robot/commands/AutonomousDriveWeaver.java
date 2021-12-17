@@ -111,7 +111,7 @@ public class AutonomousDriveWeaver extends CommandBase {
     if(time < m_timeGoal)
     {
 /* TODO fix this bad code to use trajectory state in calculate function */
-      ChassisSpeeds targetSpeeds = pathController.calculate(m_driveSubsystem.getPoseMeters(), m_desiredState.poseMeters, time - lastTime, timer.hasElapsed(0.1));
+      ChassisSpeeds targetSpeeds = pathController.calculate(m_driveSubsystem.getPoseMeters(), m_desiredState, time - lastTime, timer.hasElapsed(0.1));
       m_driveSubsystem.drive(targetSpeeds.vxMetersPerSecond, targetSpeeds.vyMetersPerSecond, targetSpeeds.omegaRadiansPerSecond, false);
   
       lastTime = time;
