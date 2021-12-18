@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.pathsOLD.TrajectoriesExporter;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -27,8 +28,8 @@ public class Robot extends TimedRobot
 
     private RobotContainer m_robotContainer;
 
-    String trajectoryJSON = "paths/Unnamed.wpilib.json";
-    static Trajectory trajectory = new Trajectory();
+    // String trajectoryJSON = "../java/frc/robot/pathCSV/pathweaver.wpilib.json";
+    // static Trajectory trajectory = new Trajectory();
     /**
      * This function is run when the robot is first started up and should be used for any
      * initialization code.
@@ -39,17 +40,20 @@ public class Robot extends TimedRobot
         // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
         // autonomous chooser on the dashboard.
         
-        try 
-        {
-            Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
-            trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-            System.out.println("it works");
-        }catch (IOException ex) 
-        {
-            DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
-        }
+        // try 
+        // {
+        //     Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
+        //     trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
 
-        m_robotContainer = new RobotContainer();
+        //     TrajectoriesExporter.exportTrajectoryToCSV(trajectory, "pathweaver");
+
+        //     System.out.println("it works");
+        // }catch (IOException ex) 
+        // {
+        //     DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
+        // }
+
+      m_robotContainer = new RobotContainer();
 
     }
 
@@ -122,7 +126,7 @@ public class Robot extends TimedRobot
     @Override
     public void testPeriodic() {}
 
-    public static Trajectory getTrajectory(){
-        return trajectory;
-    }
+    // public static Trajectory getTrajectory(){
+    //     //return trajectory;
+    // }
 }

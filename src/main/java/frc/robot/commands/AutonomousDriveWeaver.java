@@ -33,6 +33,7 @@ import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.Constants.SwerveDriveModuleConstants;
 import frc.robot.Constants.SwerveDriveModuleConstants.AutoChooser;
+import frc.robot.pathsOLD.TrajectoriesExporter;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.SwerveModule;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -56,6 +57,8 @@ public class AutonomousDriveWeaver extends CommandBase {
   private Pose2d m_robotPose;
   private double m_timeGoal;
   private State m_desiredState;
+  String trajectoryJSON = "paths/pathweaver.wpilib.json";
+  static Trajectory trajectory = new Trajectory();
 
   private Timer timer;
    SwervePathController pathController;
@@ -75,14 +78,31 @@ public class AutonomousDriveWeaver extends CommandBase {
      this.pathController = new SwervePathController(posController, headingController, rotationController);
   }
 
+  public void loadPath()
+  {
+    try 
+    {
+        Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
+        trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+
+        TrajectoriesExporter.exportTrajectoryToCSV(trajectory, "pathweaver");
+
+        System.out.println("it works");
+    }catch (IOException ex) 
+    {
+        DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
+    }
+  }
+ 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
 
-    m_trajectory = Robot.getTrajectory();
+    m_trajectory = trajectory;
     m_timeGoal = m_trajectory.getTotalTimeSeconds();
     timer = new Timer();
     timer.reset();
+    loadPath();
     
     Pose2d initialPose = m_trajectory.getInitialPose();
     m_isFinished = false;
@@ -100,6 +120,7 @@ public class AutonomousDriveWeaver extends CommandBase {
     timer.start(); 
 
   }
+
   
   @Override
   public void execute() {
@@ -111,8 +132,8 @@ public class AutonomousDriveWeaver extends CommandBase {
     if(time < m_timeGoal)
     {
 /* TODO fix this bad code to use trajectory state in calculate function */
-      ChassisSpeeds targetSpeeds = pathController.calculate(m_driveSubsystem.getPoseMeters(), m_desiredState, time - lastTime, timer.hasElapsed(0.1));
-      m_driveSubsystem.drive(targetSpeeds.vxMetersPerSecond, targetSpeeds.vyMetersPerSecond, targetSpeeds.omegaRadiansPerSecond, false);
+      // ChassisSpeeds targetSpeeds = pathController.calculate(m_driveSubsystem.getPoseMeters(), m_desiredState, time - lastTime, timer.hasElapsed(0.1));
+      // m_driveSubsystem.drive(targetSpeeds.vxMetersPerSecond, targetSpeeds.vyMetersPerSecond, targetSpeeds.omegaRadiansPerSecond, false);
   
       lastTime = time;
     }else
