@@ -74,7 +74,7 @@ public class SwerveModule
         canCoder.configAllSettings(canCoderConfiguration);
 
         m_driveEncoder.setVelocityConversionFactor(SwerveDriveModuleConstants.k_CANEncoderVelocityCoefficient);
-        m_driveEncoder.setPositionConversionFactor(SwerveDriveModuleConstants.k_CANEncoderPositionCoefficient);
+       // m_driveEncoder.setPositionConversionFactor(SwerveDriveModuleConstants.k_CANEncoderPositionCoefficient);
     }
 
     /**
@@ -233,4 +233,10 @@ public class SwerveModule
         m_moduleSteeringEncoder.setPosition(0);
         
     }
+
+    public double getDriveEncoder() 
+    {
+        return m_driveEncoder.getPosition();
+    }
+    
 }

@@ -86,8 +86,12 @@ public class SwervePath {
                 double acc = Double.parseDouble(point[2]);
                 double heading = Double.parseDouble(point[3]);
                 double rotation = Double.parseDouble(point[4]);
+                double time = Double.parseDouble(point[5]);
+                double x = Double.parseDouble(point[6]);
+                double y = Double.parseDouble(point[7]);
 
-                traj.states.add(new State(pos, Rotation2d.fromDegrees(heading), vel, acc, Rotation2d.fromDegrees(rotation), (traj.numStates() + 1) * TIME_STEP));
+
+                traj.states.add(new State(pos, Rotation2d.fromDegrees(heading), vel, acc, Rotation2d.fromDegrees(rotation), time));
             }
         } catch (Exception e) {
             e.printStackTrace();

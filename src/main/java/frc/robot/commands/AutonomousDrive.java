@@ -81,7 +81,7 @@ public class AutonomousDrive extends CommandBase {
     m_isFinished = false;
 
     this.timer = new Timer();
-    this.path = SwervePath.fromCSV("barrelPath");
+    this.path = SwervePath.fromCSV("myPath");
 
     PIDController posController = new PIDController(SwerveDriveModuleConstants.DRIVE_POS_ERROR_CONTROLLER_P, SwerveDriveModuleConstants.DRIVE_POS_ERROR_CONTROLLER_I, SwerveDriveModuleConstants.DRIVE_POS_ERROR_CONTROLLER_D);
     PIDController headingController = new PIDController(SwerveDriveModuleConstants.DRIVE_HEADING_ERROR_CONTROLLER_P, SwerveDriveModuleConstants.DRIVE_HEADING_ERROR_CONTROLLER_I, SwerveDriveModuleConstants.DRIVE_HEADING_ERROR_CONTROLLER_D);
@@ -108,12 +108,13 @@ public class AutonomousDrive extends CommandBase {
     //m_driveController = new HolonomicDriveController(m_xController, m_yController, m_rotController);
     m_driveSubsystem.resetOdometry(new Pose2d(m_driveSubsystem.getPoseMeters().getTranslation(), initialState.getRotation()));
     m_driveSubsystem.resetEncoders();
-    pathController.reset(m_driveSubsystem.getPoseMeters());
+   // pathController.reset(m_driveSubsystem.getPoseMeters());
 
     lastTime = 0;
 
    // m_driveSubsystem.resetOdometry(new Pose2d(new Translation2d(0, 0), new Rotation2d(0)));
     //m_driveSubsystem.resetOdometry(m_trajectory.getInitialPose());
+  
     
 
   }
@@ -126,18 +127,22 @@ public class AutonomousDrive extends CommandBase {
 
     if(ignoreHeading) desiredState.rotation = new Rotation2d(0);
 
-    ChassisSpeeds targetSpeeds = pathController.calculate(m_driveSubsystem.getPoseMeters(), desiredState, time - lastTime, timer.hasElapsed(0.1));
-    m_driveSubsystem.drive(targetSpeeds.vxMetersPerSecond, targetSpeeds.vyMetersPerSecond, targetSpeeds.omegaRadiansPerSecond, false);
+   // ChassisSpeeds targetSpeeds = pathController.calculate(m_driveSubsystem.getPoseMeters(), desiredState, time - lastTime, timer.hasElapsed(0.1));
+   // m_driveSubsystem.drive(targetSpeeds.vxMetersPerSecond, targetSpeeds.vyMetersPerSecond, targetSpeeds.omegaRadiansPerSecond, false);
+
+     m_driveSubsystem.drive(desiredState.getVelocity() * desiredState.getHeading().getCos(), desiredState.getVelocity() * desiredState.getHeading().getSin(), 0, false);
+    // SmartDashboard.putNumber("Calc VelX", desiredState.getVelocity() * desiredState.getHeading().getCos());
+    // SmartDashboard.putNumber("Calc VelY", desiredState.getVelocity() * desiredState.getHeading().getSin());
 
     lastTime = time;
 
-      // curX = m_robotPose.getX();
-      // curY = m_robotPose.getY();
+      curX = m_driveSubsystem.getOdometry().getPoseMeters().getX();
+      curY = m_driveSubsystem.getOdometry().getPoseMeters().getY();
       // goalX = m_goal.poseMeters.getX();
       // goalY = m_goal.poseMeters.getY();
 
-      // SmartDashboard.putNumber("Current X Position", curX);
-      // SmartDashboard.putNumber("Current Y Position", curY);
+       SmartDashboard.putNumber("AutoXPos", curX);
+       SmartDashboard.putNumber("AutoYPos", curY);
       // SmartDashboard.putNumber("Goal X Position", goalX);
       // SmartDashboard.putNumber("Goal Y Position", goalY);
       // SmartDashboard.putNumber("Error X Position", goalX -  curX);
