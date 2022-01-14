@@ -15,6 +15,7 @@ import com.ctre.phoenix.sensors.CANCoderConfiguration;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.SwerveDriveModuleConstants;
 
 import frc.robot.Constants.SwerveDriveModuleConstants.DriveModulePIDValues;
@@ -128,6 +129,9 @@ public class SwerveModule
         m_angleMotor.set(filterAngleMotorDeadband(setAngle));
         
         m_driverPIDController.setReference(state.speedMetersPerSecond, ControlType.kVelocity);
+
+        SmartDashboard.putNumber("Drive Encoder", m_driveEncoder.getPosition());
+
     }
 
     public double calculateCurrentTicks() {

@@ -138,6 +138,7 @@ public class AutonomousDrive extends CommandBase {
 
       curX = m_driveSubsystem.getOdometry().getPoseMeters().getX();
       curY = m_driveSubsystem.getOdometry().getPoseMeters().getY();
+
       // goalX = m_goal.poseMeters.getX();
       // goalY = m_goal.poseMeters.getY();
 

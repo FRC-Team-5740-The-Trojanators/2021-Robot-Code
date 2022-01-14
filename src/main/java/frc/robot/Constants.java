@@ -80,7 +80,7 @@ public final class Constants
 
         public static final double k_RobotRadius = .4131; //distance from center of robot to the wheel in m
         
-        public static final double k_MaxSpeed = Units.feetToMeters(5); // unit is m/s ; actual max is 12
+        public static final double k_MaxSpeed = Units.feetToMeters(10); // unit is m/s ; actual max is 12
         public static final double k_MaxTeleSpeed = Units.feetToMeters(15);
         public static final double k_MaxAcceleration = Units.feetToMeters(8); // unit is m/s/s (aka, m/s^2)
         
@@ -182,10 +182,10 @@ public final class Constants
         {
             public static final double k_driveP[] = 
             {
-                .01,
-                .01,
-                .01,
-                .01,
+                -.225,
+                -.225,
+                -.225,
+                -.225,
             };
 
             public static final double k_driveI = 0.0;
@@ -194,10 +194,21 @@ public final class Constants
             public static final double k_driveIz = 0; 
             public static final double k_driveFF[] = 
             {
-                .220,
-                .233,
-                .237,
-                .233
+                // .220,
+                // .233,
+                // .237,
+                // .233,
+
+                   1/Units.feetToMeters(14.4),
+                   1/Units.feetToMeters(14.4),
+                   1/Units.feetToMeters(14.4),
+                   1/Units.feetToMeters(14.4),
+
+                // 0.24980201,
+                // 0.24980201,
+                // 0.24980201,
+                // 0.24980201,
+
             };
             
             public static final double k_driveMaxOutput = 1; 
