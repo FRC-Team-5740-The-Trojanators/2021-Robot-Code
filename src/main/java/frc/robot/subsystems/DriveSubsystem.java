@@ -14,6 +14,8 @@ import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.SwerveDriveModuleConstants;
 import frc.robot.Constants.SwerveDriveModuleConstants.CANBusIDs;
@@ -75,6 +77,7 @@ public class DriveSubsystem extends SubsystemBase
             modules[i].setSteerP(SwerveDriveModuleConstants.SteeringControllerPIDValues.k_steerP[i]);
             modules[i].setSteerD(SwerveDriveModuleConstants.SteeringControllerPIDValues.k_steerD[i]);
         }
+
     }
 
     public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) 

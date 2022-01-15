@@ -25,7 +25,7 @@ import edu.wpi.first.wpilibj.util.Units;
 
 public final class Constants 
 {
-    public static final class HIDConstants 
+    public static final class HIDConstants
     {
         /**
          * XBox Controller layout
@@ -186,10 +186,10 @@ public final class Constants
                 // -.225,
                 // -.225,
                 // -.225,
-                0.01,
-                0.01,
-                0.01,
-                0.01,
+                0.001,
+                0.001,
+                0.001,
+                0.001,
             };
 
             public static final double k_driveI = 0.0;
