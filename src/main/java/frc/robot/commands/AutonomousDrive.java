@@ -133,7 +133,8 @@ public class AutonomousDrive extends CommandBase {
      m_driveSubsystem.drive(desiredState.getVelocity() * desiredState.getHeading().getCos(), desiredState.getVelocity() * desiredState.getHeading().getSin(), 0, false);
     // SmartDashboard.putNumber("Calc VelX", desiredState.getVelocity() * desiredState.getHeading().getCos());
     // SmartDashboard.putNumber("Calc VelY", desiredState.getVelocity() * desiredState.getHeading().getSin());
-
+    SmartDashboard.putNumber("Velocity Desired", desiredState.getVelocity());
+    SmartDashboard.putNumber("Position Desired", desiredState.getPos());
     lastTime = time;
 
       curX = m_driveSubsystem.getOdometry().getPoseMeters().getX();

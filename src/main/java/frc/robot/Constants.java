@@ -182,10 +182,14 @@ public final class Constants
         {
             public static final double k_driveP[] = 
             {
-                -.225,
-                -.225,
-                -.225,
-                -.225,
+                // -.225,
+                // -.225,
+                // -.225,
+                // -.225,
+                0.01,
+                0.01,
+                0.01,
+                0.01,
             };
 
             public static final double k_driveI = 0.0;

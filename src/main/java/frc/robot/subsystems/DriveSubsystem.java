@@ -89,6 +89,7 @@ public class DriveSubsystem extends SubsystemBase
         {
             SwerveModule module = modules[i];
             SmartDashboard.putNumber(String.valueOf(i) + " Drive Velocity", module.getDriveVelocity());
+            SmartDashboard.putNumber(String.valueOf(i) + " Drive Position", module.getSparkMaxPosition());
             module.setDesiredState(m_states[i]);
         } 
 
