@@ -44,7 +44,7 @@
               "_title": "limelight_Stream"
             }
           },
-          "3,0": {
+          "6,2": {
             "size": [
               1,
               1
@@ -55,7 +55,7 @@
               "_title": "Gyro"
             }
           },
-          "4,0": {
+          "7,2": {
             "size": [
               1,
               1
@@ -66,7 +66,7 @@
               "_title": "Hood Abs Encoder"
             }
           },
-          "5,0": {
+          "0,1": {
             "size": [
               1,
               1
@@ -99,106 +99,7 @@
               "_title": "rot"
             }
           },
-          "0,1": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/0 Drive Velocity",
-              "_title": "0 Drive Velocity"
-            }
-          },
-          "1,1": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/0 Drive Setpoint",
-              "_title": "0 Drive Setpoint"
-            }
-          },
-          "2,1": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Drive Encoder",
-              "_title": "Drive Encoder"
-            }
-          },
-          "3,1": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/1 Drive Velocity",
-              "_title": "1 Drive Velocity"
-            }
-          },
-          "4,1": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/1 Drive Setpoint",
-              "_title": "1 Drive Setpoint"
-            }
-          },
-          "5,1": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/2 Drive Velocity",
-              "_title": "2 Drive Velocity"
-            }
-          },
           "6,1": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/2 Drive Setpoint",
-              "_title": "2 Drive Setpoint"
-            }
-          },
-          "7,1": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/3 Drive Velocity",
-              "_title": "3 Drive Velocity"
-            }
-          },
-          "0,2": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/3 Drive Setpoint",
-              "_title": "3 Drive Setpoint"
-            }
-          },
-          "1,2": {
             "size": [
               1,
               1
@@ -209,7 +110,7 @@
               "_title": "Current X Position"
             }
           },
-          "2,2": {
+          "7,1": {
             "size": [
               1,
               1
@@ -218,6 +119,81 @@
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Current Y Position",
               "_title": "Current Y Position"
+            }
+          },
+          "3,0": {
+            "size": [
+              3,
+              3
+            ],
+            "content": {
+              "_type": "Graph",
+              "_source0": "network_table:///SmartDashboard/0 Drive Velocity",
+              "_source1": "network_table:///SmartDashboard/Velocity Desired",
+              "_title": "Graph",
+              "Graph/Visible time": 15.0,
+              "Graph/X-axis auto scrolling": false,
+              "Y-axis/Automatic bounds": false,
+              "Y-axis/Upper bound": 2.2,
+              "Y-axis/Lower bound": 0.0,
+              "Y-axis/Unit": "ul",
+              "Visible data/SmartDashboard/0 Drive Velocity": true,
+              "Visible data/SmartDashboard/Velocity Desired": true
+            }
+          },
+          "1,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/0 Drive Velocity",
+              "_title": "0 Drive Velocity"
+            }
+          },
+          "2,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/0 Drive Setpoint",
+              "_title": "0 Drive Setpoint"
+            }
+          },
+          "0,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Drive Encoder",
+              "_title": "Drive Encoder"
+            }
+          },
+          "1,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/1 Drive Velocity",
+              "_title": "1 Drive Velocity"
+            }
+          },
+          "2,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/1 Drive Setpoint",
+              "_title": "1 Drive Setpoint"
             }
           }
         }
@@ -283,7 +259,7 @@
           "4,0": {
             "size": [
               1,
-              1
+              2
             ],
             "content": {
               "_type": "Boolean Box",
@@ -465,7 +441,7 @@
         "vgap": 16.0,
         "titleType": 0,
         "tiles": {
-          "3,0": {
+          "0,0": {
             "size": [
               3,
               3
@@ -481,6 +457,90 @@
               "Y-axis/Lower bound": -1.0,
               "Y-axis/Unit": "ul",
               "Visible data/SmartDashboard/0 Drive Velocity": true
+            }
+          },
+          "3,0": {
+            "size": [
+              3,
+              2
+            ],
+            "content": {
+              "_type": "Camera Stream",
+              "_source0": "camera_server://limelight",
+              "_title": "limelight",
+              "Crosshair/Show crosshair": true,
+              "Crosshair/Crosshair color": "#FFFFFFFF",
+              "Controls/Show controls": true,
+              "Controls/Rotation": "NONE",
+              "compression": -1.0,
+              "fps": -1,
+              "imageWidth": -1,
+              "imageHeight": -1
+            }
+          },
+          "6,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Simple Dial",
+              "_source0": "network_table:///SmartDashboard/Gyro",
+              "_title": "SmartDashboard/Gyro",
+              "Range/Min": 0.0,
+              "Range/Max": 100.0,
+              "Visuals/Show value": true
+            }
+          },
+          "5,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Number Bar",
+              "_source0": "network_table:///SmartDashboard/3 Drive Position",
+              "_title": "SmartDashboard/3 Drive Position",
+              "Range/Min": -1.0,
+              "Range/Max": 1.0,
+              "Range/Center": 0.0,
+              "Visuals/Num tick marks": 5,
+              "Visuals/Show text": true
+            }
+          },
+          "6,0": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Number Slider",
+              "_title": "Number Slider",
+              "Slider Settings/Min": -1.0,
+              "Slider Settings/Max": 1.0,
+              "Slider Settings/Block increment": 0.0625,
+              "Visuals/Display value": true
+            }
+          },
+          "6,2": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Ultrasonic",
+              "_title": "Ultrasonic",
+              "Unit/Unit": "INCH"
+            }
+          },
+          "3,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Toggle Button",
+              "_title": "Toggle Button"
             }
           }
         }
