@@ -126,7 +126,7 @@ public class SwerveModule
         Rotation2d currentRotation = getAngle();
         SwerveModuleState state = SwerveModuleState.optimize(desiredState, currentRotation);
         Rotation2d rotationDelta = state.angle.minus(currentRotation); //takes our current rotatation and subtracts the last state rotation
-
+       
         double deltaTicks = calculateDeltaTicks(rotationDelta);
         double currentTicks = calculateCurrentTicks();
         double desiredTicks = currentTicks + deltaTicks;

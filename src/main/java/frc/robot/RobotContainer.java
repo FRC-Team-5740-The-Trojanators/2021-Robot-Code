@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.HIDConstants;
 import frc.robot.commands.AutonomousDrive;
-
+import frc.robot.commands.AutonomousDrive2;
 import frc.robot.commands.IntakeFlip;
 import frc.robot.commands.IntakeRun;
 import frc.robot.commands.RotateRobot;
@@ -70,6 +70,7 @@ public class RobotContainer
     public final DriveSubsystem m_robotDrive = new DriveSubsystem(false);
     private final IntakeSubsystem m_intake = new IntakeSubsystem();
     private final AutonomousDrive m_autonomousDrive = new AutonomousDrive(m_robotDrive);
+  //  private final AutonomousDrive2 m_autonomousDrive2 = new AutonomousDrive2(m_robotDrive);
     private final ShooterSubsystem m_shooter = new ShooterSubsystem();
     private final HoodSubsystem m_hood = new HoodSubsystem();
     private final IndexerSubsystem m_indexer = new IndexerSubsystem();
@@ -92,6 +93,7 @@ public class RobotContainer
     //Command Groups
     private final ParallelCommandGroup spinupCommandGroup = new ParallelCommandGroup(m_flyWheelCommand, m_moveHood);
     //private final SequentialCommandGroup galacticSearchCommandGroup = new SequentialCommandGroup(m_rotateRobot, m_autonomousDrive);
+   // private final SequentialCommandGroup autonomousCommandTestGroup = new SequentialCommandGroup(m_autonomousDrive, m_autonomousDrive2);
 
     //The Button Binding Names
     public static JoystickButton intakeFlip, intakeRun, intakeReverse, indexerRun, prepareShooter, TestButton;
@@ -153,6 +155,7 @@ public class RobotContainer
     {
         // An ExampleCommand will run in autonomous
         //return galacticSearchCommandGroup;
+       // return autonomousCommandTestGroup;
         return m_autonomousDrive;
 
     }

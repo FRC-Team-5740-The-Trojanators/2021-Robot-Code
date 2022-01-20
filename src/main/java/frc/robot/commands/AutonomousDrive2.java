@@ -26,13 +26,14 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants;
 import frc.robot.Constants.SwerveDriveModuleConstants;
 import frc.robot.Constants.SwerveDriveModuleConstants.AutoChooser;
+import frc.robot.pathsOLD.BarrelRacePath;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.SwerveModule;
 import frc.robot.subsystems.IntakeSubsystem;
 import lib.swerve.SwervePath;
 import lib.swerve.SwervePathController;
 
-public class AutonomousDrive extends CommandBase {
+public class AutonomousDrive2 extends CommandBase {
 
   private Trajectory m_trajectory; 
 
@@ -62,14 +63,14 @@ public class AutonomousDrive extends CommandBase {
   {}
 
   /** Creates a new AutonomousDrive. */
-  public AutonomousDrive(DriveSubsystem driveSubsystem) {
+  public AutonomousDrive2(DriveSubsystem driveSubsystem) {
     addRequirements(driveSubsystem);
     m_driveSubsystem = driveSubsystem;
     //m_goal = new Trajectory.State(); :}
     m_isFinished = false;
 
     this.timer = new Timer();
-    this.path = SwervePath.fromCSV("SquareTest");
+    this.path = SwervePath.fromCSV("myPath2");
 
     PIDController posController = new PIDController(SwerveDriveModuleConstants.DRIVE_POS_ERROR_CONTROLLER_P, SwerveDriveModuleConstants.DRIVE_POS_ERROR_CONTROLLER_I, SwerveDriveModuleConstants.DRIVE_POS_ERROR_CONTROLLER_D);
     PIDController headingController = new PIDController(SwerveDriveModuleConstants.DRIVE_HEADING_ERROR_CONTROLLER_P, SwerveDriveModuleConstants.DRIVE_HEADING_ERROR_CONTROLLER_I, SwerveDriveModuleConstants.DRIVE_HEADING_ERROR_CONTROLLER_D);
