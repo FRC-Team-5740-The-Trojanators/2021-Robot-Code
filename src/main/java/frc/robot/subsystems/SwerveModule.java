@@ -63,9 +63,15 @@ public class SwerveModule
 
         m_steeringPIDController.setTolerance(SteeringControllerPIDValues.k_ToleranceInTicks);
 
-        //Steering P and D and Drive P and FF are in Drive Subsystem as []
+        m_driverPIDController.setP(DriveModulePIDValues.k_driveP);
         m_driverPIDController.setI(DriveModulePIDValues.k_driveI);
         m_driverPIDController.setD(DriveModulePIDValues.k_driveD);
+        m_driverPIDController.setFF(DriveModulePIDValues.k_driveFF);
+
+        SmartDashboard.putNumber("P Gain", DriveModulePIDValues.k_driveP);
+        SmartDashboard.putNumber("I Gain", DriveModulePIDValues.k_driveI);
+        SmartDashboard.putNumber("D Gain", DriveModulePIDValues.k_driveD);
+        SmartDashboard.putNumber("FF Gain", DriveModulePIDValues.k_driveFF);
 
         m_driverPIDController.setOutputRange(-1, 1);
         
@@ -241,6 +247,19 @@ public class SwerveModule
     public double getDriveEncoder() 
     {
         return m_driveEncoder.getPosition();
+    }
+
+    public void adjustPIDValues()
+    {
+        double p = SmartDashboard.getNumber("P Gain", DriveModulePIDValues.k_driveP);
+        double i = SmartDashboard.getNumber("I Gain", DriveModulePIDValues.k_driveI);
+        double d = SmartDashboard.getNumber("D Gain", DriveModulePIDValues.k_driveD);
+        double ff = SmartDashboard.getNumber("FF Gain", DriveModulePIDValues.k_driveFF);
+
+        if((p != DriveModulePIDValues.k_driveP)) { m_driverPIDController.setP(p); DriveModulePIDValues.k_driveP = p; System.out.println("CHANGED TO: " + p); }
+        if((i != DriveModulePIDValues.k_driveI)) { m_driverPIDController.setI(i); DriveModulePIDValues.k_driveI = i; }
+        if((d != DriveModulePIDValues.k_driveD)) { m_driverPIDController.setD(d); DriveModulePIDValues.k_driveD = d; }
+        if((ff != DriveModulePIDValues.k_driveFF)) { m_driverPIDController.setP(ff); DriveModulePIDValues.k_driveFF = ff; }
     }
     
 }

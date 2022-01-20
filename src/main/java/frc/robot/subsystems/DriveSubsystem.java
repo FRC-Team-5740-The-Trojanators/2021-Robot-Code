@@ -72,8 +72,6 @@ public class DriveSubsystem extends SubsystemBase
         for(int i = 0; i < 4; i++)
         {
             modules[i].resetDriveEncoder();
-            modules[i].setDriveP(SwerveDriveModuleConstants.DriveModulePIDValues.k_driveP[i]);
-            modules[i].setDriveFF(SwerveDriveModuleConstants.DriveModulePIDValues.k_driveFF[i]);
             modules[i].setSteerP(SwerveDriveModuleConstants.SteeringControllerPIDValues.k_steerP[i]);
             modules[i].setSteerD(SwerveDriveModuleConstants.SteeringControllerPIDValues.k_steerD[i]);
         }
@@ -142,6 +140,11 @@ public class DriveSubsystem extends SubsystemBase
       var gyroAngle = Rotation2d.fromDegrees(m_imu.getAngle());
       m_Robotpose = m_odometry.update(gyroAngle, modules[0].getState(), modules[1].getState(), modules[2].getState(), modules[3].getState());
       SmartDashboard.putNumber("Gyro", gyroAngle.getDegrees());
+      modules[0].adjustPIDValues();
+      modules[1].adjustPIDValues();
+      modules[2].adjustPIDValues();
+      modules[3].adjustPIDValues();
+
     }
   
     @Override

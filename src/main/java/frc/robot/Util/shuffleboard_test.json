@@ -13,112 +13,22 @@
         "tiles": {
           "0,0": {
             "size": [
-              1,
-              1
+              3,
+              3
             ],
             "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/limelight_PipelineName",
-              "_title": "limelight_PipelineName"
-            }
-          },
-          "1,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/limelight_Interface",
-              "_title": "limelight_Interface"
-            }
-          },
-          "2,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/limelight_Stream",
-              "_title": "limelight_Stream"
-            }
-          },
-          "6,2": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Gyro",
-              "_title": "Gyro"
-            }
-          },
-          "7,2": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Hood Abs Encoder",
-              "_title": "Hood Abs Encoder"
-            }
-          },
-          "0,1": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Hood Quad Encoder",
-              "_title": "Hood Quad Encoder"
-            }
-          },
-          "6,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/QuadOffset",
-              "_title": "QuadOffset"
-            }
-          },
-          "7,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/rot",
-              "_title": "rot"
-            }
-          },
-          "6,1": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Current X Position",
-              "_title": "Current X Position"
-            }
-          },
-          "7,1": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Current Y Position",
-              "_title": "Current Y Position"
+              "_type": "Graph",
+              "_source0": "network_table:///SmartDashboard/Velocity Desired",
+              "_source1": "network_table:///SmartDashboard/0 Drive Velocity",
+              "_title": "Graph",
+              "Graph/Visible time": 12.0,
+              "Graph/X-axis auto scrolling": false,
+              "Y-axis/Automatic bounds": false,
+              "Y-axis/Upper bound": 1.1,
+              "Y-axis/Lower bound": 0.9,
+              "Y-axis/Unit": "ul",
+              "Visible data/SmartDashboard/0 Drive Velocity": true,
+              "Visible data/SmartDashboard/Velocity Desired": true
             }
           },
           "3,0": {
@@ -128,72 +38,53 @@
             ],
             "content": {
               "_type": "Graph",
-              "_source0": "network_table:///SmartDashboard/0 Drive Velocity",
-              "_source1": "network_table:///SmartDashboard/Velocity Desired",
+              "_source0": "network_table:///SmartDashboard/0 Drive Position",
+              "_source1": "network_table:///SmartDashboard/Position Desired",
+              "_source2": "network_table:///SmartDashboard/AutoXPos",
+              "_source3": "network_table:///SmartDashboard/Current X Position",
               "_title": "Graph",
-              "Graph/Visible time": 15.0,
+              "Graph/Visible time": 30.0,
               "Graph/X-axis auto scrolling": false,
-              "Y-axis/Automatic bounds": false,
-              "Y-axis/Upper bound": 2.2,
-              "Y-axis/Lower bound": 0.0,
+              "Y-axis/Automatic bounds": true,
+              "Y-axis/Upper bound": 1.0,
+              "Y-axis/Lower bound": -1.0,
               "Y-axis/Unit": "ul",
-              "Visible data/SmartDashboard/0 Drive Velocity": true,
-              "Visible data/SmartDashboard/Velocity Desired": true
+              "Visible data/SmartDashboard/0 Drive Position": false,
+              "Visible data/SmartDashboard/AutoXPos": false,
+              "Visible data/SmartDashboard/Current X Position": false,
+              "Visible data/SmartDashboard/Position Desired": false
             }
           },
-          "1,1": {
+          "6,0": {
+            "size": [
+              1,
+              3
+            ],
+            "content": {
+              "_type": "PID Command",
+              "_title": "PID Command"
+            }
+          },
+          "7,0": {
             "size": [
               1,
               1
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/0 Drive Velocity",
-              "_title": "0 Drive Velocity"
+              "_source0": "network_table:///SmartDashboard/P Gain",
+              "_title": "SmartDashboard/P Gain"
             }
           },
-          "2,1": {
+          "7,1": {
             "size": [
               1,
               1
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/0 Drive Setpoint",
-              "_title": "0 Drive Setpoint"
-            }
-          },
-          "0,2": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Drive Encoder",
-              "_title": "Drive Encoder"
-            }
-          },
-          "1,2": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/1 Drive Velocity",
-              "_title": "1 Drive Velocity"
-            }
-          },
-          "2,2": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/1 Drive Setpoint",
-              "_title": "1 Drive Setpoint"
+              "_source0": "network_table:///SmartDashboard/FF Gain",
+              "_title": "SmartDashboard/FF Gain"
             }
           }
         }

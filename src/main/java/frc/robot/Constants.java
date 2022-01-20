@@ -180,40 +180,12 @@ public final class Constants
 
         public static final class DriveModulePIDValues
         {
-            public static final double k_driveP[] = 
-            {
-                // -.225,
-                // -.225,
-                // -.225,
-                // -.225,
-                0.001,
-                0.001,
-                0.001,
-                0.001,
-            };
-
-            public static final double k_driveI = 0.0;
-            public static final double k_driveD = 0.0;
+            public static double k_driveP = 0.028; //0.0005
+            public static double k_driveI = 0.0;
+            public static double k_driveD = 0.025;
 
             public static final double k_driveIz = 0; 
-            public static final double k_driveFF[] = 
-            {
-                // .220,
-                // .233,
-                // .237,
-                // .233,
-
-                   1/Units.feetToMeters(14.4),
-                   1/Units.feetToMeters(14.4),
-                   1/Units.feetToMeters(14.4),
-                   1/Units.feetToMeters(14.4),
-
-                // 0.24980201,
-                // 0.24980201,
-                // 0.24980201,
-                // 0.24980201,
-
-            };
+            public static double k_driveFF = 1/Units.feetToMeters(14.4);
             
             public static final double k_driveMaxOutput = 1; 
             public static final double k_driveMinOutput = -1;
