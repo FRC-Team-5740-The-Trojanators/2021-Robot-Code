@@ -91,6 +91,7 @@ public class DriveSubsystem extends SubsystemBase
             SwerveModule module = modules[i];
             SmartDashboard.putNumber(String.valueOf(i) + " Drive Velocity", module.getDriveVelocity());
             SmartDashboard.putNumber(String.valueOf(i) + " Drive Position", module.getSparkMaxPosition());
+            SmartDashboard.putNumber(String.valueOf(0) + " Steer Rot", module.getRotationDegrees());
             module.setDesiredState(m_states[i]);
         } 
 
@@ -109,6 +110,7 @@ public class DriveSubsystem extends SubsystemBase
             SwerveModule module = modules[i];
             SmartDashboard.putNumber(String.valueOf(i) + " Drive Velocity", module.getDriveVelocity());
             SmartDashboard.putNumber(String.valueOf(i) + " Drive Setpoint", module.getState().speedMetersPerSecond);
+
             module.setDesiredState(m_states[i]);
         } 
 

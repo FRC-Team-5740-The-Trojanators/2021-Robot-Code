@@ -69,7 +69,7 @@ public class AutonomousDrive extends CommandBase {
     m_isFinished = false;
 
     this.timer = new Timer();
-    this.path = SwervePath.fromCSV("SquareTest");
+    this.path = SwervePath.fromCSV("EggPath");
 
     PIDController posController = new PIDController(SwerveDriveModuleConstants.DRIVE_POS_ERROR_CONTROLLER_P, SwerveDriveModuleConstants.DRIVE_POS_ERROR_CONTROLLER_I, SwerveDriveModuleConstants.DRIVE_POS_ERROR_CONTROLLER_D);
     PIDController headingController = new PIDController(SwerveDriveModuleConstants.DRIVE_HEADING_ERROR_CONTROLLER_P, SwerveDriveModuleConstants.DRIVE_HEADING_ERROR_CONTROLLER_I, SwerveDriveModuleConstants.DRIVE_HEADING_ERROR_CONTROLLER_D);
@@ -115,14 +115,17 @@ public class AutonomousDrive extends CommandBase {
 
     if(ignoreHeading) desiredState.rotation = new Rotation2d(0);
 
-   // ChassisSpeeds targetSpeeds = pathController.calculate(m_driveSubsystem.getPoseMeters(), desiredState, time - lastTime, timer.hasElapsed(0.1));
+    //ChassisSpeeds targetSpeeds = pathController.calculate(m_driveSubsystem.getPoseMeters(), desiredState, time - lastTime, timer.hasElapsed(0.1));
    // m_driveSubsystem.drive(targetSpeeds.vxMetersPerSecond, targetSpeeds.vyMetersPerSecond, targetSpeeds.omegaRadiansPerSecond, false);
 
-     m_driveSubsystem.drive(desiredState.getVelocity() * desiredState.getHeading().getCos(), desiredState.getVelocity() * desiredState.getHeading().getSin(), 0, false);
+    m_driveSubsystem.drive(desiredState.getVelocity() * desiredState.getRotation().getCos(), desiredState.getVelocity() * desiredState.getRotation().getSin(), 0, false);
     // SmartDashboard.putNumber("Calc VelX", desiredState.getVelocity() * desiredState.getHeading().getCos());
     // SmartDashboard.putNumber("Calc VelY", desiredState.getVelocity() * desiredState.getHeading().getSin());
     SmartDashboard.putNumber("Velocity Desired", desiredState.getVelocity());
     SmartDashboard.putNumber("Position Desired", desiredState.getPos());
+    SmartDashboard.putNumber("Heading Desired", desiredState.getHeading().getDegrees()); 
+    SmartDashboard.putNumber("Different Heading Desired", desiredState.getRotation().getDegrees()); 
+
     lastTime = time;
 
       curX = m_driveSubsystem.getOdometry().getPoseMeters().getX();

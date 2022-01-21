@@ -137,6 +137,7 @@ public class SwerveModule
         m_driverPIDController.setReference(state.speedMetersPerSecond, ControlType.kVelocity);
 
         SmartDashboard.putNumber("Drive Encoder", m_driveEncoder.getPosition());
+        //SmartDashboard.putNumber("Heading Read", m_moduleSteeringEncoder.getAbsolutePosition());
 
     }
 
@@ -214,6 +215,11 @@ public class SwerveModule
     public double getRotationDegrees(){
         return m_moduleSteeringEncoder.getPosition();
     }
+
+    public double getAbsoluteRotationDegrees(){
+        return m_moduleSteeringEncoder.getAbsolutePosition();
+    }
+
 
     public double getDrivePIDF(String parameter){
         if(parameter.toLowerCase() == "p")
