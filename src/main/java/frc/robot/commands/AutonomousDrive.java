@@ -69,7 +69,7 @@ public class AutonomousDrive extends CommandBase {
     m_isFinished = false;
 
     this.timer = new Timer();
-    this.path = SwervePath.fromCSV("EggPath");
+    this.path = SwervePath.fromCSV("figureEight");
 
     PIDController posController = new PIDController(SwerveDriveModuleConstants.DRIVE_POS_ERROR_CONTROLLER_P, SwerveDriveModuleConstants.DRIVE_POS_ERROR_CONTROLLER_I, SwerveDriveModuleConstants.DRIVE_POS_ERROR_CONTROLLER_D);
     PIDController headingController = new PIDController(SwerveDriveModuleConstants.DRIVE_HEADING_ERROR_CONTROLLER_P, SwerveDriveModuleConstants.DRIVE_HEADING_ERROR_CONTROLLER_I, SwerveDriveModuleConstants.DRIVE_HEADING_ERROR_CONTROLLER_D);
