@@ -8,6 +8,7 @@ import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
+import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.CANCoderConfiguration;
@@ -29,7 +30,7 @@ import com.ctre.phoenix.sensors.SensorInitializationStrategy;
  * to those motors' controllers and encoders, as well as defining the feedback
  * loops used to enhance their control.
  */
-public class SwerveModule
+public class SwerveModuleTalon
 {
     private CANEncoder m_driveEncoder;
 
@@ -49,49 +50,13 @@ public class SwerveModule
      * @param driveMotorChannel ID for the drive motor.
      * @param steeringMotorChannel ID for the turning motor.
      */
-    public SwerveModule(CANSparkMax driveMotor, CANSparkMax angleMotor, CANCoder canCoder, Rotation2d offset)
-    {
-        m_driveMotor = driveMotor;
-        m_angleMotor = angleMotor;
-        m_moduleSteeringEncoder = canCoder;
-        m_offset = offset;
-
-        m_driverPIDController = driveMotor.getPIDController();
-        m_driveEncoder = driveMotor.getEncoder(); 
-
-       //Sets steering PID values using WPI version
-        m_steeringPIDController = new PIDController(0, 0, 0);
-
-        m_steeringPIDController.setTolerance(SteeringControllerPIDValues.k_ToleranceInTicks);
-
-        m_driverPIDController.setP(DriveModulePIDValues.k_driveP);
-        m_driverPIDController.setI(DriveModulePIDValues.k_driveI);
-        m_driverPIDController.setD(DriveModulePIDValues.k_driveD);
-        m_driverPIDController.setFF(DriveModulePIDValues.k_driveFF);
-
-        SmartDashboard.putNumber("P Gain", DriveModulePIDValues.k_driveP);
-        SmartDashboard.putNumber("I Gain", DriveModulePIDValues.k_driveI);
-        SmartDashboard.putNumber("D Gain", DriveModulePIDValues.k_driveD);
-        SmartDashboard.putNumber("FF Gain", DriveModulePIDValues.k_driveFF);
-
-        m_driverPIDController.setOutputRange(-1, 1);
-        
-        CANCoderConfiguration canCoderConfiguration = new CANCoderConfiguration();
-        canCoderConfiguration.magnetOffsetDegrees = m_offset.getDegrees();
-        canCoderConfiguration.initializationStrategy = SensorInitializationStrategy.BootToAbsolutePosition;
-        canCoder.configAllSettings(canCoderConfiguration);
-
-        m_driveEncoder.setVelocityConversionFactor(SwerveDriveModuleConstants.k_CANEncoderVelocityCoefficient);
-        m_driveEncoder.setPositionConversionFactor(SwerveDriveModuleConstants.k_CANEncoderPositionCoefficient);
-    }
-
-    public void SwerveModuleTalon(TalonFX angleMotor, CANSparkMax driveMotor, CANCoder canCoder, Rotation2d offset)
+    public SwerveModuleTalon(CANSparkMax driveMotor, TalonFX angleMotor, CANCoder canCoder, Rotation2d offset)
     {
         m_driveMotor = driveMotor;
         m_extraAngleMotor = angleMotor;
         m_moduleSteeringEncoder = canCoder;
         m_offset = offset;
-        
+
         m_driverPIDController = driveMotor.getPIDController();
         m_driveEncoder = driveMotor.getEncoder(); 
 
@@ -121,6 +86,7 @@ public class SwerveModule
         m_driveEncoder.setPositionConversionFactor(SwerveDriveModuleConstants.k_CANEncoderPositionCoefficient);
     }
 
+   
     /**
      * Returns the current state of the module.
      *
@@ -169,7 +135,7 @@ public class SwerveModule
         double desiredTicks = currentTicks + deltaTicks;
         double setAngle = m_steeringPIDController.calculate(currentTicks, desiredTicks);
 
-        m_angleMotor.set(filterAngleMotorDeadband(setAngle));
+        m_extraAngleMotor.set(TalonFXControlMode.Velocity, filterAngleMotorDeadband(setAngle));
         
         m_driverPIDController.setReference(state.speedMetersPerSecond, ControlType.kVelocity);
 
