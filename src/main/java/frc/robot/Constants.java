@@ -42,6 +42,7 @@ public final class Constants
          */
 
         public static final int k_DriverControllerPort = 1;
+        public static final int k_OperatorControllerPort = 2;
         public static final double kDeadBand = 0.05;
         public static final int kA = 1;
         public static final int kB = 2;
@@ -149,6 +150,8 @@ public final class Constants
             public static final int k_HoodID = 15;
             public static final int k_IntakeMotors = 16;
             public static final int k_IndexerID = 17; 
+
+            public static final int k_TalonTestID = 20;
         }
         
         /**
@@ -349,6 +352,15 @@ public final class Constants
     public static final double DRIVE_TARGETING_CONTROLLER_D = 0.5;
     public static final double DRIVE_ROTATION_MIN_VELOCITY = 25;
     public static final double DRIVE_TARGETING_I_ZONE = 2;
+
+    }
+
+    public final class talonPID
+    {
+        public final static double k_talonP = 0.01;
+        public final static double k_talonI = 0.0;
+        public final  static double k_talonD = 0.0;
+        public final  static double k_talonFF = 0.0;
 
     }
 }

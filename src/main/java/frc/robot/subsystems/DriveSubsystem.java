@@ -59,10 +59,10 @@ public class DriveSubsystem extends SubsystemBase
         new SwerveModule(new CANSparkMax(CANBusIDs.k_LeftFront_DriveMotor, MotorType.kBrushless), new CANSparkMax(CANBusIDs.k_LeftFront_SteeringMotor, MotorType.kBrushless), new CANCoder(CANBusIDs.frontLeftCANCoderId), Rotation2d.fromDegrees(SwerveDriveModuleConstants.frontLeftOffset)), // Front Left
         new SwerveModule(new CANSparkMax(CANBusIDs.k_RightFront_DriveMotor, MotorType.kBrushless), new CANSparkMax(CANBusIDs.k_RightFront_SteeringMotor, MotorType.kBrushless), new CANCoder(CANBusIDs.frontRightCANCoderId), Rotation2d.fromDegrees(SwerveDriveModuleConstants.frontRightOffset)), // Front Right
         new SwerveModule(new CANSparkMax(CANBusIDs.k_LeftRear_DriveMotor, MotorType.kBrushless), new CANSparkMax(CANBusIDs.k_LeftRear_SteeringMotor, MotorType.kBrushless), new CANCoder(CANBusIDs.backLeftCANCoderId), Rotation2d.fromDegrees(SwerveDriveModuleConstants.backLeftOffset)), // Back Left
-       // new SwerveModule(new CANSparkMax(CANBusIDs.k_RightRear_DriveMotor, MotorType.kBrushless), new CANSparkMax(CANBusIDs.k_RightRear_SteeringMotor, MotorType.kBrushless), new CANCoder(CANBusIDs.backRightCANCoderId), Rotation2d.fromDegrees(SwerveDriveModuleConstants.backRightOffset)) //Back Right
+        new SwerveModule(new CANSparkMax(CANBusIDs.k_RightRear_DriveMotor, MotorType.kBrushless), new CANSparkMax(CANBusIDs.k_RightRear_SteeringMotor, MotorType.kBrushless), new CANCoder(CANBusIDs.backRightCANCoderId), Rotation2d.fromDegrees(SwerveDriveModuleConstants.backRightOffset)) //Back Right
     };
 
-    public SwerveModuleTalon module3 = new SwerveModuleTalon(new CANSparkMax(CANBusIDs.k_RightRear_DriveMotor, MotorType.kBrushless), new TalonFX(CANBusIDs.k_RightRear_SteeringMotor),  new CANCoder(CANBusIDs.backRightCANCoderId), Rotation2d.fromDegrees(SwerveDriveModuleConstants.backRightOffset));
+    //public SwerveModuleTalon module3 = new SwerveModuleTalon(new CANSparkMax(CANBusIDs.k_RightRear_DriveMotor, MotorType.kBrushless), new TalonFX(CANBusIDs.k_RightRear_SteeringMotor),  new CANCoder(CANBusIDs.backRightCANCoderId), Rotation2d.fromDegrees(SwerveDriveModuleConstants.backRightOffset));
 
     // /** Creates a new DriveSubsystem. */
     public DriveSubsystem( boolean calibrateGyro)
@@ -72,16 +72,16 @@ public class DriveSubsystem extends SubsystemBase
                 m_imu.reset(); //recalibrates gyro offset
             }
         
-        for(int i = 0; i < 3; i++)
+        for(int i = 0; i < 4; i++)
         {
             modules[i].resetDriveEncoder();
             modules[i].setSteerP(SwerveDriveModuleConstants.SteeringControllerPIDValues.k_steerP[i]);
             modules[i].setSteerD(SwerveDriveModuleConstants.SteeringControllerPIDValues.k_steerD[i]);
         }
 
-        module3.resetDriveEncoder();
-        module3.setSteerP(SwerveDriveModuleConstants.SteeringControllerPIDValues.k_steerP[3]);
-        module3.setSteerD(SwerveDriveModuleConstants.SteeringControllerPIDValues.k_steerD[3]);
+        // module3.resetDriveEncoder();
+        // module3.setSteerP(SwerveDriveModuleConstants.SteeringControllerPIDValues.k_steerP[3]);
+        // module3.setSteerD(SwerveDriveModuleConstants.SteeringControllerPIDValues.k_steerD[3]);
 
     }
 
@@ -112,14 +112,14 @@ public class DriveSubsystem extends SubsystemBase
                 ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, Rotation2d.fromDegrees(m_imu.getAngle()))
                 : new ChassisSpeeds(xSpeed, ySpeed, rot));
         SwerveDriveKinematics.normalizeWheelSpeeds(m_states, SwerveDriveModuleConstants.k_MaxTeleSpeed);
-        for (int i = 0; i < 3; i++) 
+        for (int i = 0; i < 4; i++) 
         {
             SwerveModule module = modules[i];
             SmartDashboard.putNumber(String.valueOf(i) + " Drive Velocity", module.getDriveVelocity());
             SmartDashboard.putNumber(String.valueOf(i) + " Drive Setpoint", module.getState().speedMetersPerSecond);
             module.setDesiredState(m_states[i]);
         } 
-        module3.setDesiredState(m_states[3]);
+        //module3.setDesiredState(m_states[3]);
 
     }
     
@@ -127,7 +127,8 @@ public class DriveSubsystem extends SubsystemBase
         modules[0].resetDriveEncoder();
         modules[1].resetDriveEncoder();
         modules[2].resetDriveEncoder();
-        module3.resetDriveEncoder();
+        modules[3].resetDriveEncoder();
+        //module3.resetDriveEncoder();
     }
 
     public SwerveModuleState[] getStates()
@@ -147,12 +148,13 @@ public class DriveSubsystem extends SubsystemBase
       //setSteerDthroughDashboard();
       // This method will be called once per scheduler run
       var gyroAngle = Rotation2d.fromDegrees(m_imu.getAngle());
-      m_Robotpose = m_odometry.update(gyroAngle, modules[0].getState(), modules[1].getState(), modules[2].getState(), module3.getState());
+      m_Robotpose = m_odometry.update(gyroAngle, modules[0].getState(), modules[1].getState(), modules[2].getState(), modules[3].getState());
       SmartDashboard.putNumber("Gyro", gyroAngle.getDegrees());
       modules[0].adjustPIDValues();
       modules[1].adjustPIDValues();
       modules[2].adjustPIDValues();
-      module3.adjustPIDValues();
+      modules[3].adjustPIDValues();
+     // module3.adjustPIDValues();
 
     }
   
@@ -216,7 +218,8 @@ public class DriveSubsystem extends SubsystemBase
         modules[0].setSteerP(P0);
         modules[1].setSteerP(P1);
         modules[2].setSteerP(P2);
-        module3.setSteerP(P3);
+        modules[3].setSteerP(P3);
+        //module3.setSteerP(P3);
     }
     public void setSteerDthroughDashboard()
     {
@@ -231,7 +234,8 @@ public class DriveSubsystem extends SubsystemBase
         modules[0].setSteerD(D0);
         modules[1].setSteerD(D1);
         modules[2].setSteerD(D2);
-        module3.setSteerD(D3);
+        modules[3].setSteerD(D3);
+        //module3.setSteerD(D3);
     }
     public Trajectory getTrajectory()
     {

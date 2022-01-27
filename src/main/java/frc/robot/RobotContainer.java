@@ -15,6 +15,7 @@ import frc.robot.commands.AutonomousDrive2;
 import frc.robot.commands.IntakeFlip;
 import frc.robot.commands.IntakeRun;
 import frc.robot.commands.RotateRobot;
+import frc.robot.commands.RunTalon;
 import frc.robot.commands.IntakeReverse;
 import frc.robot.commands.SwerveDriveCommand;
 
@@ -27,6 +28,7 @@ import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import frc.robot.subsystems.SwerveModule;
+import frc.robot.subsystems.TalonTesting;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.ForceExtendHood;
 import frc.robot.commands.ForceRetractHood;
@@ -75,9 +77,12 @@ public class RobotContainer
     private final HoodSubsystem m_hood = new HoodSubsystem();
     private final IndexerSubsystem m_indexer = new IndexerSubsystem();
     private final FlyWheelSubsystem m_flywheel = new FlyWheelSubsystem();
+    private final TalonTesting m_talon = new TalonTesting();
 
     // The driver's controller
     XboxController m_driverController = new XboxController(HIDConstants.k_DriverControllerPort);
+    XboxController m_operatorController = new XboxController(HIDConstants.k_OperatorControllerPort);
+
 
     //Commands
     private final IntakeRun m_intakeRun = new IntakeRun(m_intake);
@@ -89,6 +94,7 @@ public class RobotContainer
     //private final ForceRetractHood m_forceRetract = new ForceRetractHood(m_hood);
     private final FlyWheelCommand m_flyWheelCommand = new FlyWheelCommand(m_flywheel);
     private final RotateRobot m_rotateRobot = new RotateRobot(m_robotDrive, m_intake, m_shooter);
+    //private final RunTalon m_runTalon = new RunTalon(m_talon, m_operatorController);
     
     //Command Groups
     private final ParallelCommandGroup spinupCommandGroup = new ParallelCommandGroup(m_flyWheelCommand, m_moveHood);
@@ -106,8 +112,9 @@ public class RobotContainer
         //  TrajectoriesExporter.exportTrajectoryToHumanReadable(traj, BouncePath1.getTrajectoryName());
 
         configureButtonBindings();
-        m_robotDrive.setDefaultCommand(new SwerveDriveCommand(m_robotDrive, m_driverController));
+        //m_robotDrive.setDefaultCommand(new SwerveDriveCommand(m_robotDrive, m_driverController));
         m_hood.setDefaultCommand(new HoodDefaultCommand(m_hood));
+        m_talon.setDefaultCommand(new RunTalon(m_talon));
 
         NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
         NetworkTableEntry tx = table.getEntry("tx");

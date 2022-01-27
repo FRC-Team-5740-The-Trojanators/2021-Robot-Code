@@ -48,9 +48,7 @@
               "Y-axis/Automatic bounds": true,
               "Y-axis/Upper bound": 5.0,
               "Y-axis/Lower bound": -5.0,
-              "Y-axis/Unit": "ul",
-              "Visible data/SmartDashboard/0 Drive Position": false,
-              "Visible data/SmartDashboard/Position Desired": true
+              "Y-axis/Unit": "ul"
             }
           },
           "7,0": {
@@ -90,9 +88,7 @@
               "Y-axis/Automatic bounds": true,
               "Y-axis/Upper bound": 1.0,
               "Y-axis/Lower bound": -1.0,
-              "Y-axis/Unit": "ul",
-              "Visible data/SmartDashboard/0 Steer Rot": true,
-              "Visible data/SmartDashboard/Different Heading Desired": true
+              "Y-axis/Unit": "ul"
             }
           },
           "6,2": {
@@ -376,8 +372,7 @@
               "Y-axis/Automatic bounds": true,
               "Y-axis/Upper bound": 1.0,
               "Y-axis/Lower bound": -1.0,
-              "Y-axis/Unit": "ul",
-              "Visible data/SmartDashboard/0 Drive Velocity": true
+              "Y-axis/Unit": "ul"
             }
           },
           "3,0": {
