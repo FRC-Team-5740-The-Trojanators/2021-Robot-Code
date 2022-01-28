@@ -357,7 +357,7 @@ public final class Constants
 
     public final class talonPID
     {
-        public final static double k_talonP = 0.01;
+        public final static double k_talonP = 10.0;
         public final static double k_talonI = 0.0;
         public final  static double k_talonD = 0.0;
         public final  static double k_talonFF = 0.0;

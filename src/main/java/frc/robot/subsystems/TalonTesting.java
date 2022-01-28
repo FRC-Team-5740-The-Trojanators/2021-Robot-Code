@@ -40,9 +40,15 @@ public class TalonTesting extends SubsystemBase {
     // m_angleMotor = angleMotor;
      m_moduleSteeringEncoder = new CANCoder(CANBusIDs.backRightCANCoderId);
     // m_offset = offset;
-    
-    TalonFXConfiguration angleTalonConfig = new TalonFXConfiguration();
+
     m_offset = new Rotation2d(0);
+    m_moduleSteeringEncoder.configFactoryDefault();
+    CANCoderConfiguration canCoderConfiguration = new CANCoderConfiguration();
+    canCoderConfiguration.magnetOffsetDegrees = m_offset.getDegrees();
+    //canCoderConfiguration.initializationStrategy = SensorInitializationStrategy.BootToAbsolutePosition;
+    m_moduleSteeringEncoder.configAllSettings(canCoderConfiguration);
+    TalonFXConfiguration angleTalonConfig = new TalonFXConfiguration();
+    
     
     m_angleMotor = new TalonFX(CANBusIDs.k_TalonTestID);
     m_angleMotor.configFactoryDefault();
@@ -54,13 +60,6 @@ public class TalonTesting extends SubsystemBase {
     angleTalonConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.RemoteSensor0;
     angleTalonConfig.slot0.kP = talonPID.k_talonP;
     m_angleMotor.configAllSettings(angleTalonConfig);
-  
-    CANCoderConfiguration canCoderConfiguration = new CANCoderConfiguration();
-    canCoderConfiguration.magnetOffsetDegrees = m_offset.getDegrees();
-    canCoderConfiguration.initializationStrategy = SensorInitializationStrategy.BootToAbsolutePosition;
-    m_moduleSteeringEncoder.configFactoryDefault();
-    m_moduleSteeringEncoder.configAllSettings(canCoderConfiguration);
-    
   }
 
   public void setSetpoint(int setpoint)
