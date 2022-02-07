@@ -152,6 +152,7 @@ public final class Constants
             public static final int k_IndexerID = 17; 
 
             public static final int k_TalonTestID = 20;
+            public static final int k_pigeonID = 19;
         }
         
         /**

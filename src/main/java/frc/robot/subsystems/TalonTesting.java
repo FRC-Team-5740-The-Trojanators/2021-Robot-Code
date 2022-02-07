@@ -23,6 +23,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.CANCoderConfiguration;
+import com.ctre.phoenix.sensors.PigeonIMU;
 import com.ctre.phoenix.sensors.SensorInitializationStrategy;
 
 
@@ -33,7 +34,7 @@ public class TalonTesting extends SubsystemBase {
   private TalonFX m_angleMotor;
   private CANCoder m_moduleSteeringEncoder;
   private Rotation2d m_offset;
-
+  PigeonIMU m_imu = new PigeonIMU(CANBusIDs.k_pigeonID);
 
   public TalonTesting(/*TalonFX angleMotor, CANCoder moduleSteeringEncoder, Rotation2d offset*/) 
   {
@@ -72,7 +73,7 @@ public class TalonTesting extends SubsystemBase {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("canPos", m_moduleSteeringEncoder.getPosition());
     SmartDashboard.putNumber("canAbsPos", m_moduleSteeringEncoder.getAbsolutePosition());
-
+    SmartDashboard.putNumber("pigeonYaw", readPigeon());
   }
 
   public void runTalon(double speed)
@@ -83,5 +84,12 @@ public class TalonTesting extends SubsystemBase {
   public void stopTalon()
   {
     m_angleMotor.set(TalonFXControlMode.PercentOutput, 0);
+  }
+
+  public double readPigeon()
+  {
+    double[] ypr = new double[3];
+    m_imu.getYawPitchRoll(ypr);
+    return ypr[0]; 
   }
 }
