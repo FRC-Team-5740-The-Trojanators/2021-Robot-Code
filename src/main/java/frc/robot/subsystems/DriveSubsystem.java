@@ -5,6 +5,8 @@
 package frc.robot.subsystems;
 
 import com.analog.adis16470.frc.ADIS16470_IMU;
+
+import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -30,11 +32,14 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 @SuppressWarnings("PMD.ExcessiveImports")
 public class DriveSubsystem extends SubsystemBase 
 {
+    //private UsbCamera m_UsbCamera = CameraServer.startAutomaticCapture();
+    NetworkTableEntry cameraEntry = NetworkTableInstance.getDefault().getTable("").getEntry("Camera");
+
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
     NetworkTableEntry tx = table.getEntry("tx");
     NetworkTableEntry ty = table.getEntry("ty");
     NetworkTableEntry ta = table.getEntry("ta");
-    
+
     Trajectory m_trajectory; 
 
     // The gyro sensor
